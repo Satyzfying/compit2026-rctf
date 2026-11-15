@@ -5,32 +5,44 @@
   const configQuery = useClientConfig()
   const ctfName = $derived(configQuery.data?.ctfName ?? 'CompIT 2026')
 
-  // Template section rules - siap diisi saat panitia mengirimkan teks final
+  // Peraturan resmi kompetisi CompIT 2026
   const ruleSections = [
     {
-      title: '1. Ketentuan Umum & Peserta',
-      description: 'Syarat kepesertaan, komposisi anggota tim, dan integritas perlombaan.',
-      placeholder: 'Detail peraturan mengenai ketentuan umum peserta akan diperbarui di sini setelah dirilis resmi oleh panitia.',
+      title: '1. Format Kompetisi & Kategori Soal',
+      description: 'Model tantangan dan cakupan bidang keamanan siber yang diujikan.',
+      content:
+        'Model kompetisi yang digunakan adalah Jeopardy dengan kategori Cryptography, Web Exploitation, Binary Exploitation, Digital Forensic, Reverse Engineering, dan Miscellaneous.',
     },
     {
-      title: '2. Format Kompetisi & Flag',
-      description: 'Format jeopardy, kategori tantangan, dan standar format flag submission.',
-      placeholder: 'Detail format kompetisi, daftar kategori, dan format flag resmi akan diperbarui di sini.',
+      title: '2. Waktu Pelaksanaan Kompetisi',
+      description: 'Jadwal pembukaan dan penutupan platform perlombaan.',
+      content:
+        'Kompetisi berlangsung selama 2 hari, dimulai pada tanggal 16 November 2026 pukul 09:00 WIB dan berakhir pada tanggal 17 November 2026 pukul 23:59 WIB.',
     },
     {
-      title: '3. Sistem Penilaian (Dynamic Scoring)',
-      description: 'Mekanisme perhitungan poin dinamis, decay, dan sistem tiebreaker.',
-      placeholder: 'Detail sistem penilaian dan ketentuan scoreboard akan diperbarui di sini.',
+      title: '3. Sistem Penilaian (Dynamic Scoring) & Peringkat',
+      description: 'Mekanisme skor dinamis dan penentuan posisi tim.',
+      content:
+        'Penilaian ditentukan dari seberapa tinggi peringkat dan total nilai yang didapatkan. Bobot nilai bersifat dinamis, dimana akan berkurang seiring dengan banyaknya peserta yang dapat menyelesaikan soal tersebut.',
     },
     {
-      title: '4. Tata Tertib & Larangan Keras',
-      description: 'Ketentuan fair play, larangan DoS/DDoS, larangan berbagi flag, dan sanksi diskualifikasi.',
-      placeholder: 'Daftar larangan dan sanksi pelanggaran akan diperbarui di sini.',
+      title: '4. Tata Tertib & Larangan Penggunaan AI',
+      description: 'Integritas pengerjaan mandiri dan saluran komunikasi bantuan panitia.',
+      content:
+        'Selama pengerjaan, peserta tidak diperbolehkan menggunakan bantuan AI dalam bentuk apapun. Jika terdapat keraguan, diharapkan untuk open ticket dan bertanya kepada panitia.',
+      highlight: true,
     },
     {
-      title: '5. Ketentuan Write-Up',
-      description: 'Kewajiban laporan penyelesaian soal bagi tim pemuncak scoreboard.',
-      placeholder: 'Format dokumen, batas waktu pengumpulan, dan kriteria write-up akan diperbarui di sini.',
+      title: '5. Kewajiban Write-Up (Top 10 Scoreboard)',
+      description: 'Laporan teknis penyelesaian tantangan untuk verifikasi submisi.',
+      content:
+        'Write-up merupakan kewajiban mutlak bagi tim yang menempati peringkat 10 keatas pada scoreboard untuk menguji orisinalitas dan validitas submisi flag selama perlombaan berlangsung.',
+    },
+    {
+      title: '6. Diskualifikasi & Penyesuaian Juara (Podium)',
+      description: 'Konsekuensi kecurangan atau ketiadaan write-up bagi pemenang.',
+      content:
+        'Jika tim yang berhasil menempati posisi 1, 2, dan 3 pada scoreboard terdapat indikasi kecurangan atau tidak mengumpulkan write up sampai batas yang ditentukan maka tim yang berada di peringkat dibawahnya akan naik ke atas.',
     },
   ]
 </script>
@@ -47,24 +59,22 @@
 
   <!-- Announcement Notice Card -->
   <div class="notice-card">
-    <div class="notice-icon">📢</div>
+    <div class="notice-indicator" aria-hidden="true"></div>
     <div class="notice-body">
-      <h3>Informasi Peraturan Kompetisi</h3>
+      <h3>Tata Tertib Resmi Perlombaan</h3>
       <p>
-        Buku panduan dan peraturan lengkap <strong>{ctfName}</strong> saat ini sedang difinalisasi oleh panitia.
-        Rincian peraturan resmi akan segera dipublikasikan di halaman ini sebelum kompetisi dimulai.
+        Seluruh peserta <strong>{ctfName}</strong> wajib memahami dan menaati seluruh ketentuan di bawah ini.
+        Pelanggaran terhadap tata tertib dapat berakibat pada sanksi pembatalan poin hingga diskualifikasi tim.
       </p>
     </div>
   </div>
 
-  <!-- Template Sections -->
+  <!-- Rule Sections -->
   <div class="rules-grid">
     {#each ruleSections as section}
       <Card title={section.title} description={section.description}>
-        <div class="template-box">
-          <p class="placeholder-text">
-            <em>{section.placeholder}</em>
-          </p>
+        <div class="rule-body" class:highlight={section.highlight}>
+          <p>{section.content}</p>
         </div>
       </Card>
     {/each}
@@ -90,72 +100,76 @@
   }
 
   .rules-header h1 {
-    font-size: var(--step-3, 2rem);
-    font-weight: 800;
+    font-size: 2rem;
+    font-weight: 600;
     letter-spacing: -0.02em;
-    background: linear-gradient(135deg, #e2e8f0 0%, #38bdf8 100%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #ededed;
     margin: 0;
   }
 
   .subtitle {
-    color: var(--foreground-l2, #94a3b8);
-    font-size: var(--step-0, 1rem);
+    color: #a3a9b8;
+    font-size: 1rem;
     margin: 0;
   }
 
   .notice-card {
     display: flex;
-    gap: var(--space-s);
+    gap: 0.75rem;
     align-items: flex-start;
-    padding: var(--space-s) var(--space-m);
-    background: rgba(14, 165, 233, 0.08);
-    border: 1px solid rgba(56, 189, 248, 0.25);
-    border-radius: var(--radius-lg);
+    padding: 0.85rem 1.15rem;
+    background: rgba(10, 22, 42, 0.88);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    border-radius: 8px;
   }
 
-  .notice-icon {
-    font-size: 1.5rem;
-    line-height: 1;
+  .notice-indicator {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: #38bdf8;
     flex-shrink: 0;
-    margin-top: 0.15rem;
+    margin-top: 0.45rem;
   }
 
   .notice-body h3 {
     margin: 0 0 0.25rem 0;
-    font-size: 1rem;
-    font-weight: 600;
-    color: #38bdf8;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: #f1f5f9;
   }
 
   .notice-body p {
     margin: 0;
-    font-size: 0.9rem;
-    color: var(--foreground-l1, #cbd5e1);
+    font-size: 0.875rem;
+    color: #94a3b8;
     line-height: 1.5;
   }
 
   .rules-grid {
     display: flex;
     flex-direction: column;
-    gap: var(--space-m);
+    gap: 1rem;
   }
 
-  .template-box {
-    padding: var(--space-s);
-    background: rgba(15, 23, 42, 0.5);
-    border: 1px dashed rgba(148, 163, 184, 0.2);
-    border-radius: var(--radius-md);
+  .rule-body {
+    padding: 0.85rem 1.15rem;
+    background: rgba(6, 14, 28, 0.75);
+    border: 1px solid rgba(56, 189, 248, 0.12);
+    border-radius: 8px;
   }
 
-  .placeholder-text {
+  .rule-body.highlight {
+    border-color: rgba(56, 189, 248, 0.28);
+    background: rgba(8, 20, 38, 0.85);
+  }
+
+  .rule-body p {
     margin: 0;
-    color: var(--foreground-l3, #94a3b8);
-    font-size: 0.9rem;
-    line-height: 1.5;
+    color: #cbd5e1;
+    font-size: 0.925rem;
+    line-height: 1.6;
   }
 </style>
