@@ -24,6 +24,7 @@
   import Tabs from '$lib/ui/tabs.svelte'
   import TagInput from '$lib/ui/tag-input.svelte'
   import Tooltip from '$lib/ui/tooltip.svelte'
+  import { generateUUID } from '$lib/utils/uuid'
   import {
     blankFlagEntry,
     DEFAULT_FLAG_PROVIDER,
@@ -189,7 +190,7 @@
           kind: ChallengeScoringKind.DYNAMIC,
           source: {
             transport: DynamicScoringTransport.WEBHOOK,
-            secret: dynamicSecret || crypto.randomUUID(),
+            secret: dynamicSecret || generateUUID(),
           },
         },
         []
@@ -545,7 +546,7 @@
                           size="sm"
                           {disabled}
                           onclick={() =>
-                            changeDynamicSecret(crypto.randomUUID())}
+                            changeDynamicSecret(generateUUID())}
                         >
                           Regenerate
                         </Button>

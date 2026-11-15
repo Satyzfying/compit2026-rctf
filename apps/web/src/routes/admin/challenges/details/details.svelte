@@ -17,6 +17,7 @@
   import { queryKeys } from '$lib/query/keys'
   import { useCurrentUser } from '$lib/query/user'
   import { toast } from '$lib/toast'
+  import { generateUUID } from '$lib/utils/uuid'
   import Button from '$lib/ui/button.svelte'
   import EmptyState from '$lib/ui/empty-state.svelte'
   import Spinner from '$lib/ui/spinner.svelte'
@@ -131,7 +132,7 @@
     }
     const current = editor
     const wasCreating = current.mode === 'creating'
-    const id = wasCreating ? crypto.randomUUID() : current.challenge!.id
+    const id = wasCreating ? generateUUID() : current.challenge!.id
     onEditorChange(save(current))
 
     try {
