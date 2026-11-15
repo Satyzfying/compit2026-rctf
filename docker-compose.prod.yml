@@ -87,6 +87,10 @@ services:
       options:
         max-size: "50m"
         max-file: "3"
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
     networks:
       - compit-internal
 
@@ -100,13 +104,17 @@ services:
       api:
         condition: service_healthy
     ports:
-      # Port binding for web interface (defaults to 80 on VPS, configurable via WEB_PORT_BINDING)
-      - "${WEB_PORT_BINDING:-80}:80"
+      # Port binding for web interface (defaults to 127.0.0.1:8080 for host Nginx reverse proxy)
+      - "${WEB_PORT_BINDING:-127.0.0.1:8080}:80"
     logging:
       driver: "json-file"
       options:
         max-size: "50m"
         max-file: "3"
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
     networks:
       - compit-internal
 
