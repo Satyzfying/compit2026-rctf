@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onDestroy, onMount } from 'svelte'
   import { fade, fly } from 'svelte/transition'
-  import logoHCS from '$lib/assets/logo-HCS.svg'
   import ThemeToggle from '$lib/components/theme-toggle.svelte'
   import { useClientConfig } from '$lib/query/config'
 
@@ -67,13 +66,7 @@
 
 {#if showIntro}
   <div class="intro-screen" out:fade={{ duration: 500 }}>
-    <img
-      class="logo logoHCS"
-      src={logoHCS}
-      alt={clientConfig?.ctfName ?? 'CompIT 2026'}
-      in:fly={{ y: 20, duration: 3000 }}
-    />
-    <h1 in:fly={{ y: 20, duration: 3000, delay: 200 }}>
+    <h1 in:fly={{ y: 20, duration: 2500 }}>
       Welcome to <span class="accent">{clientConfig?.ctfName ?? 'CompIT 2026'}</span>...
     </h1>
   </div>
