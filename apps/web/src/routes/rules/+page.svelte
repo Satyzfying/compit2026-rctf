@@ -54,17 +54,17 @@
 <div class="rules-container">
   <div class="rules-header">
     <h1>Rules & Regulations</h1>
-    <p class="subtitle">Peraturan & Ketentuan Resmi Perlombaan {ctfName}</p>
+    <p class="subtitle">Official Competition Rules & Regulations for {ctfName}</p>
   </div>
 
   <!-- Announcement Notice Card -->
   <div class="notice-card">
     <div class="notice-indicator" aria-hidden="true"></div>
     <div class="notice-body">
-      <h3>Tata Tertib Resmi Perlombaan</h3>
+      <h3>Official Rules & Code of Conduct</h3>
       <p>
-        Seluruh peserta <strong>{ctfName}</strong> wajib memahami dan menaati seluruh ketentuan di bawah ini.
-        Pelanggaran terhadap tata tertib dapat berakibat pada sanksi pembatalan poin hingga diskualifikasi tim.
+        All participants of <strong>{ctfName}</strong> must understand and strictly adhere to all regulations below.
+        Violations may result in point forfeiture up to team disqualification.
       </p>
     </div>
   </div>

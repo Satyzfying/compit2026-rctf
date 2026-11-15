@@ -67,7 +67,7 @@
   const isAdmin = $derived(hasAnyPermission(user, ADMIN_PANEL_PERMISSIONS))
 
   const moreLinks = [
-    { label: 'Challenge', href: '/challenges' },
+    { label: 'Challenges', href: '/challenges' },
     { label: 'Scoreboard', href: '/scores' },
     { label: 'Rules', href: '/rules' },
   ]

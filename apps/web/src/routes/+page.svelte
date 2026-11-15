@@ -48,7 +48,7 @@
         <span class="pulse-dot"></span>
         <span class="badge-text">
           {#if hasEnded}
-            Event Selesai
+            Competition Ended
           {:else if hasStarted}
             CompIT Live Now
           {:else}
@@ -58,9 +58,6 @@
       </div>
 
       <h1 class="hero-title">{ctfName}</h1>
-      <p class="hero-subtitle">
-        {clientConfig?.meta?.description || 'Competition IT - Departemen Teknologi Informasi ITS'}
-      </p>
 
       <!-- Live Countdown Status Bar -->
       <div class="countdown-bar">
@@ -68,9 +65,9 @@
           {#if hasEnded}
             Status
           {:else if hasStarted}
-            Berakhir dalam
+            Ends in
           {:else}
-            Dimulai dalam
+            Starts in
           {/if}
         </div>
         <div class="countdown-value">{countdownText}</div>
@@ -79,10 +76,10 @@
       <!-- Quick Action Buttons -->
       <div class="action-buttons">
         <a href="/rules" class="btn btn-secondary">
-          Peraturan lomba
+          Rules &amp; Regulations
         </a>
         <a href="/login" class="btn btn-primary">
-          Masuk akun tim
+          Team Login
         </a>
       </div>
     </div>
@@ -98,7 +95,7 @@
   {/if}
 
   <footer class="home-footer">
-    <p>CompIT 2026 &bull; Departemen Teknologi Informasi ITS &bull; Powered by rCTF</p>
+    <p>CompIT 2026 &bull; Department of Information Technology ITS &bull; Powered by rCTF</p>
   </footer>
 </div>
 
@@ -149,13 +146,6 @@
     margin: 0.25rem 0 0 0;
   }
 
-  .hero-subtitle {
-    color: #94a3b8;
-    font-size: 1rem;
-    max-width: 34rem;
-    margin: 0 0 var(--space-2xs) 0;
-    line-height: 1.5;
-  }
 
   .countdown-bar {
     display: flex;
