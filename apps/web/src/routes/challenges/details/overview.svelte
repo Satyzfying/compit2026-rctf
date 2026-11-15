@@ -98,26 +98,41 @@
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
-    padding: 0.75rem 1rem;
-    color: #c4fff9;
-    background: linear-gradient(
-      135deg,
-      color-mix(in oklab, #072cff8a 46%, transparent 5%),
-      /* color-mix(in oklab, #caf0f8 38%, transparent) */
-    );
+    padding: 0.85rem 1.15rem;
+    color: #e2e8f0;
+    background: transparent;
 
     :global(ui-section) {
-      background: rgb(11 42 70 / 74%);
-      border-color: rgb(91 190 202 / 38%);
+      background: rgba(8, 18, 36, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.16);
+      border-radius: 8px;
     }
 
     :global(section-header) {
-      color: #b5fff4;
-      background: rgba(21, 108, 114, 0.773);
+      color: #38bdf8;
+      font-weight: 600;
+      font-size: 0.9rem;
+      background: rgba(12, 25, 48, 0.9);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.12);
+      padding: 0.5rem 0.85rem;
     }
 
     :global(section-content) {
-      background: color-mix(in oklab, #1423748a 46%, transparent 5%);
+      background: transparent;
+      padding: 0.85rem;
+      color: #cbd5e1;
+      font-size: 0.925rem;
+      line-height: 1.6;
+    }
+
+    :global(code) {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      color: #38bdf8;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-family: var(--font-mono, monospace);
+      font-size: 0.875em;
     }
   }
 
@@ -185,25 +200,28 @@
       align-items: center;
       gap: 0.75rem;
       padding: 0.5rem 0.75rem;
-      color: inherit;
+      color: #f1f5f9;
       text-decoration: none;
-      background: var(--background-l4);
-      border-radius: var(--radius-md);
+      background: rgba(10, 22, 42, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.18);
+      border-radius: 6px;
+      transition: all 0.12s ease;
 
       &:hover {
-        background: var(--background-l5);
+        background: rgba(16, 34, 64, 0.9);
+        border-color: rgba(56, 189, 248, 0.35);
       }
 
       &:focus-visible {
-        outline: 2px solid var(--ring);
+        outline: 2px solid #38bdf8;
         outline-offset: 0;
       }
     }
 
     :global([data-slot='icon']) {
       flex-shrink: 0;
-      font-size: 1.25rem;
-      color: var(--foreground-l3);
+      font-size: 1.125rem;
+      color: #a3a9b8;
     }
   }
 

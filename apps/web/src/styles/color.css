@@ -737,6 +737,6 @@ a:focus-visible {
 }
 
 body {
-  background-color: var(--background-l0);
-  color: var(--foreground-l0);
+  background-color: #060b19;
+  color: #f1f5f9;
 }

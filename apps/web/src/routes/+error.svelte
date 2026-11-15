@@ -48,55 +48,58 @@
     overflow: hidden;
     inline-size: 100%;
     max-inline-size: 26rem;
-    background: rgba(8, 21, 38, 0.45);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid #0bad5c;
-    border-radius: 16px;
+    background: rgba(11, 19, 38, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
     padding: var(--space-m) var(--space-s);
     transition:
       transform 0.3s ease,
+      box-shadow 0.3s ease,
       border-color 0.3s ease;
 
     --color-surface: transparent;
-    --color-surface-raised: rgba(8, 21, 38, 0.4);
+    --color-surface-raised: rgba(15, 23, 42, 0.6);
     --color-bg: transparent;
     --color-card-bg: transparent;
-    --color-text: #6fe0ff;
-    --color-text-muted: #9fd8ff;
-    --color-primary: #0bad5c;
-    --color-primary-bg: rgba(11, 173, 92, 0.12);
-    --color-accent: #0effc7;
-    --color-border: #0bad5c;
+    --color-text: #e2e8f0;
+    --color-text-muted: #94a3b8;
+    --color-primary: #38bdf8;
+    --color-primary-bg: rgba(56, 189, 248, 0.12);
+    --color-accent: #38bdf8;
+    --color-border: rgba(56, 189, 248, 0.25);
   }
 
   .glass-widget:hover {
     transform: translateY(-4px);
-    border-color: #6fe0ff;
+    border-color: rgba(56, 189, 248, 0.5);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(56, 189, 248, 0.15);
   }
 
   .glass-widget :global(ui-status-card),
   .glass-widget :global(ui-status-card *) {
     background: transparent !important;
-    border-color: #0bad5c !important;
+    border-color: rgba(56, 189, 248, 0.25) !important;
   }
 
   .glass-widget :global(ui-status-card) {
     position: relative;
     z-index: 2;
-    color: #6fe0ff !important;
+    color: #e2e8f0 !important;
   }
 
   .glass-widget :global(ui-status-card h1),
   .glass-widget :global(ui-status-card h2),
   .glass-widget :global(ui-status-card [data-slot='title']) {
-    color: #eaf9ff !important;
+    color: #ffffff !important;
   }
 
   .glass-widget :global(ui-status-card p),
   .glass-widget :global(ui-status-card [data-slot='subtitle']),
   .glass-widget :global(ui-status-card [data-slot='detail']) {
-    color: #9fd8ff !important;
+    color: #94a3b8 !important;
   }
 
   .glass-widget :global(a) {
@@ -161,24 +164,18 @@
     block-size: auto;
     font-size: 0.875rem;
     font-weight: 500;
-    color: #6fe0ff !important;
-    background: linear-gradient(
-      180deg,
-      rgba(8, 22, 34, 0.92),
-      rgba(6, 20, 32, 0.86)
-    ) !important;
-    border: 1px solid #0bad5c !important;
-    border-radius: var(--radius-lg);
+    color: #ffffff !important;
+    background: linear-gradient(180deg, #0284c7, #0369a1) !important;
+    border: 1px solid rgba(56, 189, 248, 0.35) !important;
+    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+    border-radius: var(--radius-md);
     cursor: pointer;
     margin-block-start: var(--space-s);
-    transition:
-      color 0.2s ease,
-      border-color 0.2s ease,
-      transform 0.2s ease;
+    transition: all 0.2s ease;
 
     &:hover {
-      color: #c8fff5 !important;
-      border-color: #6fe0ff !important;
+      background: linear-gradient(180deg, #0369a1, #075985) !important;
+      box-shadow: 0 4px 18px rgba(2, 132, 199, 0.5);
       transform: translateY(-2px);
     }
 

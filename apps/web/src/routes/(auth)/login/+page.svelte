@@ -117,19 +117,18 @@
   footer-note {
     display: block;
     margin-top: 1rem;
-    color: var(--foreground-l3, #cbd5e1);
+    color: #94a3b8;
     font-size: 0.875rem;
   }
 
   footer-note a {
-    color: var(--foreground-prose-link, #f472b6);
+    color: #38bdf8;
     font-weight: 500;
-    text-decoration: underline;
-    text-decoration-color: currentColor;
+    text-decoration: none;
   }
 
   footer-note a:hover {
-    color: var(--foreground-prose-link, #f472b6);
+    color: #7dd3fc;
     text-decoration: underline;
   }
 </style>

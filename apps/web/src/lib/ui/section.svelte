@@ -21,8 +21,9 @@
   ui-section {
     display: block;
     overflow: clip;
-    border: 2px solid var(--border);
-    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    background: #11141c;
   }
 
   section-header {
@@ -30,14 +31,17 @@
     gap: var(--space-2xs);
     align-items: center;
     justify-content: space-between;
-    padding: 0.375rem 1rem;
-    color: var(--foreground-l3);
-    background: var(--background-l3);
+    padding: 0.45rem 0.85rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: #a3a9b8;
+    background: #161922;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   }
 
   section-content {
     display: block;
-    padding: 0.5rem 1rem;
+    padding: 0.75rem 0.85rem;
 
     &[data-flush] {
       padding: 0;

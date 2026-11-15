@@ -394,7 +394,6 @@
     flex-wrap: wrap;
     gap: 0.25rem;
     padding-inline: 1.25rem;
-    font-family: Verdana;
   }
 
   toggle-group {

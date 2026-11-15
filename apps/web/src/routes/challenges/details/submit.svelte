@@ -358,15 +358,16 @@
     min-inline-size: 0;
     block-size: var(--submit-block-size);
     padding-inline: 0.75rem;
-    font-size: 1.25rem;
-    color: #d4e9f4;
-    background: rgb(54 42 70 / 82%);
-    border: 1px solid rgb(186 119 176 / 28%);
-    border-radius: var(--radius-lg);
+    font-size: 0.875rem;
+    color: #ededed;
+    background: #1a1e28;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
 
     &[data-tone='success'] {
-      color: var(--foreground-success);
-      background: var(--background-success);
+      color: #4cc38a;
+      background: rgba(76, 195, 138, 0.1);
+      border-color: rgba(76, 195, 138, 0.25);
     }
 
     span {
@@ -377,8 +378,8 @@
 
     :global(svg) {
       flex-shrink: 0;
-      inline-size: 1.5rem;
-      block-size: 1.5rem;
+      inline-size: 1.125rem;
+      block-size: 1.125rem;
     }
   }
 
@@ -387,16 +388,24 @@
     flex-shrink: 0;
     align-items: center;
     justify-content: center;
-    padding-inline: 1rem;
+    padding-inline: 1.15rem;
     block-size: var(--submit-block-size);
-    color: blue;
-    background: linear-gradient(135deg, #174f73, #226a7b);
+    color: #ffffff;
+    font-weight: 500;
+    background: #0284c7;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
     cursor: pointer;
-    border-radius: var(--radius-lg);
+    border-radius: 8px;
+    transition: all 0.15s ease;
   }
 
   :global(button:hover:enabled) {
-    background: var(--background-l5);
+    background: #0369a1;
+  }
+
+  :global(button:active:enabled) {
+    transform: scale(0.98);
   }
 
   :global(button:focus-visible) {

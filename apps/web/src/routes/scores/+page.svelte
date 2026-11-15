@@ -139,7 +139,6 @@
     opacity: 0;
     transform: translateY(18px);
     animation: score-page-reveal 500ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    font-family: Cambay;
   }
 
   freeze-banner {
@@ -151,7 +150,6 @@
     background: rgb(7 21 47 / 0.88);
     border: 1px solid rgb(94 157 202 / 0.5);
     border-radius: 999px;
-    font-family: Tangerine;
   }
 
   @keyframes score-page-reveal {

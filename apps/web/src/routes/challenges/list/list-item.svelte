@@ -201,33 +201,20 @@
     padding: 1rem 1.1rem 1rem 1.35rem;
     text-align: start;
     cursor: pointer;
-    background: linear-gradient(
-      135deg,
-      color-mix(in oklab, #03126b8a 46%, rgba(6, 128, 71, 0.678) 5%),
-      color-mix(in oklab, #caf0f8da 38%, transparent)
-    );
-    border: 1px solid
-      color-mix(in oklab, rgb(67, 67, 128) 20%, transparent);
+    background: rgba(10, 22, 42, 0.82);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(56, 189, 248, 0.16);
     border-inline-start: 3px solid var(--category-foreground-l1);
-    border-radius: 999px;
+    border-radius: 8px;
     transform-origin: center;
     transition:
-      transform 180ms ease,
-      background 180ms ease,
-      box-shadow 180ms ease,
-      border-color 180ms ease;
-    --edge-soft: color-mix(
-      in srgb,
-       18%,
-      transparent
-    );
+      transform 150ms ease,
+      background 150ms ease,
+      border-color 150ms ease;
 
     &:hover {
-      background: linear-gradient(
-        135deg,
-        color-mix(in oklab, rgba(121, 180, 204, 0.651) 50%, transparent),
-        color-mix(in oklab, rgb(104, 123, 247) 48%, transparent)
-      );
+      background: rgba(16, 32, 60, 0.9);
+      border-color: rgba(56, 189, 248, 0.35);
       transform: translateX(2px);
     }
 

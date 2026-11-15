@@ -60,9 +60,9 @@
     align-items: flex-start;
     justify-content: space-between;
     gap: 0.75rem;
-    padding: 0.75rem 1.5rem;
-    background: rgb(12 39 70 / 76%);
-    border-block-end: 1px solid rgb(94 180 198 / 30%);
+    padding: 0.85rem 1.25rem;
+    background: rgba(8, 18, 34, 0.95);
+    border-block-end: 1px solid rgba(56, 189, 248, 0.16);
 
     @media (width >= 40rem) {
       padding-block: 1rem;
@@ -75,30 +75,31 @@
     flex-direction: column;
     gap: 0.25rem;
     min-inline-size: 0;
-    /* background: rgb(24 67 94 / 72%); */
-    font-family: Open Sans, Verdana, sans-serif;
   }
 
   h2 {
     margin: 0;
     overflow: hidden;
-    font-size: 1.5rem;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: #f1f5f9;
     text-overflow: ellipsis;
     white-space: nowrap;
 
     @media (width >= 40rem) {
-      font-size: 1.65rem;
+      font-size: 1.45rem;
     }
   }
 
   chip-row :global(ui-chip) {
-    color: #d7f4ff;
-    background: rgb(24 67 94 / 85%);
-    border: 1px solid rgba(89, 252, 214, 0.35);
-    font-size: 0.9rem;
+    color: #cbd5e1;
+    background: rgba(14, 28, 52, 0.9);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    border-radius: 6px;
+    font-size: 0.8125rem;
 
     @media (width >= 40rem) {
-      font-size: 1rem;
+      font-size: 0.9rem;
     }
   }
 

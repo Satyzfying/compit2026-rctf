@@ -57,12 +57,14 @@
   nav-countdown {
     display: flex;
     align-items: center;
-    gap: 0.625rem;
-    block-size: 2.35rem;
-    padding-inline: 1rem;
-    background: transparent;
-    border: 1px solid #0bad5c;
-    border-radius: var(--radius-lg);
+    gap: 0.5rem;
+    block-size: 2.125rem;
+    padding-inline: 0.75rem;
+    background: rgba(10, 22, 42, 0.82);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    border-radius: var(--radius-md);
 
     @media (width < 64rem) {
       display: none;
@@ -71,31 +73,28 @@
 
   countdown-label {
     display: block;
-    font-family: Cormorant Garamond;
     font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    color: #2c9fec;
+    font-weight: 600;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
+    color: #94a3b8;
     white-space: nowrap;
-    font-family: Tangerine;
   }
 
   .divider {
     display: block;
     inline-size: 1px;
-    block-size: 2rem;
-    background: #1f5d7f;
+    block-size: 1rem;
+    background: rgba(56, 189, 248, 0.2);
     flex-shrink: 0;
   }
 
   countdown-time {
     display: block;
-    font-family: Numans;
-    font-size: 0.95rem;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.875rem;
     font-weight: 600;
-    letter-spacing: 0.02em;
-    color: #c0ff13;
+    color: #38bdf8;
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
   }

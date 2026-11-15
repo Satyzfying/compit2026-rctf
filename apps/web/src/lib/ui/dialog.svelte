@@ -82,7 +82,9 @@
     position: fixed;
     inset: 0;
     z-index: var(--layer-backdrop);
-    background: rgb(0 0 0 / 0.5);
+    background: rgba(3, 7, 18, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
   }
 
   [data-part='positioner'] {
@@ -96,15 +98,20 @@
     display: flex;
     flex-direction: column;
     overflow: clip;
-    background: var(--dialog-content-background, var(--background-l1));
-    border: 2px solid var(--border);
+    background: var(--dialog-content-background, rgba(11, 19, 38, 0.95));
+    border: 1px solid rgba(56, 189, 248, 0.22);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
   }
 
   [data-part='title'] {
     flex-shrink: 0;
-    padding: 0.375rem 1rem;
-    color: var(--foreground-l3);
-    background: var(--background-l3);
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    color: #38bdf8;
+    background: rgba(15, 23, 42, 0.85);
+    border-bottom: 1px solid rgba(56, 189, 248, 0.15);
 
     &[data-hidden] {
       position: absolute;

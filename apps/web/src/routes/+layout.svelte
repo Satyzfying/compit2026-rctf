@@ -11,10 +11,7 @@
   import '../styles/theme-visibility.css'
   import { QueryClientProvider } from '@tanstack/svelte-query'
   import favicon from '$lib/assets/favicon.svg'
-  import Brainrot from '$lib/components/brainrot.svelte'
-  import CustomCursor from '$lib/components/custom-cursor.svelte'
   import Navigation from '$lib/components/navigation.svelte'
-  import RouteBubbleTransition from '$lib/components/route-bubble-transition.svelte'
   import RootEdgeFades from '$lib/components/root-edge-fades.svelte'
   import { resetSessionQueries } from '$lib/query/core'
   import ToastHost from '$lib/ui/toast-host.svelte'
@@ -96,12 +93,6 @@
 </QueryClientProvider>
 
 <ToastHost />
-
-<Brainrot />
-
-<CustomCursor />
-
-<RouteBubbleTransition />
 
 <style>
   :global(html),

@@ -62,11 +62,10 @@
     block-size: 2.25rem;
     padding-inline: var(--space-s);
     color: var(--foreground-l1);
-    background: var(--background-l4);
+    background: rgba(15, 23, 42, 0.75);
+    border: 1px solid rgba(148, 163, 184, 0.28);
     border-radius: var(--radius-md);
     cursor: text;
-    font-family: Short Stack;
-    background: color-mix(in srgb, rgba(43, 34, 137, 0.844) 50%, transparent);
 
     &:focus-within {
       outline: 2px solid var(--ring);

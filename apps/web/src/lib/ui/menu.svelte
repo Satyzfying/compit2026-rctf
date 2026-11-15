@@ -90,15 +90,13 @@
     max-block-size: min(18rem, var(--available-height, 18rem));
     overflow-y: auto;
     overscroll-behavior: none;
-    padding: 0.25rem;
-    background: linear-gradient(
-      180deg,
-      rgba(8, 22, 34, 0.97),
-      rgba(6, 20, 32, 0.94)
-    );
-    border: 1px solid #0bad5c;
-    border-radius: var(--radius-md);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    padding: 0.35rem;
+    background: rgba(11, 19, 38, 0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65);
 
     &[data-same-width] {
       min-inline-size: 0;
@@ -113,15 +111,16 @@
     display: flex;
     align-items: center;
     gap: var(--space-2xs);
-    padding: 0.375rem 0.5rem;
-    color: #6fe0ffc2;
+    padding: 0.45rem 0.65rem;
+    color: #cbd5e1;
     text-decoration: none;
     cursor: pointer;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
+    transition: all 0.15s ease;
 
     &[data-highlighted] {
-      color: #eafffae8;
-      background: rgba(11, 173, 92, 0.18);
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.12);
     }
 
     :global(svg) {
@@ -141,7 +140,7 @@
     display: flex;
     margin-inline-start: auto;
     padding-inline-start: var(--space-2xs);
-    color: #0bad5c;
+    color: #38bdf8;
 
     [data-part='item'][data-state='unchecked'] & {
       visibility: hidden;

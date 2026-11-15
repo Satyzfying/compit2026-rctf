@@ -30,14 +30,12 @@
     flex-direction: column;
     gap: var(--space-s);
     padding: var(--space-s-m);
-    background: rgba(11, 19, 38, 0.88);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(56, 189, 248, 0.16);
-    box-shadow:
-      0 20px 40px -12px rgba(0, 0, 0, 0.7),
-      0 0 24px rgba(56, 189, 248, 0.04);
-    border-radius: var(--radius-lg);
+    background: rgba(10, 22, 42, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(56, 189, 248, 0.18);
+    border-radius: 12px;
+    box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.04);
   }
 
   card-header {
@@ -48,14 +46,14 @@
 
   card-title {
     display: block;
-    font-size: var(--step-1);
+    font-size: 1.25rem;
     font-weight: 600;
-    color: var(--foreground-l0, #ffffff);
+    color: #f1f5f9;
   }
 
   card-description {
     display: block;
-    font-size: var(--step--1);
-    color: var(--foreground-l3, #94a3b8);
+    font-size: 0.875rem;
+    color: #94a3b8;
   }
 </style>

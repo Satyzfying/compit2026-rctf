@@ -12,22 +12,24 @@
   input {
     display: block;
     inline-size: 100%;
-    block-size: 2.375rem;
-    padding-inline: var(--space-xs);
-    color: var(--foreground-l0, #f8fafc);
-    background: rgba(15, 23, 42, 0.75);
-    border: 1px solid rgba(148, 163, 184, 0.28);
-    border-radius: var(--radius-md);
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    block-size: 2.25rem;
+    padding-inline: 0.75rem;
+    color: #f1f5f9;
+    background: rgba(6, 14, 28, 0.75);
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    border-radius: 8px;
+    font-size: 0.875rem;
+    transition: all 0.15s ease;
 
     &::placeholder {
-      color: rgba(148, 163, 184, 0.65);
+      color: rgba(148, 163, 184, 0.55);
     }
 
     &:focus-visible {
       outline: none;
       border-color: #38bdf8;
-      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
+      background: rgba(8, 18, 36, 0.9);
     }
 
     &[aria-invalid='true'] {

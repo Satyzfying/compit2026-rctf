@@ -35,8 +35,10 @@
         <profile-name>{user.name}</profile-name>
 
         <dl>
-          <dt>Division</dt>
-          <dd>{divisionLabel}</dd>
+          {#if Object.keys(divisions).length > 1}
+            <dt>Division</dt>
+            <dd>{divisionLabel}</dd>
+          {/if}
 
           <dt>Country</dt>
           {#if flagFilename && countryName}

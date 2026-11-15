@@ -111,11 +111,12 @@
     min-inline-size: 0;
     margin-inline: auto;
     margin-block: 0.75rem 0;
-    padding-block: 0.25rem;
-    /* background: linear-gradient(135deg, #0b203f 0%, #173b66 56%, #091a35 100%); */
-    border: 1px solid rgb(28, 198, 139);
-    border-radius: var(--radius-3xl);
-    box-shadow: 0 1rem 3rem rgb(0 0 0 / 0.22);
+    background: rgba(10, 22, 42, 0.94);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.04);
     overflow: hidden;
 
     &[data-empty] {
@@ -132,7 +133,6 @@
     min-block-size: 0;
     min-inline-size: 0;
     overflow: hidden;
-    /* background: linear-gradient(135deg, #102b50 0%, #1b4770 52%, #0b1e3d 100%); */
 
     > :global([data-scope='tabs'][data-part='root']) {
       display: flex;
@@ -144,23 +144,28 @@
 
     :global([data-scope='tabs'][data-part='list']) {
       padding-inline: 1rem;
-      background: rgb(7 24 49 / 82%);
-      border-block-end: 1px solid rgb(88 183 208 / 28%);
+      background: rgba(8, 18, 34, 0.95);
+      border-block-end: 1px solid rgba(56, 189, 248, 0.16);
     }
 
     :global([data-scope='tabs'][data-part='trigger']) {
-      color: #91b8c9;
-      background: rgb(17 43 73 / 72%);
+      color: #94a3b8;
+      background: transparent;
+      border-radius: 6px 6px 0 0;
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 0.4rem 0.9rem;
+      transition: all 0.12s ease;
 
       &[data-selected] {
-        color: #e1fbff;
-        background: rgb(30 91 121 / 92%);
-        box-shadow: inset 0 -2px 0 #77e5ec;
+        color: #f1f5f9;
+        background: rgba(14, 28, 52, 0.9);
+        box-shadow: inset 0 -2px 0 #38bdf8;
       }
 
       &:hover {
-        color: #d5f7ff;
-        background: rgb(28 75 103 / 88%);
+        color: #f1f5f9;
+        background: rgba(56, 189, 248, 0.08);
       }
     }
 
@@ -170,7 +175,7 @@
       flex-direction: column;
       min-block-size: 0;
       overflow: hidden;
-      background: rgb(13 35 63 / 82%);
+      background: rgba(10, 22, 42, 0.94);
       padding-block-end: 8rem;
     }
   }

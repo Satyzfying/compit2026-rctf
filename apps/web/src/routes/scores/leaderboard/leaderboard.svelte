@@ -439,12 +439,9 @@
     min-block-size: 0;
     inline-size: 100%;
     max-inline-size: 100%;
-    background: linear-gradient(
-      135deg, color-mix(in oklab, #cdcecf 48%, #12385e 82%),
-        color-mix(in oklab, #06bcc1 48%, transparent 75%));
-    border: 1px solid rgba(1, 7, 12, 0.959);
+    background: rgba(11, 19, 38, 0.85);
+    border: 1px solid rgba(56, 189, 248, 0.22);
     border-radius: var(--radius-lg);
-    font-family: VT323;
 
     &[data-fade-scope] {
       timeline-scope: --edge-fade, --lb-block, --lb-inline;
@@ -543,7 +540,6 @@
     display: flex;
     justify-content: flex-end;
     padding: 0.35rem 0.75rem;
-    font-family: elegant;
   }
 
   graph-toggle-row button {
