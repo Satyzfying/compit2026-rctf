@@ -4,6 +4,35 @@
 
   const configQuery = useClientConfig()
   const ctfName = $derived(configQuery.data?.ctfName ?? 'CompIT 2026')
+
+  // Template section rules - siap diisi saat panitia mengirimkan teks final
+  const ruleSections = [
+    {
+      title: '1. Ketentuan Umum & Peserta',
+      description: 'Syarat kepesertaan, komposisi anggota tim, dan integritas perlombaan.',
+      placeholder: 'Detail peraturan mengenai ketentuan umum peserta akan diperbarui di sini setelah dirilis resmi oleh panitia.',
+    },
+    {
+      title: '2. Format Kompetisi & Flag',
+      description: 'Format jeopardy, kategori tantangan, dan standar format flag submission.',
+      placeholder: 'Detail format kompetisi, daftar kategori, dan format flag resmi akan diperbarui di sini.',
+    },
+    {
+      title: '3. Sistem Penilaian (Dynamic Scoring)',
+      description: 'Mekanisme perhitungan poin dinamis, decay, dan sistem tiebreaker.',
+      placeholder: 'Detail sistem penilaian dan ketentuan scoreboard akan diperbarui di sini.',
+    },
+    {
+      title: '4. Tata Tertib & Larangan Keras',
+      description: 'Ketentuan fair play, larangan DoS/DDoS, larangan berbagi flag, dan sanksi diskualifikasi.',
+      placeholder: 'Daftar larangan dan sanksi pelanggaran akan diperbarui di sini.',
+    },
+    {
+      title: '5. Ketentuan Write-Up',
+      description: 'Kewajiban laporan penyelesaian soal bagi tim pemuncak scoreboard.',
+      placeholder: 'Format dokumen, batas waktu pengumpulan, dan kriteria write-up akan diperbarui di sini.',
+    },
+  ]
 </script>
 
 <svelte:head>
@@ -16,71 +45,29 @@
     <p class="subtitle">Peraturan & Ketentuan Resmi Perlombaan {ctfName}</p>
   </div>
 
+  <!-- Announcement Notice Card -->
+  <div class="notice-card">
+    <div class="notice-icon">📢</div>
+    <div class="notice-body">
+      <h3>Informasi Peraturan Kompetisi</h3>
+      <p>
+        Buku panduan dan peraturan lengkap <strong>{ctfName}</strong> saat ini sedang difinalisasi oleh panitia.
+        Rincian peraturan resmi akan segera dipublikasikan di halaman ini sebelum kompetisi dimulai.
+      </p>
+    </div>
+  </div>
+
+  <!-- Template Sections -->
   <div class="rules-grid">
-    <!-- 1. Ketentuan Umum -->
-    <Card title="1. Ketentuan Umum Peserta">
-      <ul class="rule-list">
-        <li>Peserta merupakan mahasiswa aktif Departemen Teknologi Informasi Institut Teknologi Sepuluh Nopember (ITS).</li>
-        <li>Kompetisi dimainkan dalam format <strong>Tim</strong> yang beranggotakan <strong>2 hingga 3 orang</strong>.</li>
-        <li>Akun peserta disediakan secara resmi oleh panitia. Pendaftaran mandiri di web ditutup untuk menjaga integritas data peserta.</li>
-        <li>Setiap peserta wajib menjunjung tinggi nilai sportivitas, kejujuran, dan etika akademik selama kompetisi berlangsung.</li>
-      </ul>
-    </Card>
-
-    <!-- 2. Format Soal & Flag -->
-    <Card title="2. Format Kompetisi & Flag">
-      <ul class="rule-list">
-        <li>Format kompetisi adalah <strong>Jeopardy CTF</strong> dengan kategori:
-          <span class="badge-group">
-            <span class="badge">Web Exploitation</span>
-            <span class="badge">Binary Exploitation</span>
-            <span class="badge">Cryptography</span>
-            <span class="badge">Digital Forensics</span>
-            <span class="badge">Reverse Engineering</span>
-            <span class="badge">Miscellaneous</span>
-          </span>
-        </li>
-        <li>Format flag resmi: <code>compit&#123;...&#125;</code> (bersifat <em>case-sensitive</em>, kecuali dinyatakan lain pada deskripsi soal).</li>
-        <li>Setiap flag yang valid hanya dapat disubmit satu kali per tim.</li>
-      </ul>
-    </Card>
-
-    <!-- 3. Sistem Penilaian -->
-    <Card title="3. Dynamic Scoring & Scoreboard">
-      <ul class="rule-list">
-        <li>Sistem penilaian menggunakan <strong>Dynamic Scoring</strong>:
-          <ul>
-            <li>Skor awal (maksimum): <strong>500 poin</strong>.</li>
-            <li>Skor minimum (floor): <strong>100 poin</strong>.</li>
-            <li>Nilai soal akan menurun secara dinamis seiring bertambahnya jumlah tim yang berhasil menyelesaikan (<em>solve</em>) soal tersebut.</li>
-          </ul>
-        </li>
-        <li>Peringkat ditentukan berdasarkan akumulasi poin tertinggi.</li>
-        <li>Jika terdapat tim dengan poin yang sama, sistem <strong>Tiebreaker</strong> akan memprioritaskan tim yang mencapai skor tersebut lebih awal.</li>
-      </ul>
-    </Card>
-
-    <!-- 4. Larangan Keras -->
-    <Card title="4. Larangan & Pelanggaran (Disqualification)">
-      <div class="warning-callout">
-        <strong>PENTING:</strong> Pelanggaran terhadap poin-poin di bawah ini akan dikenakan sanksi diskualifikasi langsung tanpa peringatan:
-      </div>
-      <ul class="rule-list alert-list">
-        <li><strong>Dilarang Melakukan DoS / DDoS:</strong> Dilarang menyerang, membanjiri request berlebihan, atau mengganggu stabilitas infrastruktur platform rCTF maupun server soal.</li>
-        <li><strong>Dilarang Flag Sharing:</strong> Dilarang membagikan flag, solusi, atau hint kepada tim lain dalam bentuk apa pun.</li>
-        <li><strong>Dilarang Brute Force:</strong> Dilarang melakukan serangan brute-force terhadap form submit flag atau akun tim lain (sistem dilengkapi rate-limiting otomatis).</li>
-        <li><strong>Dilarang Merusak Server Soal:</strong> Dilarang menghapus flag, mengubah hak akses (privilege) target secara destruktif, atau merusak lingkungan kontainer yang dapat merugikan tim lain.</li>
-      </ul>
-    </Card>
-
-    <!-- 5. Kewajiban Write-up -->
-    <Card title="5. Kewajiban Write-Up">
-      <ul class="rule-list">
-        <li>Seluruh tim yang berhasil masuk dalam <strong>Top 10 Scoreboard</strong> di akhir kompetisi <strong>wajib</strong> mengumpulkan dokumen <em>write-up</em> resmi.</li>
-        <li>Write-up berisi langkah-langkah penyelesaian dari soal-soal yang berhasil disolve, sebagai bukti keabsahan solusi.</li>
-        <li>Format dan batas waktu pengumpulan write-up akan diumumkan oleh panitia melalui kanal informasi resmi.</li>
-      </ul>
-    </Card>
+    {#each ruleSections as section}
+      <Card title={section.title} description={section.description}>
+        <div class="template-box">
+          <p class="placeholder-text">
+            <em>{section.placeholder}</em>
+          </p>
+        </div>
+      </Card>
+    {/each}
   </div>
 </div>
 
@@ -107,6 +94,7 @@
     font-weight: 800;
     letter-spacing: -0.02em;
     background: linear-gradient(135deg, #e2e8f0 0%, #38bdf8 100%);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin: 0;
@@ -118,70 +106,56 @@
     margin: 0;
   }
 
+  .notice-card {
+    display: flex;
+    gap: var(--space-s);
+    align-items: flex-start;
+    padding: var(--space-s) var(--space-m);
+    background: rgba(14, 165, 233, 0.08);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    border-radius: var(--radius-lg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .notice-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+
+  .notice-body h3 {
+    margin: 0 0 0.25rem 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #38bdf8;
+  }
+
+  .notice-body p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--foreground-l1, #cbd5e1);
+    line-height: 1.5;
+  }
+
   .rules-grid {
     display: flex;
     flex-direction: column;
     gap: var(--space-m);
   }
 
-  .rule-list {
+  .template-box {
+    padding: var(--space-s);
+    background: rgba(15, 23, 42, 0.5);
+    border: 1px dashed rgba(148, 163, 184, 0.2);
+    border-radius: var(--radius-md);
+  }
+
+  .placeholder-text {
     margin: 0;
-    padding-left: 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2xs);
-    color: var(--foreground-l1, #cbd5e1);
-    line-height: 1.6;
-    font-size: 0.95rem;
-  }
-
-  .rule-list ul {
-    margin-top: var(--space-3xs);
-    padding-left: 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3xs);
-  }
-
-  .badge-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    margin-top: 0.4rem;
-  }
-
-  .badge {
-    display: inline-block;
-    padding: 0.15rem 0.5rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    border-radius: var(--radius-sm, 4px);
-    background: rgba(56, 189, 248, 0.12);
-    color: #38bdf8;
-    border: 1px solid rgba(56, 189, 248, 0.25);
-  }
-
-  .warning-callout {
-    padding: var(--space-2xs) var(--space-xs);
-    background: rgba(239, 68, 68, 0.1);
-    border-left: 3px solid #ef4444;
-    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-    color: #fca5a5;
-    font-size: 0.875rem;
-    margin-bottom: var(--space-3xs);
-  }
-
-  .alert-list li::marker {
-    color: #ef4444;
-  }
-
-  code {
-    padding: 0.15rem 0.4rem;
-    border-radius: var(--radius-sm, 4px);
-    background: rgba(0, 0, 0, 0.35);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    font-family: monospace;
-    color: #38bdf8;
-    font-size: 0.9em;
+    color: var(--foreground-l3, #94a3b8);
+    font-size: 0.9rem;
+    line-height: 1.5;
   }
 </style>
