@@ -24,6 +24,8 @@ backups/*.sql.gz
 # Build artifacts
 dist/
 build/
+!packages/build/
+packages/build/dist/
 .svelte-kit/
 
 # Logs & temp
