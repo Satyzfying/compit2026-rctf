@@ -100,8 +100,8 @@ services:
       api:
         condition: service_healthy
     ports:
-      # Expose only to localhost so Host Nginx + TLS proxy can forward traffic securely
-      - "127.0.0.1:8080:80"
+      # Port binding for web interface (defaults to 80 on VPS, configurable via WEB_PORT_BINDING)
+      - "${WEB_PORT_BINDING:-80}:80"
     logging:
       driver: "json-file"
       options:
