@@ -18,9 +18,45 @@
   const hasStarted = $derived(startTime > 0 && now >= startTime)
   const hasEnded = $derived(endTime > 0 && now >= endTime)
 
+  // Cyber text scramble decoder effect (Matrix/Hacker style)
+  let displayTitle = $state('CompIT 2026')
+  const scrambleChars = '01#%&*+=-_<>{}[]/\\~^$!?'
+  let scrambleTimer: ReturnType<typeof setInterval> | undefined
+
+  function triggerScramble(target = ctfName) {
+    if (scrambleTimer) clearInterval(scrambleTimer)
+    let iteration = 0
+    scrambleTimer = setInterval(() => {
+      displayTitle = target
+        .split('')
+        .map((char, index) => {
+          if (char === ' ') return ' '
+          return index < Math.floor(iteration)
+            ? char
+            : scrambleChars[Math.floor(Math.random() * scrambleChars.length)]
+        })
+        .join('')
+      if (iteration >= target.length) {
+        clearInterval(scrambleTimer)
+        displayTitle = target
+      }
+      iteration += 0.5
+    }, 28)
+  }
+
+  $effect(() => {
+    if (ctfName && displayTitle === 'CompIT 2026') {
+      displayTitle = ctfName
+    }
+  })
+
   onMount(() => {
+    triggerScramble(ctfName)
     const timer = setInterval(() => (now = Date.now()), 1000)
-    return () => clearInterval(timer)
+    return () => {
+      clearInterval(timer)
+      if (scrambleTimer) clearInterval(scrambleTimer)
+    }
   })
 
   const countdownText = $derived.by(() => {
@@ -43,44 +79,57 @@
 <div class="home-container">
   <!-- Hero Card -->
   <Card>
-    <div class="hero-header">
-      <div class="hero-badge">
-        <span class="pulse-dot"></span>
-        <span class="badge-text">
-          {#if hasEnded}
-            Competition Ended
-          {:else if hasStarted}
-            CompIT Live Now
-          {:else}
-            CompIT 2026 CTF
-          {/if}
-        </span>
-      </div>
+    <div class="hero-card-container">
+      <!-- Subtle ambient floating bubbles (contained within hero card) -->
+      <div class="ambient-bubble bubble-1" aria-hidden="true"></div>
+      <div class="ambient-bubble bubble-2" aria-hidden="true"></div>
+      <div class="ambient-bubble bubble-3" aria-hidden="true"></div>
 
-      <h1 class="hero-title">{ctfName}</h1>
-
-      <!-- Live Countdown Status Bar -->
-      <div class="countdown-bar">
-        <div class="countdown-label">
-          {#if hasEnded}
-            Status
-          {:else if hasStarted}
-            Ends in
-          {:else}
-            Starts in
-          {/if}
+      <div class="hero-header">
+        <div class="hero-badge">
+          <span class="pulse-dot"></span>
+          <span class="badge-text">
+            {#if hasEnded}
+              Competition Ended
+            {:else if hasStarted}
+              CompIT Live Now
+            {:else}
+              CompIT 2026 CTF
+            {/if}
+          </span>
         </div>
-        <div class="countdown-value">{countdownText}</div>
-      </div>
 
-      <!-- Quick Action Buttons -->
-      <div class="action-buttons">
-        <a href="/rules" class="btn btn-secondary">
-          Rules &amp; Regulations
-        </a>
-        <a href="/login" class="btn btn-primary">
-          Team Login
-        </a>
+        <h1
+          class="hero-title"
+          onmouseenter={() => triggerScramble(ctfName)}
+          title="Hover to decode"
+        >
+          {displayTitle}
+        </h1>
+
+        <!-- Live Countdown Status Bar -->
+        <div class="countdown-bar">
+          <div class="countdown-label">
+            {#if hasEnded}
+              Status
+            {:else if hasStarted}
+              Ends in
+            {:else}
+              Starts in
+            {/if}
+          </div>
+          <div class="countdown-value">{countdownText}</div>
+        </div>
+
+        <!-- Quick Action Buttons -->
+        <div class="action-buttons">
+          <a href="/rules" class="btn btn-secondary">
+            Rules &amp; Regulations
+          </a>
+          <a href="/login" class="btn btn-primary">
+            Team Login
+          </a>
+        </div>
       </div>
     </div>
   </Card>
@@ -109,7 +158,68 @@
     gap: var(--space-l);
   }
 
+  .hero-card-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: inherit;
+    margin: -0.5rem -1rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .ambient-bubble {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(circle at 35% 35%, rgba(56, 189, 248, 0.2) 0%, rgba(14, 116, 144, 0.05) 60%, transparent 100%);
+    border: 1px solid rgba(56, 189, 248, 0.22);
+    box-shadow: inset 0 0 10px rgba(56, 189, 248, 0.15), 0 0 14px rgba(56, 189, 248, 0.08);
+    z-index: 0;
+  }
+
+  .bubble-1 {
+    width: 64px;
+    height: 64px;
+    bottom: -15px;
+    left: 8%;
+    animation: float-bubble 11s ease-in-out infinite alternate;
+  }
+
+  .bubble-2 {
+    width: 88px;
+    height: 88px;
+    bottom: -25px;
+    right: 10%;
+    animation: float-bubble 15s ease-in-out infinite alternate;
+    animation-delay: -4s;
+  }
+
+  .bubble-3 {
+    width: 38px;
+    height: 38px;
+    top: 20%;
+    right: 22%;
+    animation: float-bubble 9s ease-in-out infinite alternate;
+    animation-delay: -6s;
+  }
+
+  @keyframes float-bubble {
+    0% {
+      transform: translate(0, 0) scale(0.92);
+      opacity: 0.14;
+    }
+    50% {
+      transform: translate(14px, -28px) scale(1.06);
+      opacity: 0.32;
+    }
+    100% {
+      transform: translate(-10px, -50px) scale(1);
+      opacity: 0.12;
+    }
+  }
+
   .hero-header {
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -144,6 +254,13 @@
     letter-spacing: -0.02em;
     color: #f1f5f9;
     margin: 0.25rem 0 0 0;
+    cursor: default;
+    user-select: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #38bdf8;
+    }
   }
 
 

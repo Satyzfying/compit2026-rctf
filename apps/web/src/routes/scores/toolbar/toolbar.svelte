@@ -170,16 +170,17 @@
       />
     </search-slot>
 
-    <Tooltip label="Export screenshot">
+    <Tooltip label="Export shareable leaderboard card">
       {#snippet children({ props })}
         <button
           {...props}
           type="button"
           data-screenshot
-          aria-label="Export screenshot"
+          aria-label="Export shareable card"
           onclick={onScreenshot}
         >
           <IconImage aria-hidden="true" />
+          <span class="share-btn-text">Share Card</span>
         </button>
       {/snippet}
     </Tooltip>
@@ -370,14 +371,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 0.35rem;
     flex-shrink: 0;
     block-size: 2.25rem;
-    inline-size: 2.25rem;
-    color: var(--foreground-l3);
-    background: var(--background-l2);
-    border: 1px solid var(--background-l3);
-    border-radius: var(--radius-md);
+    padding-inline: 0.75rem;
+    color: #38bdf8;
+    background: rgba(10, 22, 42, 0.85);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    border-radius: 8px;
+    font-size: 0.8125rem;
+    font-weight: 500;
     cursor: pointer;
+    transition: all 0.15s ease;
 
     :global(svg) {
       font-size: 1rem;
@@ -385,12 +390,23 @@
 
     &:hover,
     &[data-state='open'] {
-      color: var(--foreground-l1);
-      background: var(--background-l3);
+      color: #f1f5f9;
+      background: rgba(16, 34, 64, 0.95);
+      border-color: rgba(56, 189, 248, 0.5);
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
     }
 
     &:focus-visible {
-      outline: 2px solid var(--ring);
+      outline: 2px solid #38bdf8;
+      outline-offset: 1px;
+    }
+  }
+
+  .share-btn-text {
+    display: none;
+
+    @media (width >= 40rem) {
+      display: inline;
     }
   }
 

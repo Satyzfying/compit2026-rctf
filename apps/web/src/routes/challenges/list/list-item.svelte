@@ -208,14 +208,20 @@
     border-radius: 8px;
     transform-origin: center;
     transition:
-      transform 150ms ease,
-      background 150ms ease,
-      border-color 150ms ease;
+      transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      background 180ms ease,
+      border-color 180ms ease,
+      box-shadow 180ms ease;
 
     &:hover {
-      background: rgba(16, 32, 60, 0.9);
-      border-color: rgba(56, 189, 248, 0.35);
-      transform: translateX(2px);
+      background: rgba(16, 34, 64, 0.94);
+      border-color: rgba(56, 189, 248, 0.45);
+      box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.45), 0 0 12px rgba(56, 189, 248, 0.14);
+      transform: translateX(4px);
+    }
+
+    &:active {
+      transform: translateX(2px) scale(0.995);
     }
 
     &[data-selected] {
