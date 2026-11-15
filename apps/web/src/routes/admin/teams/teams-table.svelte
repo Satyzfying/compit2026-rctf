@@ -82,15 +82,19 @@
     onVerify,
   }: Props = $props()
 
-  const columns: { col: AdminTeamSortBy; label: string }[] = [
+  const showDivision = $derived(Object.keys(divisions).length > 1)
+
+  const columns = $derived<{ col: AdminTeamSortBy; label: string }[]>([
     { col: AdminTeamSortBy.TEAM, label: 'Team' },
     { col: AdminTeamSortBy.STATUS, label: 'Status' },
-    { col: AdminTeamSortBy.DIVISION, label: 'Division' },
+    ...(showDivision
+      ? [{ col: AdminTeamSortBy.DIVISION, label: 'Division' }]
+      : []),
     { col: AdminTeamSortBy.EMAIL, label: 'Email' },
     { col: AdminTeamSortBy.SCORE, label: 'Score' },
     { col: AdminTeamSortBy.SOLVES, label: 'Solves' },
     { col: AdminTeamSortBy.CREATED_AT, label: 'Registered' },
-  ]
+  ])
 
   function toggleSort(col: AdminTeamSortBy) {
     sort = nextSort(sort, col, SORT_DEFAULTS)
@@ -242,15 +246,17 @@
         <span>{statusLabel(status)}</span>
       </status-cell>
     </cell>
-    <cell
-      ><truncate
-        >{divisionLabel(
-          item.kind === 'registered'
-            ? item.team.division
-            : item.verification.division
-        )}</truncate
-      ></cell
-    >
+    {#if showDivision}
+      <cell
+        ><truncate
+          >{divisionLabel(
+            item.kind === 'registered'
+              ? item.team.division
+              : item.verification.division
+          )}</truncate
+        ></cell
+      >
+    {/if}
     <cell>{@render emailCell(item)}</cell>
     <cell
       ><nums
@@ -299,13 +305,13 @@
   </empty-state>
 {/snippet}
 
-<table-region>
+<table-region class:no-division={!showDivision}>
   <AdminTable
     {rows}
     rowHeight={ROW_HEIGHT}
     headerHeight={42}
     overscan={12}
-    minTableWidth={1264}
+    minTableWidth={showDivision ? 1264 : 1120}
     {fingerprint}
     {hasNextPage}
     {isFetchingNextPage}
@@ -341,8 +347,7 @@
     align-items: center;
     gap: var(--space-2xs);
     padding: var(--space-2xs);
-    border-block-end: 2px solid var(--border);
-    font-family: Short Stack;
+    border-block-end: 1px solid rgba(56, 189, 248, 0.2);
   }
 
   search-field {
@@ -353,11 +358,10 @@
     inline-size: min(18rem, 42vw);
     block-size: 2rem;
     padding-inline: 0.5rem;
-    color: rgb(183, 0, 255);
-    background: color-mix(in srgb, rgba(43, 34, 137, 0.844) 50%, transparent);
-    border: 2px solid #058964de;
+    color: var(--foreground-l1);
+    background: rgba(15, 23, 42, 0.75);
+    border: 1px solid rgba(148, 163, 184, 0.28);
     border-radius: var(--radius-md);
-    font-family: Short Stack;
 
     :global(svg) {
       flex-shrink: 0;
@@ -392,6 +396,13 @@
       6rem 6rem 12rem 11rem;
     inline-size: 100%;
     user-select: none;
+  }
+
+  table-region.no-division teams-head,
+  table-region.no-division teams-row {
+    grid-template-columns:
+      minmax(15rem, 1.4fr) 8rem minmax(12rem, 1fr)
+      6rem 6rem 12rem 11rem;
   }
 
   teams-head {

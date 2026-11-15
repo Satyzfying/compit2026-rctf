@@ -324,16 +324,10 @@
     block-size: 100%;
     min-block-size: 0;
     overflow: hidden;
-    background: linear-gradient(
-      135deg,
-      color-mix(in oklab, rgba(63, 168, 179, 0.695) 50%, transparent),
-      color-mix(in oklab, rgb(14, 14, 176) 38%, transparent)
-    );
-    border: 2px solid rgb(25, 168, 130);
-    border-radius: var(--radius-1lg);
-    font-family: 'Pixelify Sans', Verdana, sans-serif;
+    background: rgba(11, 19, 38, 0.85);
+    border: 1px solid rgba(56, 189, 248, 0.22);
+    border-radius: var(--radius-lg);
     font-size: 0.9rem;
-    /* color: blue; */
 
     &[data-side='list'] {
       border-start-end-radius: var(--radius-3xl);

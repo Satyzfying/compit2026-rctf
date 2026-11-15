@@ -421,11 +421,12 @@
   settings-group {
     display: block;
     overflow: clip;
-    background: #08152673;
-    border: 2px solid #0bad5c;
+    background: rgba(11, 19, 38, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(56, 189, 248, 0.22);
     border-radius: var(--radius-lg);
-    color: #29f5b8ab;
-    font-family: Noto Sans Cypriot;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   }
 
   group-header {
@@ -524,30 +525,5 @@
       opacity: 0;
     }
   }
-  settings-group:nth-child(1) group-header {
-  background: #123b70;
-}
 
-settings-group:nth-child(1) group-title {
-  color: #5eead4;
-  font-family: Pochaevsk;
-}
-
-settings-group:nth-child(2) group-header {
-  background: #164e63;
-}
-
-settings-group:nth-child(2) group-title {
-  color: #67e8f9;
-  font-family: Pochaevsk;
-}
-
-settings-group:nth-child(3) group-header {
-  background: #383da1cc;
-}
-
-settings-group:nth-child(3) group-title {
-  color: #5eead4;
-  font-family: Pochaevsk;
-}
 </style>

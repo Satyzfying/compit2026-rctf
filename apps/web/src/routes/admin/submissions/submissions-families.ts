@@ -54,15 +54,18 @@ export type SubmissionFamiliesContext = {
 export function createSubmissionValueFilterFamilies(
   context: SubmissionFamiliesContext
 ): ValueFilterFamily[] {
-  return [
+  const families: ValueFilterFamily[] = [
     challengeFamily(context),
     teamFamily(context),
     kindFamily(context.filters),
     resultFamily(context.filters),
     teamStatusFamily(context.filters),
     categoryFamily(context),
-    divisionFamily(context),
   ]
+  if (context.divisionOptions.length > 1) {
+    families.push(divisionFamily(context))
+  }
+  return families
 }
 
 function challengeFamily({

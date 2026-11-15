@@ -335,15 +335,14 @@
     display: flex;
     justify-content: space-between;
     padding-inline: 2.25rem;
-    color: rgb(1, 19, 49);
+    color: #94a3b8;
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
-    font-family: Open Sans, Verdana, sans-serif;
     font-size: 0.9rem;
 
     strong {
-      color: var(--foreground-l3);
-      font-weight: var(--font-weight-normal);
+      color: #f8fafc;
+      font-weight: 600;
     }
   }
 
@@ -354,9 +353,9 @@
     gap: 0.75rem;
     margin: 0 1.25rem 0.25rem;
     padding: 0.5rem 0.625rem;
-    border: 2px solid rgb(132, 168, 25);
-    border-radius: 0.875rem;
-    background: color-mix(in srgb, rgba(8, 33, 114, 0.711) 65%, transparent);
+    border: 1px solid rgba(56, 189, 248, 0.22);
+    border-radius: var(--radius-md);
+    background: rgba(15, 23, 42, 0.75);
 
     span {
       color: var(--foreground-l1);
@@ -377,16 +376,16 @@
     min-inline-size: 4.75rem;
     block-size: 2.125rem;
     padding-inline: 0.9rem;
-    border-radius: 0.75rem;
+    border-radius: var(--radius-md);
     background: transparent;
-    border: 1px solid color-mix(in srgb, rgb(167, 230, 235) 35%, transparent);
-    color: rgb(185, 81, 213);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    color: #38bdf8;
     cursor: pointer;
-    font-family: Space Grotesk;
     font-size: 0.9rem;
+    transition: all 0.15s ease;
 
     &:hover:not(:disabled) {
-      background: color-mix(in srgb, var(--background-l5) 80%, transparent);
+      background: rgba(56, 189, 248, 0.12);
     }
 
     &:disabled {
@@ -395,8 +394,12 @@
     }
 
     &.danger {
-      border-color: color-mix(in srgb, #ff6d6d 32%, transparent);
-      color: #ffb5b5;
+      border-color: rgba(239, 68, 68, 0.4);
+      color: #f87171;
+
+      &:hover:not(:disabled) {
+        background: rgba(239, 68, 68, 0.15);
+      }
     }
 
     &.subtle {
@@ -409,7 +412,6 @@
     flex-wrap: wrap;
     gap: 0.25rem;
     padding-inline: 1.25rem;
-    font-family: Verdana;
   }
 
   search-box {
@@ -420,26 +422,24 @@
     min-inline-size: 0;
     block-size: 2.5rem;
     padding-inline: 0.75rem;
-    color: rgb(2, 3, 20);
-    background: linear-gradient(
-      135deg,
-      color-mix(in oklab, rgba(51, 53, 53, 0.695) 50%, transparent),
-      color-mix(in oklab, rgb(14, 14, 176) 38%, transparent)
-    );
-    border-radius: 20px;
-    border: 2px solid rgb(46, 152, 101);
+    color: var(--foreground-l1);
+    background: rgba(15, 23, 42, 0.75);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(148, 163, 184, 0.28);
 
     @container admin-challenges-list (min-inline-size: 24rem) {
-      border-radius: 20px var(--radius-sm) var(--radius-sm) 20px;
+      border-radius: var(--radius-md);
     }
 
     &:focus-within {
-      outline: 2px solid var(--ring);
+      outline: none;
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
     }
 
     :global(svg) {
       flex-shrink: 0;
-      color: rgba(249, 123, 161, 0.793);
+      color: #94a3b8;
     }
   }
 
@@ -448,11 +448,11 @@
     min-inline-size: 0;
     background: transparent;
     border: none;
-    color: rgb(208, 237, 244);
+    color: #f8fafc;
     outline: none;
 
     &::placeholder {
-      color: blur(0.5, 0.5, 0.5, 0.5);
+      color: rgba(148, 163, 184, 0.65);
     }
   }
 

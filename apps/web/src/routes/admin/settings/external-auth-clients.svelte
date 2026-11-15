@@ -311,7 +311,7 @@
     display: block;
     overflow: clip;
     background: color-mix(in srgb, #071d35 55%, transparent);
-    border: 2px solid #0bad5c;
+    border: 1px solid rgba(56, 189, 248, 0.22);
     border-radius: var(--radius-lg);
   }
 
@@ -325,11 +325,10 @@
   }
 
   group-title {
-    color: #5eead4;
+    color: #38bdf8;
     font-size: var(--step-0);
-    font-weight: 250;
+    font-weight: 600;
     letter-spacing: 0.02em;
-    font-family: Pochaevsk;
   }
 
   group-body {

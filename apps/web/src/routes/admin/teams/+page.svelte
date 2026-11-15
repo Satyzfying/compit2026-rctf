@@ -103,10 +103,16 @@
     canWrite && registeredRowsMayMatch(statusFilter)
   )
 
-  const families = [
-    statusFilterFamily(statusFilter),
-    divisionFilterFamily(divisionFilter, () => divisionOptions),
-  ]
+  const showDivision = $derived(Object.keys(divisions).length > 1)
+
+  const families = $derived(
+    showDivision
+      ? [
+          statusFilterFamily(statusFilter),
+          divisionFilterFamily(divisionFilter, () => divisionOptions),
+        ]
+      : [statusFilterFamily(statusFilter)]
+  )
   function filterFor(family: ValueFilterFamily): MultiFilter<unknown> {
     return (
       family.id === 'status' ? statusFilter : divisionFilter
