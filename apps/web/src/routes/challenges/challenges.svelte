@@ -63,7 +63,6 @@
 
   let selectedId = $state<string | null>(null)
   let detailsTab = $state('details')
-  let listOpen = $state(true)
   let deepLinkTarget = $state<string | null>(null)
   let innerWidth = $state(0)
   let routerReady = $state(false)
@@ -255,17 +254,8 @@
     aria-label="Challenge list and detail view"
   >
     {#if freezeTime}<freeze-banner>Freeze time</freeze-banner>{/if}
-    <button
-      class="challenge-menu-toggle"
-      type="button"
-      aria-label={listOpen ? 'Hide challenge menu' : 'Show challenge menu'}
-      data-menu-open={listOpen ? 'true' : 'false'}
-      onmouseenter={() => (listOpen = !listOpen)}
-    >
-      <span aria-hidden="true">{listOpen ? '>' : '<'}</span>
-    </button>
 
-    <div class="challenge-layout" data-menu-open={listOpen ? 'true' : 'false'}>
+    <div class="challenge-layout">
       {#if showDetailPane}
         <Splitter
           panels={[
@@ -376,67 +366,6 @@
     flex: 1;
     min-block-size: 0;
     min-inline-size: 0;
-    opacity: 1;
-    transform: translateX(0);
-    transition:
-      transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
-      opacity 260ms ease;
-
-    &[data-menu-open='false'] {
-      pointer-events: none;
-      opacity: 0;
-      transform: translateX(-100%);
-    }
-  }
-
-  .challenge-menu-toggle {
-    position: absolute;
-    z-index: 50;
-    inset-block-start: 50%;
-    inset-inline-start: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    inline-size: 4rem;
-    block-size: 6rem;
-    padding: 0;
-    color: skyblue;
-    background: linear-gradient(
-      135deg,
-      color-mix(in oklab, #2733778a 35%, rgba(33, 133, 86, 0.596) 25%),
-      color-mix(in oklab, #caf0f8 40%, transparent)
-    );
-    border: 1px solid color-mix(in oklab, rgba(3, 23, 136, 0.76) 26%, transparent);
-    border-start-start-radius: 0;
-    border-end-start-radius: 0;
-    border-start-end-radius: 999px;
-    border-end-end-radius: 999px;
-    cursor: pointer;
-    box-shadow: 0 10px 24px rgba(13, 52, 85, 0.32);
-    pointer-events: auto;
-    transform: translateY(-50%);
-    font-size: 2.5rem;
-
-    &[data-menu-open='false'] {
-      background: linear-gradient(
-        135deg,
-        color-mix(in oklab, #2733778a 35%, rgba(33, 133, 86, 0.596) 25%),
-        color-mix(in oklab, #caf0f8 40%, transparent)
-      );
-    }
-
-    &:hover {
-      background: rgba(11, 235, 224, 0.507);
-    }
-
-    &:focus-visible {
-      outline: 2px solid var(--ring);
-      outline-offset: 2px;
-    }
-
-    :global(svg) {
-      font-size: 12rem;
-    }
   }
 
   challenges-list-slot,
