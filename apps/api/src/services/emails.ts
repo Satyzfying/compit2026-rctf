@@ -10,12 +10,27 @@ export type EmailKind = 'register' | 'recover' | 'update'
 
 // FIXME(es3n1n): this is sketchy
 // TODO(es3n1n): we might want to migrate to eta/handlebars, but that's unfortunately a breaking change
-const emailHTML = await Bun.file(
-  path.join(__dirname, '/../../templates/email.html')
-).text()
-const emailTXT = await Bun.file(
-  path.join(__dirname, '/../../templates/email.txt')
-).text()
+const loadTemplate = async (filename: string): Promise<string> => {
+  const candidates = [
+    path.join(__dirname, '/../../templates', filename),
+    path.resolve(process.cwd(), 'apps/api/templates', filename),
+    path.resolve(process.cwd(), 'templates', filename),
+    path.resolve(__dirname, '../templates', filename),
+    path.resolve(__dirname, 'templates', filename),
+  ]
+  for (const candidate of candidates) {
+    try {
+      const file = Bun.file(candidate)
+      if (await file.exists()) {
+        return await file.text()
+      }
+    } catch {}
+  }
+  return ''
+}
+
+const emailHTML = await loadTemplate('email.html')
+const emailTXT = await loadTemplate('email.txt')
 
 export const formatEmailSender = (
   displayName: string,
