@@ -5,23 +5,14 @@
 
   type Mode = 'light' | 'auto' | 'dark'
 
-  let mode: Mode = $state('auto')
+  let mode: Mode = $state('dark')
   let open = $state(false)
 
   const configQuery = useClientConfig()
   const clientConfig = $derived(configQuery.data)
 
   function getAutoTheme(): 'light' | 'dark' {
-    const startTime = clientConfig?.startTime ?? 0
-    const endTime = clientConfig?.endTime ?? 0
-    const now = Date.now()
-
-    if (!startTime || !endTime || endTime <= startTime) return 'light'
-    if (now <= startTime) return 'light'
-    if (now >= endTime) return 'dark'
-
-    const progress = (now - startTime) / (endTime - startTime)
-    return progress < 0.5 ? 'light' : 'dark'
+    return 'dark'
   }
 
   function applyTheme(currentMode: Mode) {

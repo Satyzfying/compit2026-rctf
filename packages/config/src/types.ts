@@ -154,7 +154,7 @@ export const ServerConfigSchema = z.object({
   ),
   faviconUrl: z._default(
     z.string(),
-    'https://redpwn.storage.googleapis.com/branding/rctf-favicon.ico'
+    '/favicon.svg'
   ),
   logoLightUrl: z._default(z.string(), ''),
   logoDarkUrl: z._default(z.string(), ''),

@@ -613,7 +613,7 @@
   --category-foreground-l0:       var(--foreground-gray-l0);
   --category-foreground-l1:       var(--foreground-gray-l1);
 
-  color-scheme: light dark;
+  color-scheme: dark;
 }
 
 [data-category-color='crimson'] {

@@ -131,7 +131,7 @@
 
 <header
   class="center bg"
-  style="background-image: radial-gradient(ellipse at center, transparent 35%, color-mix(in oklab, black 75%, transparent) 100%), linear-gradient(to bottom, color-mix(in oklab, black 55%, transparent), transparent 25%, transparent 75%, color-mix(in oklab, black 55%, transparent)), url({imageBackground})"
+  style="background-image: radial-gradient(ellipse at center, rgba(6, 11, 25, 0.65) 0%, rgba(3, 7, 18, 0.88) 100%), linear-gradient(to bottom, rgba(3, 7, 18, 0.8) 0%, transparent 20%, transparent 80%, rgba(3, 7, 18, 0.85) 100%), url({imageBackground})"
 ></header>
 
 <header class="nav-side">

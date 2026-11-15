@@ -112,15 +112,16 @@
     }
 
     &[data-variant='default'] {
-      color: blur(0.5, 0.5, 0.5, 0.5);
-      background: linear-gradient(
-        180deg,
-        color-mix(in srgb, rgba(39, 39, 244, 0.774) 75%, transparent 5%),
-        color-mix(in srgb, rgb(23, 183, 204) 55%, transparent 5%)
-      );
+      color: #ffffff;
+      font-weight: 600;
+      background: linear-gradient(180deg, #0284c7, #0369a1);
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      transition: all 0.15s ease;
 
       &:hover {
-        background: color-mix(in srgb, rgba(94, 94, 254, 0.7) 75%, transparent);
+        background: linear-gradient(180deg, #0369a1, #075985);
+        box-shadow: 0 4px 18px rgba(2, 132, 199, 0.5);
       }
     }
 

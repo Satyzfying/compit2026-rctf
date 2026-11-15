@@ -2,11 +2,11 @@
 // resolves before first paint. Keep dependency-free and tiny.
 ;(() => {
   try {
+    const sessionMode = localStorage.getItem('session-mode')
     const theme = localStorage.getItem('theme')
-    if (theme === 'light' || theme === 'dark') {
-      document.documentElement.dataset.theme = theme
-    }
+    const chosen = sessionMode || theme || 'dark'
+    document.documentElement.dataset.theme = chosen === 'light' ? 'light' : 'dark'
   } catch {
-    // storage unavailable (private mode / disabled): fall back to system scheme
+    document.documentElement.dataset.theme = 'dark'
   }
 })()
