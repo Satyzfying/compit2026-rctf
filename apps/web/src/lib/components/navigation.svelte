@@ -1,20 +1,19 @@
 <script lang="ts">
   import { Permissions } from '@rctf/types'
+  import { slide } from 'svelte/transition'
   import { useQueryClient } from '@tanstack/svelte-query'
   import { mergeProps } from '@zag-js/svelte'
-  import wordmarkDark from '$lib/assets/wordmark-dark.svg'
-  import wordmarkLight from '$lib/assets/wordmark-light.svg'
+  import { page } from '$app/state'
   import NavigationButton from '$lib/components/navigation-button.svelte'
   import NavigationCountdown from '$lib/components/navigation-countdown.svelte'
   import NavigationMobile from '$lib/components/navigation-mobile.svelte'
   import ThemeToggle from '$lib/components/theme-toggle.svelte'
+  import imageBackground from '$lib/assets/background-theme.svg'
   import {
     IconCopy,
     IconFlagBannerFold,
     IconGavel,
     IconGear,
-    IconGlobeHemisphereWest,
-    IconHouse,
     IconSignIn,
     IconSignOut,
     IconTableFilled,
@@ -22,11 +21,9 @@
   } from '$lib/icons'
   import { useClientConfig } from '$lib/query/config'
   import { useCurrentUser } from '$lib/query/user'
-  import Avatar from '$lib/ui/avatar.svelte'
   import Menu from '$lib/ui/menu.svelte'
   import Tooltip from '$lib/ui/tooltip.svelte'
   import { copyLoginUrl, logout } from '$lib/utils/auth'
-  import { countryCodeToFlagFilename } from '$lib/utils/flags'
   import {
     ADMIN_PANEL_PERMISSIONS,
     hasAnyPermission,
@@ -35,6 +32,23 @@
   import { createRovingFocus } from '$lib/utils/roving'
 
   const rovingFocus = createRovingFocus()
+
+  let moreOpen = $state(false)
+
+  function clickOutside(node: HTMLElement, callback: () => void) {
+    function handleClick(event: MouseEvent) {
+      if (node && !node.contains(event.target as Node)) {
+        callback()
+      }
+    }
+    document.addEventListener('click', handleClick, true)
+
+    return {
+      destroy() {
+        document.removeEventListener('click', handleClick, true)
+      },
+    }
+  }
 
   const queryClient = useQueryClient()
   const configQuery = useClientConfig()
@@ -52,14 +66,11 @@
   )
   const isAdmin = $derived(hasAnyPermission(user, ADMIN_PANEL_PERMISSIONS))
 
-  const lightLogo = $derived(clientConfig?.logoLightUrl || wordmarkLight)
-  const darkLogo = $derived(clientConfig?.logoDarkUrl || wordmarkDark)
-
-  const divisionLabel = $derived(
-    user?.division
-      ? (clientConfig?.divisions[user.division] ?? user.division)
-      : 'No Division'
-  )
+  const moreLinks = [
+    { label: 'Challenge', href: '/challenges' },
+    { label: 'Scoreboard', href: '/scores' },
+    { label: 'Rules', href: '/rules' },
+  ]
 
   const adminMenuItems = $derived(
     [
@@ -118,224 +129,336 @@
   ])
 </script>
 
-<header>
-  <nav-start>
-    <a href="/" aria-label="Home">
-      <logo-light data-theme-visible="light"
-        ><img src={lightLogo} alt={clientConfig?.ctfName} /></logo-light
-      >
-      <logo-dark data-theme-visible="dark"
-        ><img src={darkLogo} alt={clientConfig?.ctfName} /></logo-dark
-      >
-    </a>
-    <nav aria-label="Main" {@attach rovingFocus}>
-      <Tooltip label="Home">
-        {#snippet children({ props })}
-          <NavigationButton
-            {...props}
-            data-roving
-            href="/"
-            activePath="/"
-            label="Home"
-            icon={IconHouse}
-          />
-        {/snippet}
-      </Tooltip>
-      <Tooltip label="Challenges">
-        {#snippet children({ props })}
-          <NavigationButton
-            {...props}
-            data-roving
-            href="/challenges"
-            activePath="/challenges"
-            label="Challenges"
-            icon={IconFlagBannerFold}
-          />
-        {/snippet}
-      </Tooltip>
-      <Tooltip label="Scoreboard">
-        {#snippet children({ props })}
-          <NavigationButton
-            {...props}
-            data-roving
-            href="/scores"
-            activePath="/scores"
-            label="Scoreboard"
-            icon={IconGlobeHemisphereWest}
-          />
-        {/snippet}
-      </Tooltip>
-      {#if isAdmin}
-        <Tooltip label="Admin">
-          {#snippet children({ props: tooltipProps })}
-            <Menu label="Admin menu" items={adminMenuItems}>
-              {#snippet trigger({ props: menuProps })}
-                <NavigationButton
-                  {...mergeProps(tooltipProps, menuProps)}
-                  data-roving
-                  activePath="/admin"
-                  label="Admin menu"
-                  icon={IconGavel}
-                />
-              {/snippet}
-            </Menu>
-          {/snippet}
-        </Tooltip>
-      {/if}
-    </nav>
-  </nav-start>
+<header
+  class="center bg"
+  style="background-image: radial-gradient(ellipse at center, transparent 35%, color-mix(in oklab, black 75%, transparent) 100%), linear-gradient(to bottom, color-mix(in oklab, black 55%, transparent), transparent 25%, transparent 75%, color-mix(in oklab, black 55%, transparent)), url({imageBackground})"
+></header>
 
-  <nav-end>
-    <NavigationCountdown />
-    {#if user && !isArchived}
-      {@const currentUser = user}
-      {#await import('$lib/components/navigation-team-stats.svelte') then { default: NavigationTeamStats }}
-        <NavigationTeamStats />
-      {/await}
-      <Menu label="Account" items={userMenuItems} placement="bottom-end">
-        {#snippet trigger({ props })}
-          <button {...props}>
-            <user-details>
-              <user-name>{currentUser.name}</user-name>
-              <user-meta>
-                {#if currentUser.countryCode}
-                  <img
-                    src="/flags/{countryCodeToFlagFilename(
-                      currentUser.countryCode
-                    )}"
-                    alt="{currentUser.countryCode} flag"
-                  />
-                {/if}
-                {#if currentUser.countryCode && currentUser.statusText}
-                  <meta-separator>·</meta-separator>
-                {/if}
-                {#if currentUser.statusText}
-                  <user-status>{currentUser.statusText}</user-status>
-                {:else if !currentUser.countryCode}
-                  <user-status>{divisionLabel}</user-status>
-                {/if}
-              </user-meta>
-            </user-details>
-            <Avatar src={currentUser.avatarUrl} name={currentUser.name} />
-          </button>
-        {/snippet}
-      </Menu>
-    {:else if !isArchived}
-      <Tooltip label="Login">
-        {#snippet children({ props })}
-          <NavigationButton
-            {...props}
-            href="/login"
-            label="Login"
-            icon={IconSignIn}
-          />
-        {/snippet}
-      </Tooltip>
-    {/if}
-    <ThemeToggle />
-  </nav-end>
+<header class="nav-side">
 
   <NavigationMobile />
+
+  {#if page.url.pathname === '/'}
+    <div class="more-menu" use:clickOutside={() => (moreOpen = false)}>
+      <button
+        type="button"
+        onclick={() => (moreOpen = !moreOpen)}
+        aria-expanded={moreOpen}
+      >
+        <span>View Options</span>
+        <span class="chevron" class:open={moreOpen}>☰</span>
+      </button>
+
+      {#if moreOpen}
+        <ul class="more-list" transition:slide={{ duration: 200 }}>
+          {#each moreLinks as link}
+            <li>
+              <a href={link.href} onclick={() => (moreOpen = false)}>
+                {link.label}
+              </a>
+            </li>
+          {/each}
+        </ul>
+      {/if}
+    </div>
+  {/if}
+  {#if page.url.pathname !== '/'}
+    <button
+      class="back-box"
+      type="button"
+      onclick={() => (window.location.href = '/')}
+    >
+      ◀ GO BACK
+    </button>
+  {/if}
+</header>
+
+<header class="nav-top-right">
+  {#if isAdmin}
+    <nav aria-label="Main" {@attach rovingFocus}>
+      <Menu label="Admin menu" items={adminMenuItems}>
+        {#snippet trigger({ props: menuProps })}
+          <NavigationButton
+            {...menuProps}
+            data-roving
+            data-admin-trigger
+            style="color: #00d4ff;"
+            background="linear-gradient(180deg, rgba(8, 22, 34, 0.97), rgba(6, 20, 32, 0.92))"
+            activePath="/admin"
+            label="Admin menu"
+            icon={IconGavel}
+          />
+        {/snippet}
+      </Menu>
+    </nav>
+  {/if}
+
+  <NavigationCountdown />
+
+  {#if user && !isArchived}
+    <Menu label="Account" items={userMenuItems} placement="bottom-end">
+      {#snippet trigger({ props })}
+        <button {...props} class="profile-menu-trigger">
+          <profile-badge>{user.name}</profile-badge>
+        </button>
+      {/snippet}
+    </Menu>
+  {:else if !user && !isArchived}
+    <span class="nav-end-pill">
+
+      <a href="/login">Login</a>
+    </span>
+  {/if}
 </header>
 
 <style>
   header {
     position: fixed;
-    inset-block-start: 0;
-    inset-inline: 0;
     z-index: var(--layer-nav);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    block-size: var(--header-height);
     padding: 0.75rem 1rem;
-    background: var(--background-l0);
+    background: transparent;
 
     @media (width >= 48rem) {
-      padding-inline: 2.25rem;
+      padding: 1.5rem 2.25rem;
     }
   }
 
-  nav-start {
+  .nav-side {
+    inset-block-start: 0;
+    inset-inline-start: 0;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: var(--space-s);
 
-    > a img {
-      display: block;
-      block-size: 2rem;
+    @media (width >= 48rem) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-m);
     }
   }
 
-  nav,
-  nav-end {
+  .nav-top-right {
+    inset-block-start: 0;
+    inset-inline-end: 0;
     display: none;
     align-items: center;
-    gap: var(--space-2xs);
+    gap: var(--space-xs);
 
     @media (width >= 48rem) {
       display: flex;
     }
   }
 
-  [data-scope='menu'][data-part='trigger'] {
-    --avatar-size: 3rem;
+  .nav-bottom-right {
+    inset-block-end: 0;
+    inset-inline-end: 0;
+    display: none;
+    align-items: center;
+    gap: var(--space-xs);
 
+    @media (width >= 48rem) {
+      display: flex;
+    }
+  }
+
+  /* h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #6fe0ff;
+
+    @media (width >= 48rem) {
+      font-size: 1rem;
+    }
+  } */
+  .center {
+    inset: 0;
+    z-index: -1;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding-inline-start: 0.5rem;
-    cursor: pointer;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  .bg {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+  }
+
+  nav {
+    position: relative;
+    display: none;
+    align-items: center;
+    gap: var(--space-2xs);
+
+    @media (width >= 48rem) {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-2xs);
+    }
+  }
+
+  .more-menu {
+    position: relative;
+    font-family: Courier Prime;
+  }
+
+  .more-menu > button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    block-size: 2.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #6fe0ffb3;
+    background: linear-gradient(
+      180deg,
+      rgba(8, 22, 34, 0.92),
+      rgba(6, 20, 32, 0.86)
+    );
+    border: 1px solid #0bad5c;
     border-radius: var(--radius-lg);
+    cursor: pointer;
 
     &:hover {
-      background: var(--background-l2);
+      color: #c8fff5af;
     }
   }
 
-  user-details {
-    display: flex;
-    flex-direction: column;
-    align-items: end;
+  .chevron {
+    display: inline-block;
+    transition: transform 200ms ease;
   }
 
-  user-name {
+  .chevron.open {
+    transform: rotate(90deg);
+  }
+
+  .more-list {
+    position: absolute;
+    inset-block-start: calc(100% + 0.5rem);
+    inset-inline-start: 0;
+    z-index: var(--layer-popover);
+    inline-size: max-content;
+    min-inline-size: 100%;
+    margin: 0;
+    padding: 0.25rem;
+    list-style: none;
+    background: linear-gradient(
+      180deg,
+      rgba(8, 22, 34, 0.97),
+      rgba(6, 20, 32, 0.94)
+    );
+    border: 1px solid #0bad5c;
+    border-radius: var(--radius-lg);
+  }
+
+  .more-list li a {
     display: block;
-    max-inline-size: 16rem;
-    overflow: hidden;
-    font-size: 1.125rem;
-    line-height: 1.25;
-    color: var(--foreground-l0);
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    inline-size: 100%;
+    padding: 0.6rem 0.85rem;
+    color: #6fe0ffaf;
+    text-decoration: none;
+    border-radius: var(--radius-md);
+
+    &:hover {
+      color: #eafffa;
+      background: rgba(11, 173, 92, 0.18);
+    }
   }
 
-  user-meta {
+  .back-box {
     display: flex;
     align-items: center;
-    gap: var(--space-3xs);
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    block-size: 1.75rem;
+    inline-size: 100%;
+    font-size: 0.875rem;
+    font-weight: 300;
+    color: #6fe0ff;
+    background: linear-gradient(
+      180deg,
+      rgba(8, 22, 34, 0.92),
+      rgba(6, 20, 32, 0.86)
+    );
+    border: 1px solid #0bad5c;
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    font-family: Kedebideri;
 
-    img {
-      block-size: 1.25rem;
-      inline-size: auto;
-      flex-shrink: 0;
+    &:hover {
+      color: #c8fff5;
     }
   }
 
-  meta-separator {
-    display: block;
-    font-size: 1.25rem;
-    line-height: 1;
-    color: var(--foreground-l3);
+  .nav-end-pill :global(a),
+  .nav-end-pill :global(button) {
+    color: #0bad5c;
+    background: linear-gradient(
+      180deg,
+      rgba(8, 22, 34, 0.92),
+      rgba(6, 20, 32, 0.86)
+    ) !important;
+
+    &:hover {
+      background: rgba(11, 173, 92, 0.15) !important;
+    }
   }
 
-  user-status {
+  [data-scope='menu'][data-part='trigger'] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: auto;
+    min-inline-size: 3rem;
+    block-size: 1.5rem;
+    padding-inline: 1rem;
+    color: #6fe0ff;
+    background: linear-gradient(
+      180deg,
+      rgba(8, 22, 34, 0.97),
+      rgba(6, 20, 32, 0.92)
+    );
+    border: 1px solid #0bad5c;
+    border-radius: 0.9rem;
+    cursor: pointer;
+
+    &:hover {
+      border-color: #dfffff;
+    }
+  }
+
+  button[data-admin-trigger],
+  button[data-admin-trigger] :global(svg) {
+    color: #442bff !important;
+    border-color: #502cf3;
+  }
+
+  button[data-admin-trigger]:hover,
+  button[data-admin-trigger]:hover :global(svg) {
+    color: #3727e3 !important;
+    border-color: #247bff;
+  }
+
+  .profile-menu-trigger {
+    padding-inline: 1rem;
+    font-family: Kedebideri;
+  }
+
+  profile-badge {
     display: block;
-    max-inline-size: 8rem;
+    max-inline-size: 12rem;
     overflow: hidden;
+    font-family: var(--font-mono, 'SFMono-Regular', monospace);
     font-size: 1rem;
-    color: var(--foreground-l3);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #6fe0ff;
     text-overflow: ellipsis;
     white-space: nowrap;
+    text-shadow: 0 0 12px rgba(88, 249, 230, 0.5);
   }
 </style>

@@ -38,3 +38,9 @@ body {
 [data-fade-source] {
   scroll-timeline: --edge-fade block;
 }
+
+/* Hide the native pointer while the custom circle cursor is active. */
+html.custom-cursor-active,
+html.custom-cursor-active * {
+  cursor: none !important;
+}

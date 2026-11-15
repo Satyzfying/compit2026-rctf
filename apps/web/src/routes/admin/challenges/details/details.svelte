@@ -329,7 +329,7 @@
 
   h1 {
     margin: 0;
-    font-size: var(--step-2);
+    font-size: clamp(1.75rem, 2.4vw, 2.25rem);
     color: var(--foreground-l0);
     overflow-wrap: anywhere;
   }
@@ -339,7 +339,8 @@
     align-items: center;
     flex-wrap: wrap;
     gap: var(--space-2xs);
-    color: var(--foreground-l3);
+    color: rgb(38, 7, 161);
+    font-size: 1rem;
   }
 
   category-pill {
@@ -347,9 +348,13 @@
     align-items: center;
     gap: var(--space-3xs);
     padding: 0.125rem var(--space-2xs);
-    font-size: var(--step--1);
+    font-size: 0.95rem;
     color: var(--category-foreground-l1);
-    background: var(--category-background-l0);
+    background: linear-gradient(
+      135deg,
+      color-mix(in oklab, var(--category-background-l0) 46%, transparent),
+      color-mix(in oklab, var(--background-l1) 38%, transparent)
+    );
     border-radius: var(--radius-md);
 
     &[data-empty] {
@@ -376,7 +381,7 @@
     justify-content: flex-end;
     gap: var(--space-2xs);
     padding: var(--space-s) var(--space-l);
-    background: var(--background-l2);
+    background: green;
   }
 
   @container challenge-details (width < 46rem) {

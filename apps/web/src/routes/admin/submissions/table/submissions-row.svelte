@@ -134,19 +134,20 @@
     block-size: 3rem;
     cursor: pointer;
     user-select: none;
-    background: var(--background-l1);
+    background: color-mix(in srgb, #102b45 84%, transparent);
     font-size: var(--step--1);
+    font-family: var(--font-sans);
 
     &[data-even] {
-      background: var(--background-l2);
+      background: color-mix(in srgb, #16405c 76%, transparent);
     }
 
     &:hover {
-      background: var(--background-l3);
+      background: color-mix(in srgb, #087f91 68%, transparent);
     }
 
     &[data-expanded] {
-      background: var(--background-l3);
+      background: color-mix(in srgb, #087f91 52%, #102b45);
     }
 
     &:focus-visible,
@@ -156,8 +157,8 @@
     }
 
     &:hover expander-button {
-      color: var(--foreground-l1);
-      background: var(--background-l4);
+      color: darkblue;
+      background: skyblue 45%;
     }
   }
 
@@ -225,7 +226,8 @@
     justify-content: center;
     inline-size: 1.75rem;
     block-size: 1.75rem;
-    color: var(--foreground-l3);
+    color: #8ab7c8;
+    background: #193b55;
     border-radius: var(--radius-md);
 
     :global(svg) {
@@ -237,12 +239,34 @@
     &[data-open] :global(svg) {
       rotate: 90deg;
     }
+
+    &:hover {
+      color: #ffffff;
+      background: #087f91;
+    }
+
+    &[data-open] {
+      color: #5eead4;
+      background: #24465d;
+    }
+
+    &[data-open]:hover {
+      color: #ffffff;
+      background: #087f91;
+    }
+  }
+
+  avatar-slot :global([data-part='fallback']) {
+    color: #d9f7ff;
+    background: #24465d;
+    border-color: #1597a8;
   }
 
   time-value {
     flex-shrink: 0;
     color: var(--foreground-l1);
     font-variant-numeric: tabular-nums;
+    font-weight: 500;
   }
 
   time-offset {
@@ -271,10 +295,11 @@
     max-inline-size: 100%;
     overflow: hidden;
     padding: var(--space-3xs) var(--space-2xs);
-    color: var(--foreground-l2);
-    background: var(--background-l4);
+    color: #c8edf5;
+    background: #24465d;
     border-radius: var(--radius-md);
     font-size: var(--step--2);
+    font-family: var(--font-mono);
     text-overflow: ellipsis;
     white-space: nowrap;
 
@@ -294,8 +319,8 @@
     align-items: center;
     gap: var(--space-3xs);
     padding: var(--space-3xs) var(--space-2xs);
-    color: var(--foreground-l2);
-    background: var(--background-l4);
+    color: #c8edf5;
+    background: #24465d;
     border-radius: var(--radius-md);
     font-size: var(--step--2);
 

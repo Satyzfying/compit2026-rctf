@@ -1,0 +1,35 @@
+ctfName: CompIT 2026
+meta:
+  description: 'Competition IT - Departemen Teknologi Informasi ITS'
+homeContent: |
+  # Selamat Datang di CompIT 2026 CTF!
+  
+  **CompIT (Competition IT)** adalah ajang kompetisi internal mahasiswa Departemen Teknologi Informasi Institut Teknologi Sepuluh Nopember (ITS).
+  
+  ### 🚩 Ketentuan Lomba
+  - **Kategori Soal:** Cryptography, Web Exploitation, Binary Exploitation, Digital Forensic, Reverse Engineering, dan Miscellaneous.
+  - **Scoring:** Dynamic Scoring (bobot nilai berkurang seiring bertambahnya solver).
+  - **Flag Format:** `compit{...}`
+  - **Ketentuan Akun:** Kredensial akun tim dibagikan secara resmi oleh panitia.
+  - **Top 10:** Wajib mengumpulkan write-up resmi di akhir kompetisi.
+  
+  *Selamat bertanding dan junjung tinggi sportivitas!*
+
+origin: http://127.0.0.1:5173
+registrationsEnabled: false
+divisions:
+  open: Mahasiswa TI ITS
+startTime: 1794794400000
+endTime: 1794934740000
+
+database:
+  sql:
+    host: 127.0.0.1
+    port: 5432
+    user: postgres
+    password: ruarua
+    database: rctf
+  redis:
+    host: 127.0.0.1
+    port: 6379
+  migrate: before

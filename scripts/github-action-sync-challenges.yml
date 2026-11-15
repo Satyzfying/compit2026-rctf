@@ -1,0 +1,57 @@
+name: Sync Challenges to CompIT 2026 rCTF
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'challenges/**'
+      - '**.yml'
+      - '**.yaml'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    name: Sync Challenges via rCTF API
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Challenge Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun Runtime
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install Dependencies
+        run: |
+          bun add yaml
+
+      - name: Prepare Sync Script
+        run: |
+          if [ -f "./sync-challenges.ts" ]; then
+            echo "[*] Using bundled sync-challenges.ts found in repository root."
+          elif [ -f "./scripts/sync-challenges.ts" ]; then
+            cp ./scripts/sync-challenges.ts ./sync-challenges.ts
+            echo "[*] Copied sync-challenges.ts from ./scripts/."
+          elif [ -n "${{ secrets.SYNC_SCRIPT_URL }}" ]; then
+            echo "[*] Fetching sync script from SYNC_SCRIPT_URL secret..."
+            curl -fsSL "${{ secrets.SYNC_SCRIPT_URL }}" -o sync-challenges.ts
+          else
+            echo "::error::sync-challenges.ts not found. Please copy sync-challenges.ts from infra repository into this repo."
+            exit 1
+          fi
+
+      - name: Sync Challenges to rCTF Server
+        env:
+          RCTF_URL: ${{ secrets.RCTF_BASE_URL || 'https://ctf.compit.its.ac.id' }}
+          RCTF_ADMIN_TOKEN: ${{ secrets.RCTF_ADMIN_TOKEN }}
+        run: |
+          if [ -z "$RCTF_ADMIN_TOKEN" ]; then
+            echo "::error::Secret RCTF_ADMIN_TOKEN is missing. Please configure it in Settings -> Secrets and variables -> Actions."
+            exit 1
+          fi
+
+          bun sync-challenges.ts --dir . --url "$RCTF_URL" --token "$RCTF_ADMIN_TOKEN"

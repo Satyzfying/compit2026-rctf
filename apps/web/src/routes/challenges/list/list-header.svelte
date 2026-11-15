@@ -41,6 +41,7 @@
       <strong>{pointsEarned.toLocaleString()}</strong>
       / {pointsTotal.toLocaleString()} pts
     </span>
+    <span class="stats-divider" aria-hidden="true">|</span>
     <span data-part="solved">
       <strong>{solvedCount.toLocaleString()}</strong>
       / {totalCount.toLocaleString()}
@@ -109,20 +110,35 @@
     flex-shrink: 0;
     flex-direction: column;
     gap: 0.5rem;
-    padding-block: 0.5rem;
+    padding-block: 0.75rem 0.9rem;
+    background: color-mix(in hsl shorter hue, rgba(2, 2, 57, 0.804) 50%, transparent 10%);
+    border-block-end: 2px solid rgb(89 190 214 / 24%);
+    font-family: Grape Nuts;
   }
 
   list-stats {
     display: flex;
-    justify-content: space-between;
-    padding-inline: 2.25rem;
-    color: var(--foreground-l5);
+    align-items: center;
+    gap: 0.75rem;
+    align-self: flex-start;
+    margin-inline-start: 1.25rem;
+    padding: 0.35rem 0.8rem;
+    color: #b8e9f3;
+    background: rgb(18 59 104 / 78%);
+    border: 1px solid rgb(92 193 216 / 30%);
+    border-radius: 999px;
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
+    font-family: Verdana;
 
     strong {
-      color: var(--foreground-l3);
+      color: #e0fbff;
       font-weight: var(--font-weight-normal);
+    }
+
+    .stats-divider {
+      color: #78bfce;
+      opacity: 0.6;
     }
   }
 
@@ -131,12 +147,15 @@
     flex-wrap: wrap;
     gap: 0.25rem;
     padding-inline: 1.25rem;
+    justify-content: space-between;
+    font-family: Verdana;
   }
 
   toggle-group {
     display: flex;
     gap: 0.25rem;
-    inline-size: 100%;
+    inline-size: auto;
+    flex-shrink: 0;
 
     @container challenges-list (width >= 24rem) {
       inline-size: auto;
@@ -145,15 +164,21 @@
 
   search-box {
     display: flex;
-    flex: 1;
+    flex: 1 1 16rem;
     align-items: center;
     gap: var(--space-2xs);
     min-inline-size: 0;
+    max-inline-size: 22rem;
     block-size: 2.5rem;
     padding-inline: 0.75rem;
-    color: var(--foreground-l3);
-    background: var(--background-l4);
+    color: #b8e9f3;
+    background: rgb(35 42 74 / 88%);
+    border: 1px solid rgba(0, 0, 0, 0.24);
     border-radius: 20px;
+
+    @container challenges-list (width >= 24rem) {
+      margin-inline-start: 2rem;
+    }
 
     @container challenges-list (width >= 24rem) {
       border-radius: 20px var(--radius-sm) var(--radius-sm) 20px;
@@ -165,7 +190,7 @@
 
     :global(svg) {
       flex-shrink: 0;
-      color: var(--foreground-l3);
+      color: #6fd0df;
     }
   }
 
@@ -174,11 +199,11 @@
     min-inline-size: 0;
     background: transparent;
     border: none;
-    color: var(--foreground-l0);
+    color: #e8fbff;
     outline: none;
 
     &::placeholder {
-      color: var(--foreground-l4);
+      color: #8db7c9;
     }
   }
 
@@ -189,8 +214,9 @@
     justify-content: center;
     block-size: 2.5rem;
     padding-inline: 1rem;
-    color: var(--foreground-l1);
-    background: var(--background-l4);
+    color: #c9f3fa;
+    background: rgb(29 45 82 / 88%);
+    border: 1px solid rgb(121 176 213 / 20%);
     cursor: pointer;
 
     @container challenges-list (width >= 24rem) {
@@ -214,15 +240,15 @@
     }
 
     &:hover {
-      background: var(--background-l5);
+      background: color-mix(in hsl shorter hue, rgba(43, 34, 137, 0.844) 25%, transparent);
     }
 
     &[data-active] {
-      color: var(--foreground-accent);
-      background: var(--background-accent);
+      color: rgb(131, 220, 255);
+      background: color-mix(in hsl shorter hue, rgba(8, 8, 117, 0.848) 25%, transparent 5%);
 
       &:hover {
-        background: var(--background-accent-hover);
+        background: color-mix(in hsl shorter hue, rgb(82, 130, 149) 25%, transparent 10%);
       }
     }
 

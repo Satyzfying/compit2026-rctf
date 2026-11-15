@@ -34,11 +34,11 @@
 </script>
 
 <overview-content>
-  <Section title="Description">
-    <Markdown content={challenge.description} />
-  </Section>
-
   <overview-grid>
+    <Section title="Description">
+      <Markdown content={challenge.description} />
+    </Section>
+
     {#if challenge.files.length > 0}
       <Section title="Files">
         <files-box>
@@ -97,14 +97,34 @@
     container-type: inline-size;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    padding: 1rem 1.25rem;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: #c4fff9;
+    background: linear-gradient(
+      135deg,
+      color-mix(in oklab, #072cff8a 46%, transparent 5%),
+      /* color-mix(in oklab, #caf0f8 38%, transparent) */
+    );
+
+    :global(ui-section) {
+      background: rgb(11 42 70 / 74%);
+      border-color: rgb(91 190 202 / 38%);
+    }
+
+    :global(section-header) {
+      color: #b5fff4;
+      background: rgba(21, 108, 114, 0.773);
+    }
+
+    :global(section-content) {
+      background: color-mix(in oklab, #1423748a 46%, transparent 5%);
+    }
   }
 
   overview-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: 1rem;
+    gap: 0.75rem;
 
     @container (min-inline-size: 36rem) {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -112,6 +132,37 @@
 
     > :global(:last-child:nth-child(odd)) {
       grid-column: 1 / -1;
+    }
+
+    > :global(ui-section) {
+      animation: overview-section-in 420ms cubic-bezier(0.22, 1, 0.36, 1)
+        backwards;
+
+      &:nth-child(odd) {
+        --overview-offset: -1.5rem;
+      }
+
+      &:nth-child(even) {
+        --overview-offset: 1.5rem;
+        animation-delay: 90ms;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      > :global(ui-section) {
+        animation: none;
+      }
+    }
+  }
+
+  @keyframes overview-section-in {
+    from {
+      opacity: 0;
+      transform: translateX(var(--overview-offset, 0));
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
     }
   }
 

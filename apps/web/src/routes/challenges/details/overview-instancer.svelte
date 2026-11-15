@@ -182,7 +182,8 @@
   async function submitResolvedFlag(flag: string) {
     toast.info(flag, { duration: 15_000 })
     if (admin) {
-      // NOTE: Admins only test the instancer, so the flag is shown but not submitted
+      
+
       return
     }
 

@@ -18,6 +18,7 @@ import {
 import { withDbAndRedis } from '../../lib/context'
 import {
   buildSeedData,
+  DEFAULT_ADMIN_PASSWORD,
   EXTERNAL_APP_CLIENT_SECRET,
   EXTERNAL_APP_WEBHOOK_SECRET,
   type SeedData,
@@ -108,6 +109,9 @@ export const runSeed = async () => {
     const adminToken = await createToken(TokenKind.Team, data.admin.id)
     const teamToken = await createToken(TokenKind.Team, data.teams[0]!.id)
 
+    console.log(
+      `Admin credentials: username=${data.admin.name} password=${DEFAULT_ADMIN_PASSWORD}`
+    )
     console.log(`Admin login: ${loginUrl(config.origin, adminToken)}`)
     console.log(`Sample team login: ${loginUrl(config.origin, teamToken)}`)
 

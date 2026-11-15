@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { BadUnknownUser, GoodLogin, LoginRoute } from '@rctf/types'
+  import { LoginRoute } from '@rctf/types'
   import { useQueryClient } from '@tanstack/svelte-query'
   import { goto } from '$app/navigation'
   import { page } from '$app/state'
-  import { apiRequest, isAuthenticated, setToken, showApiError } from '$lib/api'
+  import { setToken } from '$lib/api'
   import ArchivedNotice from '$lib/components/archived-notice.svelte'
   import { useApiForm } from '$lib/forms/use-api-form.svelte'
   import { useClientConfig } from '$lib/query/config'
@@ -14,10 +14,7 @@
   import Field from '$lib/ui/field.svelte'
   import Input from '$lib/ui/input.svelte'
   import Spinner from '$lib/ui/spinner.svelte'
-  import { createAsyncAction } from '$lib/utils/async-action.svelte'
   import { getRedirectPath } from '$lib/utils/redirect'
-  import { onMount } from 'svelte'
-  import ButtonCtftime from '../button-ctftime.svelte'
 
   const queryClient = useQueryClient()
   const configQuery = useClientConfig()
@@ -27,10 +24,7 @@
     onSuccess: response => handleLoginSuccess(response.data.authToken),
   })
 
-  const ctftimeLoginAction = createAsyncAction()
-  let loginLinkSupplied = $state(false)
-  let replacingSession = $state(false)
-  const isPending = $derived(form.submitting || ctftimeLoginAction.pending)
+  const isPending = $derived(form.submitting)
 
   function handleLoginSuccess(authToken: string) {
     setToken(authToken)
@@ -39,60 +33,10 @@
     goto(getRedirectPath(page.url.searchParams.get('next'), page.url.origin))
   }
 
-  async function handleCtftimeDone(data: {
-    ctftimeToken: string
-    ctftimeName: string
-  }) {
-    await ctftimeLoginAction.run(
-      async () => {
-        const response = await apiRequest(LoginRoute, {
-          ctftimeToken: data.ctftimeToken,
-        })
-        if (response.kind === GoodLogin.kind) {
-          handleLoginSuccess(response.data.authToken)
-        } else if (response.kind === BadUnknownUser.kind) {
-          sessionStorage.setItem('ctftimeToken', data.ctftimeToken)
-          sessionStorage.setItem('ctftimeName', data.ctftimeName)
-          goto('/register')
-        } else {
-          showApiError(response)
-        }
-      },
-      { errorMessage: 'Login failed' }
-    )
-  }
-
   function handleSubmit(event: SubmitEvent) {
     event.preventDefault()
-    const value = form.data.teamToken ?? ''
-    try {
-      const url = new URL(value)
-      const urlToken = url.searchParams.get('token')
-      if (urlToken) {
-        form.setData({ teamToken: urlToken })
-      }
-    } catch {}
     form.submit()
   }
-
-  onMount(() => {
-    const cleanUrl = new URL(page.url)
-    const token = cleanUrl.searchParams.get('token')
-    if (token === null) return
-
-    cleanUrl.searchParams.delete('token')
-    window.history.replaceState(
-      window.history.state,
-      '',
-      `${cleanUrl.pathname}${cleanUrl.search}${cleanUrl.hash}`
-    )
-    if (!token) return
-
-    replacingSession = isAuthenticated()
-    loginLinkSupplied = true
-    form.setData({ teamToken: token })
-    form.clearErrors()
-  })
 </script>
 
 <svelte:head>
@@ -106,37 +50,51 @@
 {:else if clientConfig}
   <Card title="Login" description="Log in to {clientConfig.ctfName}">
     <auth-page>
-      {#if loginLinkSupplied}
-        <p role="status">
-          {replacingSession
-            ? 'This link contains a team token. Click Login to replace your current session.'
-            : 'This link contains a team token. Click Login to confirm that you want to sign in.'}
-        </p>
-      {/if}
       <form onsubmit={handleSubmit}>
         <Field
-          label="Team token"
-          error={form.errors.teamToken ?? form.errors._form}
+          label="Username"
+          error={form.errors.username ?? form.errors._form}
         >
           {#snippet children({ id, describedBy })}
             <Input
               {id}
-              name="teamToken"
+              name="username"
+              type="text"
+              placeholder="Enter your username"
+              autocomplete="username"
+              required
+              aria-describedby={describedBy}
+              aria-invalid={!!form.errors.username ||
+                !!form.errors._form ||
+                undefined}
+              bind:value={form.data.username}
+              oninput={() => form.validateField('username')}
+            />
+          {/snippet}
+        </Field>
+        <Field
+          label="Password"
+          error={form.errors.password ?? form.errors._form}
+        >
+          {#snippet children({ id, describedBy })}
+            <Input
+              {id}
+              name="password"
               type="password"
-              placeholder="Enter your team token"
+              placeholder="Enter your password"
               autocomplete="current-password"
               required
               aria-describedby={describedBy}
-              aria-invalid={!!form.errors.teamToken ||
+              aria-invalid={!!form.errors.password ||
                 !!form.errors._form ||
                 undefined}
-              bind:value={form.data.teamToken}
-              oninput={() => form.validateField('teamToken')}
+              bind:value={form.data.password}
+              oninput={() => form.validateField('password')}
             />
           {/snippet}
         </Field>
         {#if clientConfig.emailEnabled}
-          <p><a href="/recover">Lost your team token?</a></p>
+          <p><a href="/recover">Lost your password?</a></p>
         {/if}
         <Button type="submit" disabled={isPending}>
           {#if isPending}
@@ -145,20 +103,33 @@
           Login
         </Button>
       </form>
-      {#if clientConfig.ctftime}
-        <auth-divider aria-hidden="true">or</auth-divider>
-        <ButtonCtftime
-          clientId={clientConfig.ctftime.clientId}
-          onCtftimeDone={handleCtftimeDone}
-          disabled={isPending}
-        />
-      {/if}
       {#if clientConfig.registrationsEnabled !== false}
         <footer-note
-          >Don't have an account? <a href="/register">Register here</a
+          >  Don't have an account? <a href="/register">Register here</a
           >.</footer-note
         >
       {/if}
     </auth-page>
   </Card>
 {/if}
+
+<style>
+  footer-note {
+    display: block;
+    margin-top: 1rem;
+    color: var(--foreground-l3, #cbd5e1);
+    font-size: 0.875rem;
+  }
+
+  footer-note a {
+    color: var(--foreground-prose-link, #f472b6);
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: currentColor;
+  }
+
+  footer-note a:hover {
+    color: var(--foreground-prose-link, #f472b6);
+    text-decoration: underline;
+  }
+</style>

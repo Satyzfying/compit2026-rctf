@@ -112,11 +112,15 @@
     }
 
     &[data-variant='default'] {
-      color: var(--foreground-accent);
-      background: var(--background-accent);
+      color: blur(0.5, 0.5, 0.5, 0.5);
+      background: linear-gradient(
+        180deg,
+        color-mix(in srgb, rgba(39, 39, 244, 0.774) 75%, transparent 5%),
+        color-mix(in srgb, rgb(23, 183, 204) 55%, transparent 5%)
+      );
 
       &:hover {
-        background: var(--background-accent-hover);
+        background: color-mix(in srgb, rgba(94, 94, 254, 0.7) 75%, transparent);
       }
     }
 

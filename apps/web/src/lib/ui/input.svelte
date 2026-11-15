@@ -15,7 +15,7 @@
     block-size: 2.25rem;
     padding-inline: var(--space-2xs);
     color: var(--foreground-l0);
-    background: var(--background-l4);
+    background: color-mix(in srgb, rgba(0, 0, 0, 0.637) 75%, transparent);
     border: 2px solid transparent;
     border-radius: var(--radius-md);
 

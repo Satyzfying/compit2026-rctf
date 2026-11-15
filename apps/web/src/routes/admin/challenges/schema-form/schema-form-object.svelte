@@ -6,7 +6,6 @@
 
   interface Props extends FieldProps {
     isNullable?: boolean
-    isOptional?: boolean
     nested?: boolean
     label?: string
   }
@@ -20,7 +19,6 @@
     disabled = false,
     required = false,
     isNullable = false,
-    isOptional = false,
     nested = false,
     label = '',
   }: Props = $props()
@@ -29,19 +27,18 @@
   const obj = $derived((value ?? {}) as Record<string, unknown>)
   const entries = $derived(Object.entries(schema.properties ?? {}))
   const requiredFields = $derived(new Set(schema.required ?? []))
-  const configurable = $derived(isNullable || isOptional)
 
   function enableObject() {
     onChange(path, defaultValue(schema))
   }
 
   function disableObject() {
-    onChange(path, isNullable ? null : undefined)
+    onChange(path, null)
   }
 </script>
 
 {#snippet body()}
-  {#if configurable && isNull}
+  {#if isNullable && isNull}
     <sf-nullable>
       <sf-empty>Not configured</sf-empty>
       <Button size="sm" onclick={enableObject} {disabled}>Enable</Button>
@@ -59,7 +56,7 @@
           required={requiredFields.has(key)}
         />
       {/each}
-      {#if configurable}
+      {#if isNullable}
         <sf-nullable-actions>
           <Button size="sm" variant="ghost" onclick={disableObject} {disabled}
             >Disable</Button

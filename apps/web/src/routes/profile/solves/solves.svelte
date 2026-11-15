@@ -394,6 +394,7 @@
     flex-wrap: wrap;
     gap: 0.25rem;
     padding-inline: 1.25rem;
+    font-family: Verdana;
   }
 
   toggle-group {
@@ -453,7 +454,7 @@
     block-size: 2.5rem;
     padding-inline: 1rem;
     color: var(--foreground-l1);
-    background: var(--background-l4);
+    background: skyblue;
     cursor: pointer;
 
     @container solves (width >= 24rem) {
@@ -495,15 +496,15 @@
     }
 
     &:hover {
-      background: var(--background-l5);
+      background: blue;
     }
 
     &[data-active] {
       color: var(--foreground-accent);
-      background: var(--background-accent);
+      background: skyblue;
 
       &:hover {
-        background: var(--background-accent-hover);
+        background: blue;
       }
     }
 

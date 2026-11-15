@@ -29,8 +29,9 @@
     gap: var(--space-2xs);
     block-size: 2.75rem;
     padding-inline: 0.75rem;
-    color: var(--foreground-l3);
-    border-block-end: 2px solid var(--border);
+    color: #5eead4;
+    background: color-mix(in srgb, rgba(0, 0, 0, 0.637) 75%, transparent);
+    border-block-end: 2px solid #1597a8;
 
     :global(svg) {
       flex-shrink: 0;
@@ -49,13 +50,13 @@
   input {
     min-inline-size: 0;
     flex: 1;
-    color: var(--foreground-l1);
+    color: #d9f7ff;
     background: transparent;
     border: none;
     font-size: var(--step--1);
 
     &::placeholder {
-      color: var(--foreground-l4);
+      color: #8ab7c8;
     }
 
     &:focus-visible {

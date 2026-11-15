@@ -192,9 +192,9 @@
     justify-content: center;
     inline-size: 2rem;
     block-size: 2rem;
-    color: var(--foreground-l2);
-    background: var(--background-l4);
-    border: 2px solid var(--border);
+    color: #d9f7ff;
+    background: #24465d;
+    border: 2px solid #1597a8;
     border-radius: var(--radius-md);
     cursor: pointer;
 
@@ -204,12 +204,12 @@
     }
 
     &:hover {
-      color: var(--foreground-l1);
-      background: var(--background-l5);
+      color: #ffffff;
+      background: #087f91;
     }
 
     &[data-active] {
-      color: var(--foreground-accent);
+      color: #5eead4;
     }
 
     &:focus-visible {

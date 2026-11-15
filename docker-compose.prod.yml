@@ -1,0 +1,119 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: compit-postgres
+    restart: always
+    command: ["postgres", "-c", "max_connections=200"]
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ChangeMeSecurePassword2026!}
+      POSTGRES_DB: ${POSTGRES_DB:-rctf}
+    ports:
+      # Expose only to localhost so host management scripts can connect
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-rctf}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
+    networks:
+      - compit-internal
+
+  redis:
+    image: redis:7-alpine
+    container_name: compit-redis
+    restart: always
+    command: ["redis-server", "--requirepass", "${RCTF_REDIS_PASSWORD:-ChangeMeSecureRedis2026!}", "--appendonly", "yes"]
+    ports:
+      # Expose only to localhost for host cache invalidation scripts
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${RCTF_REDIS_PASSWORD:-ChangeMeSecureRedis2026!}", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
+    networks:
+      - compit-internal
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: compit-api
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      WORKER_EXTENSION: ".js"
+      RCTF_DATABASE_HOST: postgres
+      RCTF_DATABASE_PORT: 5432
+      RCTF_DATABASE_USERNAME: ${POSTGRES_USER:-postgres}
+      RCTF_DATABASE_PASSWORD: ${POSTGRES_PASSWORD:-ChangeMeSecurePassword2026!}
+      RCTF_DATABASE_DATABASE: ${POSTGRES_DB:-rctf}
+      RCTF_REDIS_HOST: redis
+      RCTF_REDIS_PORT: 6379
+      RCTF_REDIS_PASSWORD: ${RCTF_REDIS_PASSWORD:-ChangeMeSecureRedis2026!}
+      RCTF_ORIGIN: ${RCTF_ORIGIN:-http://localhost}
+      RCTF_TOKEN_KEY: ${RCTF_TOKEN_KEY:?RCTF_TOKEN_KEY must be set in .env}
+    volumes:
+      - ./uploads:/app/uploads
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/api/readyz || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
+    networks:
+      - compit-internal
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    container_name: compit-web
+    restart: always
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      # Expose only to localhost so Host Nginx + TLS proxy can forward traffic securely
+      - "127.0.0.1:8080:80"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
+    networks:
+      - compit-internal
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  compit-internal:
+    driver: bridge

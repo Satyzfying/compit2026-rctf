@@ -8,8 +8,6 @@
   } from '@rctf/types'
   import { useQueryClient } from '@tanstack/svelte-query'
   import { apiRequest, showApiError } from '$lib/api'
-  import wordmarkDark from '$lib/assets/wordmark-dark.svg'
-  import wordmarkLight from '$lib/assets/wordmark-light.svg'
   import MarkdownEditor from '$lib/components/markdown-editor.svelte'
   import { IconWarningCircle, IconX } from '$lib/icons'
   import { useAdminSettings } from '$lib/query/admin'
@@ -34,10 +32,8 @@
     initialFormState,
     parseDatetimeLocal,
     resetGroup,
-    sponsorsReducer,
     validateTiming,
     type SettingsFormState,
-    type SponsorAction,
   } from './settings-model'
 
   const queryClient = useQueryClient()
@@ -57,35 +53,13 @@
   const defaults = $derived(settingsQuery.data?.defaults)
 
   let form = $state<SettingsFormState | null>(null)
-  let sponsorSelected = $state(0)
   let initialized = $state(false)
   let saving = $state(false)
-
-  const logoTargets = [
-    { key: 'light' as const, label: 'Light mode', fallback: wordmarkLight },
-    { key: 'dark' as const, label: 'Dark mode', fallback: wordmarkDark },
-  ]
-
-  const sponsorIconTargets = [
-    {
-      key: 'light' as const,
-      label: 'Light mode icon',
-      field: 'iconLight',
-      fallbackField: 'iconDark',
-    },
-    {
-      key: 'dark' as const,
-      label: 'Dark mode icon',
-      field: 'iconDark',
-      fallbackField: 'iconLight',
-    },
-  ] as const
 
   $effect(() => {
     const data = settingsQuery.data
     if (!data || initialized) return
     form = initialFormState(data.overrides, data.defaults)
-    sponsorSelected = 0
     initialized = true
   })
 
@@ -98,7 +72,6 @@
         )
       : null
   )
-  const selectedSponsor = $derived(form?.sponsors.list[sponsorSelected])
 
   function markGroup(key: keyof SettingsFormState) {
     if (!form) return
@@ -131,23 +104,6 @@
     form.meta = resetGroup(defaults, 'meta')
   }
 
-  function resetSponsors() {
-    if (!form || !defaults) return
-    form.sponsors = resetGroup(defaults, 'sponsors')
-    sponsorSelected = 0
-  }
-
-  function dispatchSponsors(action: SponsorAction) {
-    if (!form) return
-    const next = sponsorsReducer(
-      { list: form.sponsors.list, selected: sponsorSelected },
-      action
-    )
-    form.sponsors.list = next.list
-    sponsorSelected = next.selected
-    if (action.type !== 'select') markGroup('sponsors')
-  }
-
   async function uploadImage(file: File): Promise<string | null> {
     if (!file.type.startsWith('image/')) {
       toast.error('Please select an image file.')
@@ -177,35 +133,11 @@
     markGroup('logo')
   }
 
-  function setSponsorIcon(field: 'iconLight' | 'iconDark', value: string) {
-    dispatchSponsors({ type: 'update', index: sponsorSelected, field, value })
-  }
-
   async function uploadLogo(target: 'light' | 'dark', file: File) {
     const url = await uploadImage(file)
     if (url !== null) {
       setLogo(target, url)
     }
-  }
-
-  async function uploadSponsorIcon(
-    field: 'iconLight' | 'iconDark',
-    file: File
-  ) {
-    const target = selectedSponsor
-    if (!target) {
-      return
-    }
-    const url = await uploadImage(file)
-    if (url === null || !form) {
-      return
-    }
-    const index = form.sponsors.list.indexOf(target)
-    if (index === -1) {
-      toast.error('Sponsor changed during upload; the icon was not applied.')
-      return
-    }
-    dispatchSponsors({ type: 'update', index, field, value: url })
   }
 
   async function save() {
@@ -357,39 +289,6 @@
       </settings-group>
 
       <settings-group>
-        {@render groupHeader('Logo', resetLogo)}
-        <group-body>
-          {#each logoTargets as target (target.key)}
-            <UploadRow
-              label={target.label}
-              mode={target.key}
-              url={settingsForm.logo[target.key]}
-              alt={`${target.label} logo`}
-              removeLabel={`Remove ${target.label} logo`}
-              fallback={target.fallback}
-              onUpload={file => uploadLogo(target.key, file)}
-              onChange={url => setLogo(target.key, url)}
-            />
-          {/each}
-        </group-body>
-      </settings-group>
-
-      <settings-group>
-        {@render groupHeader('Home content', resetHome)}
-        <group-body>
-          <MarkdownEditor
-            value={settingsForm.homeContent.value}
-            label="Home content"
-            placeholder="Markdown content for the home page..."
-            oninput={value => {
-              settingsForm.homeContent.value = value
-              markGroup('homeContent')
-            }}
-          />
-        </group-body>
-      </settings-group>
-
-      <settings-group>
         {@render groupHeader('Open Graph', resetMeta)}
         <group-body>
           <Field label="OG Description">
@@ -418,121 +317,6 @@
               />
             {/snippet}
           </Field>
-        </group-body>
-      </settings-group>
-
-      <settings-group>
-        {@render groupHeader('Sponsors', resetSponsors)}
-        <group-body data-flush>
-          <sponsors-editor>
-            <sponsor-list>
-              <sponsor-items>
-                {#if settingsForm.sponsors.list.length === 0}
-                  <sponsor-empty>No sponsors</sponsor-empty>
-                {:else}
-                  {#each settingsForm.sponsors.list as sponsor, i (i)}
-                    <sponsor-item
-                      data-active={sponsorSelected === i ? '' : undefined}
-                    >
-                      <button
-                        type="button"
-                        data-select
-                        onclick={() =>
-                          dispatchSponsors({ type: 'select', index: i })}
-                      >
-                        {sponsor.name || `Sponsor ${i + 1}`}
-                      </button>
-                      <button
-                        type="button"
-                        data-remove
-                        aria-label="Remove sponsor"
-                        onclick={() =>
-                          dispatchSponsors({ type: 'remove', index: i })}
-                      >
-                        <IconX />
-                      </button>
-                    </sponsor-item>
-                  {/each}
-                {/if}
-              </sponsor-items>
-              <sponsor-footer>
-                <Button
-                  size="sm"
-                  onclick={() => dispatchSponsors({ type: 'add' })}>Add</Button
-                >
-              </sponsor-footer>
-            </sponsor-list>
-            <sponsor-detail>
-              {#if selectedSponsor}
-                {@const sponsor = selectedSponsor}
-                <Field label="Name">
-                  {#snippet children({ id })}
-                    <Input
-                      {id}
-                      value={sponsor.name}
-                      placeholder="Sponsor name"
-                      oninput={e =>
-                        dispatchSponsors({
-                          type: 'update',
-                          index: sponsorSelected,
-                          field: 'name',
-                          value: e.currentTarget.value,
-                        })}
-                    />
-                  {/snippet}
-                </Field>
-                {#each sponsorIconTargets as target (target.key)}
-                  <UploadRow
-                    label={target.label}
-                    mode={target.key}
-                    url={sponsor[target.field]}
-                    alt={`${sponsor.name || 'Sponsor'} ${target.label}`}
-                    removeLabel={`Remove ${target.label}`}
-                    fallback={sponsor[target.fallbackField] || undefined}
-                    invertFallback
-                    urlEditable
-                    onUpload={file => uploadSponsorIcon(target.field, file)}
-                    onChange={value => setSponsorIcon(target.field, value)}
-                  />
-                {/each}
-                <Field label="Description" description="Markdown supported.">
-                  <MarkdownEditor
-                    rows={4}
-                    value={sponsor.description}
-                    label="Sponsor description"
-                    placeholder="Sponsor description"
-                    oninput={value =>
-                      dispatchSponsors({
-                        type: 'update',
-                        index: sponsorSelected,
-                        field: 'description',
-                        value,
-                      })}
-                  />
-                </Field>
-                <Field label="URL">
-                  {#snippet children({ id })}
-                    <Input
-                      {id}
-                      value={sponsor.url}
-                      placeholder="https://..."
-                      oninput={e =>
-                        dispatchSponsors({
-                          type: 'update',
-                          index: sponsorSelected,
-                          field: 'url',
-                          value: e.currentTarget.value,
-                        })}
-                    />
-                  {/snippet}
-                </Field>
-              {:else}
-                <sponsor-placeholder
-                  >Add a sponsor to get started</sponsor-placeholder
-                >
-              {/if}
-            </sponsor-detail>
-          </sponsors-editor>
         </group-body>
       </settings-group>
 
@@ -583,23 +367,65 @@
   settings-page {
     display: block;
     inline-size: 100%;
-    max-inline-size: 48rem;
+    max-inline-size: 72rem;
     margin-inline: auto;
     padding-inline: var(--space-m);
   }
 
   settings-form {
-    display: flex;
-    flex-direction: column;
+    display: grid;
     gap: var(--space-s);
+
+    @media (min-width: 48rem) {
+      grid-template-columns: repeat(2, minmax(22rem, 1fr));
+    }
+
+    > settings-group {
+      animation: settings-group-in 420ms cubic-bezier(0.22, 1, 0.36, 1)
+        backwards;
+
+      &:nth-child(odd) {
+        --settings-offset: -1.25rem;
+      }
+
+      &:nth-child(even) {
+        --settings-offset: 1.25rem;
+        animation-delay: 90ms;
+      }
+
+      &:last-child {
+        @media (min-width: 48rem) {
+          grid-column: 1 / -1;
+        }
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      > settings-group {
+        animation: none;
+      }
+    }
+  }
+
+  @keyframes settings-group-in {
+    from {
+      opacity: 0;
+      transform: translateX(var(--settings-offset, 0));
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
   }
 
   settings-group {
     display: block;
     overflow: clip;
-    background: var(--background-l1);
-    border: 2px solid var(--border);
+    background: #08152673;
+    border: 2px solid #0bad5c;
     border-radius: var(--radius-lg);
+    color: #29f5b8ab;
+    font-family: Noto Sans Cypriot;
   }
 
   group-header {
@@ -608,7 +434,7 @@
     justify-content: space-between;
     gap: var(--space-s);
     padding: 0.375rem var(--space-s);
-    background: var(--background-l3);
+    background: #092d707a;
   }
 
   group-title {
@@ -621,7 +447,7 @@
   button[data-reset] {
     padding: 0;
     font-size: var(--step--1);
-    color: var(--foreground-l4);
+    color: #010241;
     background: none;
     border: none;
     cursor: pointer;
@@ -636,10 +462,6 @@
     flex-direction: column;
     gap: 0.75rem;
     padding: var(--space-s);
-
-    &[data-flush] {
-      padding: 0;
-    }
   }
 
   field-error {
@@ -652,154 +474,11 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--space-s);
+    color: rgba(39, 241, 191, 0.671);
 
     @media (min-width: 32rem) {
       grid-template-columns: 1fr 1fr;
     }
-  }
-
-  sponsors-editor {
-    display: flex;
-    flex-direction: column;
-    min-block-size: 12rem;
-
-    @media (min-width: 40rem) {
-      flex-direction: row;
-    }
-  }
-
-  sponsor-list {
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
-    border-block-end: 2px solid var(--border);
-
-    @media (min-width: 40rem) {
-      inline-size: 11rem;
-      border-block-end: none;
-      border-inline-end: 2px solid var(--border);
-    }
-  }
-
-  sponsor-items {
-    display: flex;
-    flex: 1;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: var(--space-3xs);
-    padding: var(--space-2xs);
-    overflow: hidden;
-
-    @media (min-width: 40rem) {
-      flex-direction: column;
-      flex-wrap: nowrap;
-      gap: 2px;
-    }
-  }
-
-  sponsor-footer {
-    display: flex;
-    flex-shrink: 0;
-    padding: var(--space-2xs);
-    border-block-start: 2px solid var(--border);
-
-    :global(button) {
-      inline-size: 100%;
-    }
-  }
-
-  sponsor-item {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3xs);
-    max-inline-size: 100%;
-    border-radius: var(--radius-md);
-    color: var(--foreground-l4);
-
-    &:hover {
-      background: var(--background-l3);
-      color: var(--foreground-l0);
-    }
-
-    &[data-active] {
-      background: var(--background-l4);
-      color: var(--foreground-l0);
-    }
-
-    @media (min-width: 40rem) {
-      inline-size: 100%;
-    }
-
-    button[data-select] {
-      overflow: hidden;
-      flex: 1;
-      padding: 0.375rem var(--space-2xs);
-      color: inherit;
-      font-size: var(--step--1);
-      white-space: nowrap;
-      text-align: start;
-      text-overflow: ellipsis;
-      background: none;
-      border: none;
-      cursor: pointer;
-    }
-
-    button[data-remove] {
-      display: flex;
-      flex-shrink: 0;
-      margin-inline-end: var(--space-3xs);
-      padding: 0.125rem;
-      color: inherit;
-      background: none;
-      border: none;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      opacity: 0;
-
-      :global(svg) {
-        inline-size: 0.75rem;
-        block-size: 0.75rem;
-      }
-
-      &:hover {
-        color: var(--foreground-destructive);
-        background: var(--background-destructive);
-      }
-
-      &:focus-visible {
-        opacity: 1;
-      }
-    }
-
-    &:hover button[data-remove],
-    &[data-active] button[data-remove] {
-      opacity: 1;
-    }
-  }
-
-  sponsor-empty,
-  sponsor-placeholder {
-    display: block;
-    padding: 0.375rem var(--space-2xs);
-    font-size: var(--step--1);
-    color: var(--foreground-l4);
-  }
-
-  sponsor-placeholder {
-    display: flex;
-    flex: 1;
-    align-items: center;
-    justify-content: center;
-    block-size: 100%;
-  }
-
-  sponsor-detail {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    min-inline-size: 0;
-    flex: 1;
-    padding: var(--space-s);
   }
 
   save-bar {
@@ -808,13 +487,17 @@
     z-index: 1;
     display: flex;
     padding-block: var(--space-s);
-    background: var(--background-l0);
+    background: transparent;
 
     :global(button) {
       inline-size: 100%;
     }
   }
 
+  button {
+          color: #0070d8;
+      background: #4b74e4;
+  }
   bar-fade {
     position: absolute;
     inset-inline: 0;
@@ -841,4 +524,30 @@
       opacity: 0;
     }
   }
+  settings-group:nth-child(1) group-header {
+  background: #123b70;
+}
+
+settings-group:nth-child(1) group-title {
+  color: #5eead4;
+  font-family: Pochaevsk;
+}
+
+settings-group:nth-child(2) group-header {
+  background: #164e63;
+}
+
+settings-group:nth-child(2) group-title {
+  color: #67e8f9;
+  font-family: Pochaevsk;
+}
+
+settings-group:nth-child(3) group-header {
+  background: #383da1cc;
+}
+
+settings-group:nth-child(3) group-title {
+  color: #5eead4;
+  font-family: Pochaevsk;
+}
 </style>

@@ -129,7 +129,7 @@ const createUserErrorResponse = (
 
 export const createUserInternal = async (
   db: DatabaseClient,
-  user: Pick<User, 'division' | 'email' | 'name' | 'ctftimeId'>
+  user: Pick<User, 'division' | 'email' | 'name' | 'ctftimeId' | 'passwordHash'>
 ): Promise<CreateUserInternalResult> => {
   let created
 
@@ -166,7 +166,7 @@ export const createUserInternal = async (
 export const createUser = async (
   res: CreateUserResponseHelpers,
   db: DatabaseClient,
-  user: Pick<User, 'division' | 'email' | 'name' | 'ctftimeId'>
+  user: Pick<User, 'division' | 'email' | 'name' | 'ctftimeId' | 'passwordHash'>
 ): Promise<
   ReturnType<CreateUserResponseHelpers[keyof CreateUserResponseHelpers]>
 > => {
@@ -182,7 +182,7 @@ export const createUser = async (
 export const createUserV2 = async (
   res: CreateUserV2ResponseHelpers,
   db: DatabaseClient,
-  user: Pick<User, 'division' | 'email' | 'name' | 'ctftimeId'>
+  user: Pick<User, 'division' | 'email' | 'name' | 'ctftimeId' | 'passwordHash'>
 ): Promise<
   ReturnType<CreateUserV2ResponseHelpers[keyof CreateUserV2ResponseHelpers]>
 > => {
@@ -400,6 +400,18 @@ export const getUser = async (
   id: string
 ): Promise<User | undefined> => {
   return await preparedGetUser(db).execute({ id }).then(takeUnique)
+}
+
+export const getUserByName = async (
+  db: DatabaseClient,
+  name: string
+): Promise<User | undefined> => {
+  return await db
+    .select()
+    .from(users)
+    .where(eq(users.name, name))
+    .limit(1)
+    .then(takeUnique)
 }
 
 export const getUserByNameOrEmail = async (

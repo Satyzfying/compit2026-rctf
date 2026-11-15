@@ -18,6 +18,7 @@ export const users = pgTable(
     id: text().primaryKey().notNull(),
     name: citext('name').notNull(),
     email: text(),
+    passwordHash: text('password_hash'),
     division: text().notNull(),
     perms: integer().notNull(),
     ctftimeId: text('ctftime_id'),

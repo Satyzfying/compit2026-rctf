@@ -54,8 +54,8 @@ interface InternalTokenData<Kind extends TokenKind> {
 }
 
 export const tokenExpiries: Record<TokenKind, number> = {
-  [TokenKind.Auth]: Infinity,
-  [TokenKind.Team]: Infinity,
+  [TokenKind.Auth]: 72 * 60 * 60, // 72 hours
+  [TokenKind.Team]: 72 * 60 * 60, // 72 hours
   [TokenKind.Verify]: Math.floor(config.loginTimeout / 1000),
   [TokenKind.CtftimeAuth]: Math.floor(config.loginTimeout / 1000),
 }

@@ -46,10 +46,16 @@
     inline-size: 100%;
     block-size: 100%;
     user-select: none;
-    background: var(--background-l3);
-    border-block-end: 2px solid var(--border);
-    color: var(--foreground-l3);
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, rgba(20, 20, 174, 0.637) 95%, transparent),
+      color-mix(in srgb, rgba(49, 153, 167, 0.596) 55%, transparent)
+    );
+    border-block-end: 2px solid black;
+    color: #8ab7c8;
     font-size: var(--step--1);
+    font-family: var(--font-sans);
+    font-weight: 600;
   }
 
   header-cell {
@@ -78,7 +84,7 @@
     }
 
     &:hover {
-      color: var(--foreground-l1);
+      color: #5eead4;
     }
 
     &:focus-visible {
@@ -95,7 +101,7 @@
     }
 
     &[data-active] {
-      color: var(--foreground-l1);
+      color: #5eead4;
     }
 
     &[data-active] :global(svg) {

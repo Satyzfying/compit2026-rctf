@@ -1,4 +1,21 @@
 :root {
+  /* Purple-tinted neutral scale, blended from gray + plum so it stays
+     theme-aware (light/dark) without hardcoding new hex values. Used to
+     replace --gray-* as the base for backgrounds/foregrounds below,
+     giving the whole UI a subtle purple cast instead of neutral gray. */
+  --mauve-1:  color-mix(in oklab, var(--gray-1) 82%, var(--plum-3) 18%);
+  --mauve-2:  color-mix(in oklab, var(--gray-2) 82%, var(--plum-3) 18%);
+  --mauve-3:  color-mix(in oklab, var(--gray-3) 80%, var(--plum-4) 20%);
+  --mauve-4:  color-mix(in oklab, var(--gray-4) 78%, var(--plum-5) 22%);
+  --mauve-5:  color-mix(in oklab, var(--gray-5) 76%, var(--plum-6) 24%);
+  --mauve-6:  color-mix(in oklab, var(--gray-6) 74%, var(--plum-7) 26%);
+  --mauve-7:  color-mix(in oklab, var(--gray-7) 72%, var(--plum-8) 28%);
+  --mauve-8:  color-mix(in oklab, var(--gray-8) 70%, var(--plum-9) 30%);
+  --mauve-9:  color-mix(in oklab, var(--gray-9) 80%, var(--plum-9) 20%);
+  --mauve-10: color-mix(in oklab, var(--gray-10) 80%, var(--plum-10) 20%);
+  --mauve-11: color-mix(in oklab, var(--gray-11) 85%, var(--plum-11) 15%);
+  --mauve-12: color-mix(in oklab, var(--gray-12) 90%, var(--plum-12) 10%);
+
   --gray-1:   light-dark(#fcfcfc, #111111);
   --gray-2:   light-dark(#f9f9f9, #191919);
   --gray-3:   light-dark(#f0f0f0, #222222);
@@ -474,24 +491,24 @@
   --purple-a11: light-dark(#52009aba, #d19dff);
   --purple-a12: light-dark(#250049df, #f1ddfffa);
 
-  --background-l0: var(--gray-1);
-  --background-l1: light-dark(var(--gray-3), var(--gray-2));
-  --background-l2: light-dark(var(--gray-4), var(--gray-3));
-  --background-l3: light-dark(var(--gray-5), var(--gray-4));
-  --background-l4: light-dark(var(--gray-6), var(--gray-5));
-  --background-l5: light-dark(var(--gray-7), var(--gray-6));
-  --border:        var(--gray-6);
-  --ring:          var(--gray-8);
-  --foreground-l0: var(--gray-12);
-  --foreground-l1: var(--gray-11);
-  --foreground-l2: var(--gray-10);
-  --foreground-l3: var(--gray-9);
-  --foreground-l4: var(--gray-8);
-  --foreground-l5: light-dark(var(--gray-8), var(--gray-7));
+  --background-l0: var(--mauve-1);
+  --background-l1: light-dark(var(--mauve-3), var(--mauve-2));
+  --background-l2: light-dark(var(--mauve-4), var(--mauve-3));
+  --background-l3: light-dark(var(--mauve-5), var(--mauve-4));
+  --background-l4: light-dark(var(--mauve-6), var(--mauve-5));
+  --background-l5: light-dark(var(--mauve-7), var(--mauve-6));
+  --border:        var(--mauve-6);
+  --ring:          var(--mauve-8);
+  --foreground-l0: var(--mauve-12);
+  --foreground-l1: var(--mauve-11);
+  --foreground-l2: var(--mauve-10);
+  --foreground-l3: var(--mauve-9);
+  --foreground-l4: var(--mauve-8);
+  --foreground-l5: light-dark(var(--mauve-8), var(--mauve-7));
 
-  --background-accent:            var(--sky-4);
-  --background-accent-hover:      var(--sky-5);
-  --foreground-accent:            var(--sky-11);
+  --background-accent:            var(--pink-4);
+  --background-accent-hover:      var(--pink-5);
+  --foreground-accent:            var(--pink-11);
   --background-destructive:       var(--red-4);
   --background-destructive-hover: var(--red-5);
   --foreground-destructive:       var(--red-11);
@@ -526,8 +543,8 @@
   --foreground-ninth:   var(--plum-9);
   --foreground-tenth:   var(--pink-9);
 
-  --foreground-prose:             var(--gray-11);
-  --foreground-prose-link:        var(--sky-11);
+  --foreground-prose:             var(--mauve-11);
+  --foreground-prose-link:        var(--pink-11);
   --foreground-prose-inline-code: var(--red-11);
 
   --background-red-l0:       var(--red-a3);

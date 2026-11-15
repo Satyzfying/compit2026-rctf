@@ -12,10 +12,19 @@
     challenge: AdminChallenge
     category: string
     selected: boolean
+    multiSelected: boolean
     onSelect: () => void
+    onToggleSelect: () => void
   }
 
-  let { challenge, category, selected, onSelect }: Props = $props()
+  let {
+    challenge,
+    category,
+    selected,
+    multiSelected,
+    onSelect,
+    onToggleSelect,
+  }: Props = $props()
 
   const isDynamic = $derived(
     challenge.scoring?.kind === ChallengeScoringKind.DYNAMIC
@@ -30,15 +39,31 @@
 </script>
 
 <li>
-  <button
-    type="button"
-    onclick={onSelect}
-    data-selected={selected ? '' : undefined}
-  >
-    <item-title>
-      <span data-part="category">{category} /</span>
-      <span data-part="name">{challenge.name}</span>
-    </item-title>
+  <challenge-row>
+    <button
+      type="button"
+      class="select-toggle"
+      aria-label={multiSelected ? 'Unselect challenge' : 'Select challenge'}
+      data-selected={multiSelected ? '' : undefined}
+      onclick={(event: MouseEvent) => {
+        event.stopPropagation()
+        onToggleSelect()
+      }}
+    >
+      {multiSelected ? '✓' : ''}
+    </button>
+
+    <button
+      type="button"
+      class="challenge-select"
+      id={`admin-chall-${challenge.id}`}
+      onclick={onSelect}
+      data-selected={selected ? '' : undefined}
+    >
+      <item-title>
+        <span data-part="category">{category} /</span>
+        <span data-part="name">{challenge.name}</span>
+      </item-title>
 
     <item-meta>
       {#if hasStatusIcon}
@@ -57,29 +82,79 @@
           {/if}
         </item-status>
       {/if}
-      {#if isDynamic}
-        <span data-part="points"><strong>Dynamic</strong></span>
-      {:else}
-        <span data-part="points"><strong>{points}</strong> pts</span>
-      {/if}
-    </item-meta>
-  </button>
+        {#if isDynamic}
+          <span data-part="points"><strong>Dynamic</strong></span>
+        {:else}
+          <span data-part="points"><strong>{points}</strong> pts</span>
+        {/if}
+      </item-meta>
+    </button>
+  </challenge-row>
 </li>
 
 <style>
   li {
     display: block;
+    animation: admin-challenge-entry 360ms ease-out both;
   }
 
-  button {
+  @keyframes admin-challenge-entry {
+    from {
+      opacity: 0;
+      translate: -1.5rem 0;
+    }
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    li {
+      animation: none;
+    }
+  }
+
+  challenge-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .select-toggle {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
+    border: 2px solid color-mix(in srgb, rgb(68, 176, 104) 85%, transparent);
+    border-radius: 0.5rem;
+    background: rgb(17, 5, 47);
+    color: var(--foreground-l0);
+    cursor: pointer;
+    font-weight: 700;
+
+    &[data-selected] {
+      background: blur(0.5, 0.5, 0.5, 0.5);
+      border-color: rgb(68, 176, 104);
+      color: var(--foreground-accent);
+    }
+  }
+
+  .challenge-select {
     position: relative;
     display: flex;
+    flex: 1 1 auto;
     flex-direction: column;
     gap: 0.25rem;
     inline-size: 100%;
+    max-inline-size: 100%;
+    min-inline-size: 0;
     padding: 0.5rem 2.25rem;
     text-align: start;
     cursor: pointer;
+    background: var(--category-background-l1);
 
     &:hover {
       background: var(--category-background-l1-hover);
@@ -121,7 +196,10 @@
   }
 
   [data-part='category'] {
+    display: inline;
     color: var(--category-foreground-l1);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
   [data-part='name'] {
@@ -162,7 +240,7 @@
   }
 
   @container admin-challenges-list (min-inline-size: 24rem) {
-    button {
+    .challenge-select {
       flex-direction: row;
       align-items: center;
       justify-content: space-between;

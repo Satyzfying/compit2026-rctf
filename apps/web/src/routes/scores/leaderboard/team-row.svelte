@@ -123,8 +123,9 @@
     inline-size: 2rem;
 
     strong {
-      color: var(--rank-fg-l0, var(--foreground-l0));
-      font-weight: 400;
+      color: var(--rank-fg-l0, var(--foreground-accent, var(--foreground-l0)));
+      font-weight: 600;
+      letter-spacing: -0.03em;
       font-variant-numeric: tabular-nums;
     }
 
@@ -156,6 +157,7 @@
     a {
       overflow: hidden;
       color: var(--rank-fg-l0, var(--foreground-l0));
+      font-weight: 600;
       white-space: nowrap;
       text-overflow: ellipsis;
 
@@ -206,7 +208,8 @@
 
     strong {
       color: var(--foreground-l1);
-      font-weight: 400;
+      font-weight: 700;
+      letter-spacing: -0.02em;
       white-space: nowrap;
       font-variant-numeric: tabular-nums;
 

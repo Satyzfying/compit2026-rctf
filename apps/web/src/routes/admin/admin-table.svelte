@@ -155,13 +155,14 @@
     flex-direction: column;
     block-size: 100%;
     inline-size: 100%;
-    background: var(--background-l1);
-    border: 2px solid var(--border);
+    background: transparent;
+    border: 2px solid #5eead4;
     border-radius: var(--radius-lg);
     overflow: hidden;
 
     &[data-scrolling] admin-row {
       pointer-events: none;
+      background: transparent;
     }
   }
 
@@ -195,7 +196,7 @@
     z-index: 20;
     display: block;
     flex-shrink: 0;
-    background: var(--background-l1);
+    background: transparent;
   }
 
   admin-empty {
@@ -211,6 +212,7 @@
     display: block;
     inline-size: 100%;
     contain: layout style;
+    background: transparent;
   }
 
   admin-row {
@@ -221,6 +223,7 @@
     inline-size: 100%;
     translate: 0 var(--row-y);
     contain: layout style;
+    background: transparent;
   }
 
   admin-spinner {
@@ -228,7 +231,7 @@
     inline-size: 100%;
     align-items: center;
     justify-content: center;
-    color: var(--foreground-l3);
+    color: blue;
     font-size: 1.25rem;
   }
 </style>

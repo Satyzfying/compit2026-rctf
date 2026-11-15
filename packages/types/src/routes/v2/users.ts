@@ -5,6 +5,7 @@ import { defineRoute } from '../../internal'
 import {
   BadAvatarFile,
   BadAvatarFileSize,
+  BadBody,
   BadCaptcha,
   BadDivisionChangeEnded,
   BadDivisionNotAllowed,
@@ -70,6 +71,7 @@ export const UpdateUserRouteV2 = defineRoute({
   }),
   goodResponses: [GoodUserUpdateV2],
   badResponses: [
+    BadBody,
     BadName,
     BadRateLimit,
     BadDivisionNotAllowed,

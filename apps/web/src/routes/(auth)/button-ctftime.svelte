@@ -1,7 +1,6 @@
 <script lang="ts">
   import { CtftimeCallbackRoute, GoodCtftimeToken } from '@rctf/types'
   import { apiRequest, showApiError } from '$lib/api'
-  import ctftimeLogo from '$lib/assets/ctftime.svg'
   import Button from '$lib/ui/button.svelte'
   import Spinner from '$lib/ui/spinner.svelte'
   import { createAsyncAction } from '$lib/utils/async-action.svelte'
@@ -99,8 +98,7 @@
       <Spinner />
       <span>Connecting...</span>
     {:else}
-      <img src={ctftimeLogo} alt="" />
-      <span>Connect to CTFtime</span>
+      <span>login</span>
     {/if}
   </Button>
 </ctftime-button>
@@ -111,10 +109,11 @@
 
     :global(button) {
       inline-size: 100%;
-    }
 
-    img {
-      block-size: 1.5rem;
+      &::before,
+      &::after {
+        content: none;
+      }
     }
   }
 </style>

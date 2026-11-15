@@ -338,6 +338,8 @@ export const createSolveAndGetBloodNumber = async (
     userId: string
     submissionIp?: string | null
     submittedFlag?: string
+    aiSolver?: string | null
+    solverFile?: string | null
     matchedFlag?: MatchedFlagEntry
     cheated?: boolean
     cheatedFrom?: string
@@ -382,6 +384,8 @@ export const createSolveAndGetBloodNumber = async (
         ...(params.submittedFlag
           ? { submittedFlag: params.submittedFlag }
           : {}),
+        ...(params.aiSolver ? { aiSolver: params.aiSolver } : {}),
+        ...(params.solverFile ? { solverFile: params.solverFile } : {}),
         ...(params.matchedFlag
           ? {
               matchedFlagIndex: params.matchedFlag.index,
@@ -1148,9 +1152,16 @@ export const submitFlag = async (
     userId: string
     challengeId: string
     flag: string
+    aiSolver?: string | null
+    solverFile?: string | null
     submissionIp: string | undefined
   }
 ): Promise<ReturnType<SubmitResponseHelpers[keyof SubmitResponseHelpers]>> => {
+  const normalizedAiSolver = (() => {
+    const value = params.aiSolver?.trim()
+    return value ? value : 'i did not use ai'
+  })()
+  const normalizedSolverFile = params.solverFile?.trim() || null
   // NOTE(es3n1n): Directly querying from the database to bypass any stale cache entries
   const submitter = await getSubmitterState(db, params.userId)
   if (!submitter) {
@@ -1199,6 +1210,8 @@ export const submitFlag = async (
       result: SubmissionResult.INCORRECT,
       details: {
         submittedFlag: params.flag,
+        ...(normalizedSolverFile ? { solverFile: normalizedSolverFile } : {}),
+        aiSolver: normalizedAiSolver,
       },
     }).catch(err =>
       log.error(
@@ -1238,6 +1251,8 @@ export const submitFlag = async (
       userId: params.userId,
       submissionIp: params.submissionIp,
       submittedFlag: params.flag,
+      ...(normalizedSolverFile ? { solverFile: normalizedSolverFile } : {}),
+      aiSolver: normalizedAiSolver,
       matchedFlag: matched,
       cheated,
       cheatedFrom,
@@ -1251,7 +1266,11 @@ export const submitFlag = async (
         userId: params.userId,
         ip: params.submissionIp,
         result: SubmissionResult.ALREADY_SOLVED,
-        details: { submittedFlag: params.flag },
+        details: {
+          submittedFlag: params.flag,
+          ...(normalizedSolverFile ? { solverFile: normalizedSolverFile } : {}),
+          aiSolver: normalizedAiSolver,
+        },
       }).catch(err =>
         log.error(
           { err, challengeId: params.challengeId, userId: params.userId },

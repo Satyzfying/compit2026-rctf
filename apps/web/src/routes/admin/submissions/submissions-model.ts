@@ -255,6 +255,12 @@ export function detailEntries(submission: Submission): DetailEntry[] {
     const entries: DetailEntry[] = [
       { label: 'flag', value: formatDetailValue(details.submittedFlag) },
     ]
+    if (typeof details.solverFile === 'string' && details.solverFile.trim() !== '') {
+      entries.push({ label: 'solver ref', value: details.solverFile.trim() })
+    }
+    if (typeof details.aiSolver === 'string' && details.aiSolver.trim() !== '') {
+      entries.push({ label: 'ai solver', value: details.aiSolver.trim() })
+    }
     if (submission.result === SubmissionResult.CHEATED) {
       entries.push({
         label: 'owner',

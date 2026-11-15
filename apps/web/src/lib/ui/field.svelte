@@ -63,7 +63,7 @@
 
   field-required {
     margin-inline-start: 0.125rem;
-    color: var(--foreground-destructive);
+    color: white;
   }
 
   field-hint {
@@ -84,6 +84,6 @@
   }
 
   form-field[data-incomplete] field-error {
-    color: var(--foreground-l3);
+    color: navy;
   }
 </style>

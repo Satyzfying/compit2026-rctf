@@ -407,8 +407,8 @@
     display: flex;
     flex-direction: column;
     min-block-size: 0;
-    block-size: calc(100dvh - var(--header-height));
-    max-block-size: calc(100dvh - var(--header-height));
+    block-size: 100%;
+    max-block-size: 100%;
     padding: 0 1rem 1rem;
     overflow: hidden;
 

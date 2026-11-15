@@ -310,8 +310,8 @@
   settings-group {
     display: block;
     overflow: clip;
-    background: var(--background-l1);
-    border: 2px solid var(--border);
+    background: color-mix(in srgb, #071d35 55%, transparent);
+    border: 2px solid #0bad5c;
     border-radius: var(--radius-lg);
   }
 
@@ -320,12 +320,16 @@
     align-items: center;
     justify-content: space-between;
     gap: var(--space-s);
-    padding: 0.375rem var(--space-s);
-    background: var(--background-l3);
+    padding: 0.5rem var(--space-s);
+    background: color-mix(in hsl shorter hue, rgb(12, 19, 145) 28%, lightblue 28%);
   }
 
   group-title {
-    color: var(--foreground-l3);
+    color: #5eead4;
+    font-size: var(--step-0);
+    font-weight: 250;
+    letter-spacing: 0.02em;
+    font-family: Pochaevsk;
   }
 
   group-body {
@@ -336,9 +340,11 @@
   group-note {
     display: block;
     padding: var(--space-2xs) var(--space-s);
-    font-size: var(--step--1);
-    color: var(--foreground-l3);
-    border-block-end: 2px solid var(--border);
+    font-size: var(--step-0);
+    line-height: 1.5;
+    color: #8ab7c8;
+    background: color-mix(in srgb, #163b5ece 72%, transparent);
+    border-block-end: 2px solid rgb(21 151 168 / 45%);
   }
 
   clients-editor {
@@ -355,12 +361,14 @@
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
-    border-block-end: 2px solid var(--border);
+    min-inline-size: 0;
+    background: color-mix(in srgb, #163b5ece 72%, transparent);
+    border-block-end: 2px solid #1597a8;
 
     @media (min-width: 40rem) {
-      inline-size: 11rem;
+      inline-size: 17rem;
       border-block-end: none;
-      border-inline-end: 2px solid var(--border);
+      border-inline-end: 2px solid #1597a8;
     }
   }
 
@@ -370,7 +378,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     gap: var(--space-3xs);
-    padding: var(--space-2xs);
+    padding: 0.5rem;
     overflow: hidden;
 
     @media (min-width: 40rem) {
@@ -384,7 +392,7 @@
     display: flex;
     flex-shrink: 0;
     padding: var(--space-2xs);
-    border-block-start: 2px solid var(--border);
+    /* border-block-start: 2px solid rgb(21 151 168 / 45%); */
 
     :global(button) {
       inline-size: 100%;
@@ -400,13 +408,14 @@
     color: var(--foreground-l4);
 
     &:hover {
-      background: var(--background-l3);
-      color: var(--foreground-l0);
+      background: #087f91;
+      color: #ffffff;
     }
 
     &[data-active] {
-      background: var(--background-l4);
-      color: var(--foreground-l0);
+      background: color-mix(in srgb, rgba(0, 0, 0, 0.637) 75%, transparent);
+      color: #d9f7ff;
+      /* box-shadow: inset 3px 0 0 #5eead4; */
     }
 
     @media (min-width: 40rem) {
@@ -416,9 +425,11 @@
     button[data-select] {
       overflow: hidden;
       flex: 1;
-      padding: 0.375rem var(--space-2xs);
+      min-block-size: 2.3rem;
+      padding: 0.5rem var(--space-2xs);
       color: inherit;
-      font-size: var(--step--1);
+      font-size: var(--step-0);
+      line-height: 1.3;
       white-space: nowrap;
       text-align: start;
       text-overflow: ellipsis;
@@ -463,8 +474,9 @@
   client-empty,
   client-placeholder {
     display: block;
-    padding: 0.375rem var(--space-2xs);
-    font-size: var(--step--1);
+    padding: 0.5rem var(--space-2xs);
+    font-size: var(--step-0);
+    line-height: 1.5;
     color: var(--foreground-l4);
   }
 
@@ -479,10 +491,12 @@
   client-detail {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.9rem;
     min-inline-size: 0;
     flex: 1;
-    padding: var(--space-s);
+    padding: var(--space-s) var(--space-m);
+    line-height: 1.5;
+    background: color-mix(in srgb, #163b5ece 72%, transparent);
   }
 
   form,
@@ -530,11 +544,12 @@
     justify-content: space-between;
     gap: var(--space-2xs);
     inline-size: 100%;
-    padding: var(--space-3xs) var(--space-2xs);
-    color: var(--foreground-l1);
+    min-block-size: 2.5rem;
+    padding: var(--space-2xs) var(--space-2xs);
+    color: #d9f7ff;
     text-align: start;
-    background: var(--background-l4);
-    border: 2px solid transparent;
+    background: color-mix(in srgb, rgba(0, 0, 0, 0.637) 75%, transparent);
+    border: 1px solid rgb(94 234 212 / 28%);
     border-radius: var(--radius-md);
     cursor: pointer;
 
@@ -550,7 +565,8 @@
     }
 
     &:hover {
-      background: var(--background-l5);
+      background: #087f91;
+      border-color: #5eead4;
     }
 
     &:focus-visible {
@@ -561,13 +577,15 @@
 
   code {
     font-family: var(--font-mono);
-    font-size: var(--step--1);
+    font-size: var(--step-0);
 
     &[data-readonly] {
       display: block;
       padding: var(--space-3xs) var(--space-2xs);
       word-break: break-all;
-      background: var(--background-l4);
+      color: #d9f7ff;
+      background: color-mix(in srgb, rgba(0, 0, 0, 0.637) 75%, transparent);
+      border: 1px solid rgb(94 234 212 / 24%);
       border-radius: var(--radius-md);
     }
   }

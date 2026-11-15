@@ -1,13 +1,7 @@
 <script lang="ts">
   import { ChallengeScoringKind, type Challenge } from '@rctf/types'
   import EdgeFades from '$lib/components/edge-fades.svelte'
-  import {
-    IconFile,
-    IconFlagBanner,
-    IconGlobeHemisphereWest,
-    IconTrophy,
-  } from '$lib/icons'
-  import EmptyState from '$lib/ui/empty-state.svelte'
+  import { IconFile, IconGlobeHemisphereWest, IconTrophy } from '$lib/icons'
   import Tabs from '$lib/ui/tabs.svelte'
   import type { Component } from 'svelte'
   import ChallengeDetailsHeader from './details-header.svelte'
@@ -92,36 +86,37 @@
       </Tabs>
     </details-tabs>
 
-    {#if challenge.hasFlag}
-      <details-footer>
-        {#if activeTab === 'details'}
-          <ChallengeDetailsPodium {challenge} {isSolved} />
-        {/if}
-        <ChallengeDetailsSubmit {challenge} {isSolved} {onSolve} />
-      </details-footer>
-    {:else if isDynamic && activeTab === 'details'}
-      <details-footer>
+    <details-footer>
+      {#if activeTab === 'details' && challenge.hasFlag}
+        <ChallengeDetailsPodium {challenge} {isSolved} />
+      {:else if isDynamic && activeTab === 'details'}
         <ChallengeDetailsPodiumDynamic {challenge} />
-      </details-footer>
-    {/if}
+      {/if}
+      <ChallengeDetailsSubmit {challenge} {isSolved} {onSolve} />
+    </details-footer>
   </challenge-details>
 {:else}
-  <challenge-details data-empty>
-    <EmptyState
-      icon={IconFlagBanner}
-      title="Select a challenge"
-      subtitle="Choose a challenge from the list to view details"
-    />
-  </challenge-details>
+  <challenge-details data-empty></challenge-details>
 {/if}
 
 <style>
   challenge-details {
+    position: relative;
     display: flex;
+    flex: 1 1 auto;
     flex-direction: column;
-    inline-size: 100%;
-    block-size: 100%;
+    inline-size: min(100%, 60rem);
+    block-size: calc(100% - 0.75rem);
     min-block-size: 0;
+    min-inline-size: 0;
+    margin-inline: auto;
+    margin-block: 0.75rem 0;
+    padding-block: 0.25rem;
+    /* background: linear-gradient(135deg, #0b203f 0%, #173b66 56%, #091a35 100%); */
+    border: 1px solid rgb(28, 198, 139);
+    border-radius: var(--radius-3xl);
+    box-shadow: 0 1rem 3rem rgb(0 0 0 / 0.22);
+    overflow: hidden;
 
     &[data-empty] {
       align-items: center;
@@ -131,19 +126,42 @@
 
   details-tabs {
     display: flex;
-    flex: 1;
+    flex: 1 1 auto;
     flex-direction: column;
+    block-size: 100%;
     min-block-size: 0;
+    min-inline-size: 0;
+    overflow: hidden;
+    /* background: linear-gradient(135deg, #102b50 0%, #1b4770 52%, #0b1e3d 100%); */
 
     > :global([data-scope='tabs'][data-part='root']) {
       display: flex;
       flex: 1;
       flex-direction: column;
+      block-size: 100%;
       min-block-size: 0;
     }
 
     :global([data-scope='tabs'][data-part='list']) {
-      padding-inline: 1.25rem;
+      padding-inline: 1rem;
+      background: rgb(7 24 49 / 82%);
+      border-block-end: 1px solid rgb(88 183 208 / 28%);
+    }
+
+    :global([data-scope='tabs'][data-part='trigger']) {
+      color: #91b8c9;
+      background: rgb(17 43 73 / 72%);
+
+      &[data-selected] {
+        color: #e1fbff;
+        background: rgb(30 91 121 / 92%);
+        box-shadow: inset 0 -2px 0 #77e5ec;
+      }
+
+      &:hover {
+        color: #d5f7ff;
+        background: rgb(28 75 103 / 88%);
+      }
     }
 
     :global([data-scope='tabs'][data-part='content']:not([hidden])) {
@@ -152,33 +170,50 @@
       flex-direction: column;
       min-block-size: 0;
       overflow: hidden;
-      background: var(--background-l2);
+      background: rgb(13 35 63 / 82%);
+      padding-block-end: 8rem;
     }
   }
 
   details-viewport {
     position: relative;
     display: flex;
-    flex: 1;
+    flex: 1 1 auto;
     flex-direction: column;
+    block-size: 100%;
     min-block-size: 0;
+    max-block-size: 100%;
+    overflow: hidden;
   }
 
   details-scroll {
     display: block;
-    flex: 1;
+    flex: 1 1 0;
+    block-size: 0;
     min-block-size: 0;
+    max-block-size: 100%;
     overflow-y: auto;
     overscroll-behavior: none;
+    scrollbar-width: none;
     outline: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   details-footer {
+    position: absolute;
+    z-index: 2;
+    inset-inline: 1rem;
+    inset-block-end: 4rem;
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
-    gap: 0.5rem;
-    padding: 0.5rem 1.25rem 1rem;
-    background: var(--background-l2);
+    inline-size: auto;
+    gap: 0.4rem;
+    margin-block-end: 0;
+    padding: 0.9rem 1rem 0;
+    background: transparent;
   }
 </style>

@@ -16,7 +16,7 @@ adminGroup.route(GetInstancerSchemaRouteV2, async ({ res }) => {
     defaultInstancer: defaultInstancerName,
     instancers: Object.entries(instancers).map(([name, provider]) => ({
       name,
-      schema: z.toJSONSchema(provider.configSchema, { io: 'input' }),
+      schema: z.toJSONSchema(provider.configSchema),
       defaults: provider.getDefaults(),
       canStop: provider.capabilities.canStop,
       canExtend: provider.capabilities.canExtend,

@@ -82,3 +82,11 @@ export const rateLimitRegisterByIp = (redis: TypedRedis, ip: string) =>
 // burst 2, 1 per 30min per email
 export const rateLimitRegisterByEmail = (redis: TypedRedis, email: string) =>
   rateLimit(redis, `rl:REGISTER_EMAIL:${email}`, 2, 3_600_000)
+
+// Campus NAT friendly: burst 30, 60 per minute per IP (prevents ITS WiFi NAT lockout)
+export const rateLimitLoginByIp = (redis: TypedRedis, ip: string) =>
+  rateLimit(redis, `rl:LOGIN_IP:${ip}`, 30, 60_000)
+
+// Strict credential anti-brute-force: burst 5, 5 per min per username
+export const rateLimitLoginByUsername = (redis: TypedRedis, username: string) =>
+  rateLimit(redis, `rl:LOGIN_USER:${username.toLowerCase().trim()}`, 5, 60_000)

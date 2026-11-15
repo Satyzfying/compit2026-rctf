@@ -65,14 +65,14 @@
     --slot-fg-l0: var(--foreground-nth-l0);
     --slot-fg-l1: var(--foreground-nth-l1);
     --slot-bg: var(--background-nth);
-    --avatar-size: 2.75rem;
+    --avatar-size: 2.25rem;
     --avatar-radius: var(--radius-md);
 
     display: flex;
     gap: 0.5rem;
     align-items: center;
     justify-content: space-between;
-    block-size: 3.5rem;
+    block-size: 3rem;
     padding: 0.25rem;
     background: var(--slot-bg);
     border: 2px solid transparent;
@@ -81,38 +81,43 @@
     &[data-variant='gold'] {
       --slot-fg-l0: var(--foreground-gold-l0);
       --slot-fg-l1: var(--foreground-gold-l1);
-      --slot-bg: color-mix(in oklab, var(--background-gold) 60%, transparent);
+      --slot-bg: color-mix(in oklab, var(--background-gold) 82%, #15182a);
+      border-color: color-mix(in oklab, var(--foreground-gold-l1) 55%, transparent);
     }
 
     &[data-variant='silver'] {
       --slot-fg-l0: var(--foreground-silver-l0);
       --slot-fg-l1: var(--foreground-silver-l1);
-      --slot-bg: color-mix(in oklab, var(--background-silver) 60%, transparent);
+      --slot-bg: color-mix(in oklab, var(--background-silver) 82%, #15182a);
+      border-color: color-mix(in oklab, var(--foreground-silver-l1) 55%, transparent);
     }
 
     &[data-variant='bronze'] {
       --slot-fg-l0: var(--foreground-bronze-l0);
       --slot-fg-l1: var(--foreground-bronze-l1);
-      --slot-bg: color-mix(in oklab, var(--background-bronze) 60%, transparent);
+      --slot-bg: color-mix(in oklab, var(--background-bronze) 82%, #15182a);
+      border-color: color-mix(in oklab, var(--foreground-bronze-l1) 55%, transparent);
     }
 
     &[data-variant='self'] {
       --slot-fg-l0: var(--foreground-self-l0);
       --slot-fg-l1: var(--foreground-self-l1);
-      --slot-bg: var(--background-self-l1);
+      --slot-bg: color-mix(in oklab, var(--background-self-l1) 84%, #15182a);
+      border-color: color-mix(in oklab, var(--foreground-self-l1) 55%, transparent);
     }
 
     &[data-kind='empty'],
     &[data-kind='placeholder'],
     &[data-kind='loading'] {
-      background: transparent;
+      background: rgb(20 55 82 / 46%);
       border-style: dashed;
-      border-color: var(--border);
+      border-color: rgb(92 191 205 / 42%);
     }
 
     &[data-kind='placeholder'] {
-      --slot-fg-l0: var(--foreground-l4);
-      --slot-fg-l1: color-mix(in oklab, var(--foreground-l5) 50%, transparent);
+      --slot-fg-l0: #e2e7ff;
+      --slot-fg-l1: #aebbdc;
+      background: rgb(31 63 86 / 58%);
     }
 
     &[data-kind='loading'] {

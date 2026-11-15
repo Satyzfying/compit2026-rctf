@@ -1,6 +1,4 @@
 <script lang="ts">
-  import wordmarkDark from '$lib/assets/wordmark-dark.svg'
-  import wordmarkLight from '$lib/assets/wordmark-light.svg'
   import ScoresSparkline from '$lib/chart/sparkline.svelte'
   import { useClientConfig } from '$lib/query/config'
   import type { LeaderboardGraphSeries } from '$lib/query/leaderboard'
@@ -51,12 +49,6 @@
     shadow = false,
   }: Props = $props()
 
-  const configQuery = useClientConfig()
-  const lightWordmark = $derived(
-    configQuery.data?.logoLightUrl || wordmarkLight
-  )
-  const darkWordmark = $derived(configQuery.data?.logoDarkUrl || wordmarkDark)
-
   const selfId = $derived(selfTeam?.id ?? null)
   const teamIds = $derived(teams.map(team => team.id))
 
@@ -106,12 +98,8 @@
 <screenshot-preview data-shadow={shadow || undefined} data-screenshot-container>
   {#if options.showHeader}
     <preview-header>
-      <logo-light data-theme-visible="light"
-        ><img src={lightWordmark} alt="Logo" data-wordmark /></logo-light
-      >
-      <logo-dark data-theme-visible="dark"
-        ><img src={darkWordmark} alt="Logo" data-wordmark /></logo-dark
-      >
+      <h1>{ctfName}</h1>
+      
       <title-block>
         <ctf-name>{ctfName}</ctf-name>
         {#if options.subtitle}
@@ -329,8 +317,11 @@
     align-items: flex-start;
     justify-content: space-between;
 
-    img[data-wordmark] {
-      block-size: 2.5rem;
+    h1 {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--foreground-l0);
     }
   }
 

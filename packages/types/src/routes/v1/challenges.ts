@@ -35,6 +35,12 @@ export const SubmitFlagRoute = defineRoute({
       .string()
       .check(z.maxLength(1024))
       .check(z.describe('Maximum length `1024`.')),
+    solverFile: z
+      .optional(z.string().check(z.maxLength(2048)))
+      .check(z.describe('Optional solver reference, not uploaded binary content. Use a safe name or URL.')),
+    aiSolver: z
+      .optional(z.string().check(z.maxLength(2048)))
+      .check(z.describe('Optional AI-solver disclosure. Empty values default to `i did not use ai`.')),
   }),
   goodResponses: [GoodFlag],
   badResponses: [

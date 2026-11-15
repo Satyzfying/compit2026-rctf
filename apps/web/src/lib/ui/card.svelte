@@ -30,7 +30,11 @@
     flex-direction: column;
     gap: var(--space-s);
     padding: var(--space-s-m);
-    background: var(--background-l1);
+    background: linear-gradient(
+      135deg,
+      color-mix(in oklab, rgba(14, 24, 138, 0.695) 50%, rgb(1, 43, 43) 25%),
+      color-mix(in oklab, rgb(22, 46, 53) 35%, transparent 28%)
+    );
     border-radius: var(--radius-lg);
   }
 
@@ -48,6 +52,6 @@
   card-description {
     display: block;
     font-size: var(--step--1);
-    color: var(--foreground-l3);
+    color: rgb(139, 208, 238);
   }
 </style>

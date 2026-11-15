@@ -196,7 +196,5 @@ function isMissingRequired(
   if (value === undefined) return true
   if (value === null) return !schema || !schemaAllowsNull(schema)
   if (value === '') return true
-  return (
-    Array.isArray(value) && value.length === 0 && (schema?.minItems ?? 0) > 0
-  )
+  return Array.isArray(value) && value.length === 0
 }

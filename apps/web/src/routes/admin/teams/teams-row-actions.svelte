@@ -153,29 +153,40 @@
     :global(svg) {
       inline-size: 1rem;
       block-size: 1rem;
+      color: inherit;
+      fill: currentColor;
+    }
+
+    :global(svg path) {
+      fill: currentColor !important;
     }
   }
 
   button {
-    color: var(--foreground-l2);
-    background: var(--background-l4);
-    border: 2px solid transparent;
+    color: #d9f7ff;
+    background: #24465d;
+    border: 1px solid rgb(94 234 212 / 24%);
     cursor: pointer;
 
     &:hover {
-      color: var(--foreground-l1);
-      background: var(--background-l5);
+      color: #ffffff;
+      background: #087f91;
+      border-color: #5eead4;
     }
 
     &[data-tone='danger'] {
-      color: var(--foreground-destructive);
+      color: #ffd6da;
+      background: #713448;
+      border-color: rgb(255 154 162 / 35%);
+
+      :global(svg path) {
+        fill: currentColor !important;
+      }
 
       &:hover {
-        background: color-mix(
-          in srgb,
-          var(--foreground-destructive) 16%,
-          var(--background-l4)
-        );
+        color: #ffffff;
+        background: #b83d59;
+        border-color: #ff9aa2;
       }
     }
 

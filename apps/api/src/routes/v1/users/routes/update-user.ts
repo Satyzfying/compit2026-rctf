@@ -5,6 +5,12 @@ import { divisionAllowed } from '../../../../util/acl'
 import usersGroup from '../group'
 
 usersGroup.route(UpdateUserRoute, async ({ ctx, user, res, body }) => {
+  if (body.name !== undefined && body.name !== user.name) {
+    return res.badBody({
+      reason: 'Team names are permanently locked by competition committee.',
+    })
+  }
+
   if (
     body.division !== undefined &&
     !divisionAllowed(user.email, body.division)

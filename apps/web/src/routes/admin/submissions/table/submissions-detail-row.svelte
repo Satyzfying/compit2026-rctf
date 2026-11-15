@@ -48,12 +48,14 @@
     gap: var(--space-2xs);
     padding-inline: var(--space-2xs) var(--space-2xs);
     padding-inline-start: 3.25rem;
-    background: var(--background-l3);
+    background: color-mix(in srgb, #071d35 88%, #087f91 12%);
+    border-block-start: 1px solid #1597a8;
+    border-block-end: 1px solid rgb(21 151 168 / 45%);
   }
 
   detail-label {
     flex-shrink: 0;
-    color: var(--foreground-l3);
+    color: #8ab7c8;
     font-size: var(--step--1);
     white-space: nowrap;
   }
@@ -77,7 +79,9 @@
     align-items: center;
     gap: var(--space-3xs);
     padding: var(--space-3xs) var(--space-2xs);
-    background: var(--background-l4);
+    color: #d9f7ff;
+    background: #24465d;
+    border: 1px solid rgb(94 234 212 / 28%);
     border-radius: var(--radius-md);
     white-space: nowrap;
 
@@ -88,14 +92,14 @@
 
   pill-label {
     flex-shrink: 0;
-    color: var(--foreground-l3);
+    color: #8ab7c8;
     font-size: var(--step--2);
   }
 
   code {
     min-inline-size: 0;
     overflow: hidden;
-    color: var(--foreground-l1);
+    color: #d9f7ff;
     font-size: var(--step--2);
     text-overflow: ellipsis;
   }
@@ -131,7 +135,7 @@
 
     &:hover {
       color: var(--foreground-l1);
-      background: var(--background-l4);
+      background: #087f91;
     }
 
     &:focus-visible {

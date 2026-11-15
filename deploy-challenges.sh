@@ -1,0 +1,1 @@
+scripts/deploy-challenges.sh

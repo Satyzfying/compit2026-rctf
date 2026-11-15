@@ -209,6 +209,9 @@
 </script>
 
 <graph-root>
+  <graph-title>Users score progression</graph-title>
+  <graph-axis-label data-axis="y">Score</graph-axis-label>
+  <graph-axis-label data-axis="x">Time</graph-axis-label>
   <div data-graph-viewport bind:clientWidth={width} bind:clientHeight={height}>
     <svg
       role="img"
@@ -301,6 +304,36 @@
     display: block;
     inline-size: 100%;
     block-size: 100%;
+    color: #bfeef5;
+  }
+
+  graph-title {
+    position: absolute;
+    z-index: 1;
+    inset-block-start: 0.35rem;
+    inset-inline-start: 0.75rem;
+    color: #d8fbff;
+    font-size: var(--step--1);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  graph-axis-label {
+    position: absolute;
+    z-index: 1;
+    color: #8fcbd8;
+    font-size: var(--step--2);
+    pointer-events: none;
+
+    &[data-axis='y'] {
+      inset-block-start: 1.5rem;
+      inset-inline-start: 0.75rem;
+    }
+
+    &[data-axis='x'] {
+      inset-block-end: 0.15rem;
+      inset-inline-end: 0.75rem;
+    }
   }
 
   [data-graph-viewport] {
@@ -313,6 +346,7 @@
     inline-size: 100%;
     block-size: 100%;
     outline-offset: -2px;
+    color: #78d8e6;
   }
 
   [data-hover-crosshair] {

@@ -714,6 +714,14 @@
     flex: 1;
     flex-direction: column;
     min-block-size: 0;
+    border-radius: var(--radius-md);
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, rgba(17, 17, 150, 0.637) 75%, transparent),
+      color-mix(in srgb, rgba(28, 126, 139, 0.637) 55%, transparent)
+    );
   }
 
   form-tabs {
@@ -736,13 +744,21 @@
       overscroll-behavior: none;
     }
 
+    :global([data-scope='tabs'][data-part='trigger']) {
+      font-size: 1rem;
+    }
+
     :global([data-scope='tabs'][data-part='content']:not([hidden])) {
       display: flex;
       flex: 1;
       flex-direction: column;
       min-block-size: 0;
       overflow: hidden;
-      background: var(--background-l2);
+      background: linear-gradient(
+        135deg,
+        color-mix(in oklab, rgba(17, 25, 109, 0.695) 50%, rgb(150, 176, 176) 35%),
+        color-mix(in oklab, rgb(80, 170, 197) 38%, transparent)
+      );
     }
   }
 
@@ -758,11 +774,11 @@
     form-tabs :global([data-scope='tabs'][data-part='trigger']) {
       justify-content: center;
       border-radius: var(--radius-md);
-      background: var(--background-l2);
+      background: blue;
     }
 
     form-tabs :global([data-scope='tabs'][data-part='trigger'][data-selected]) {
-      background: var(--background-l3);
+      background: blue;
     }
   }
 

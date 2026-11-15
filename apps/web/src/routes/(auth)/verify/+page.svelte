@@ -17,8 +17,6 @@
   import Card from '$lib/ui/card.svelte'
   import Spinner from '$lib/ui/spinner.svelte'
   import { createAsyncAction } from '$lib/utils/async-action.svelte'
-  import { buildLoginUrl } from '$lib/utils/auth'
-  import TeamTokenCard from '../team-token-card.svelte'
 
   const queryClient = useQueryClient()
   const configQuery = useClientConfig()
@@ -31,8 +29,7 @@
   let error = $state<string | null>(null)
   let emailSet = $state(false)
   let verified = $state(false)
-  let registeredTeamToken = $state<string | null>(null)
-  let registeredLoginUrl = $state<string | null>(null)
+  let registered = $state(false)
   const verifyAction = createAsyncAction()
 
   const verifyInfoError = $derived(
@@ -88,8 +85,7 @@
         const response = await apiRequest(VerifyRouteV2, { verifyToken })
         if (response.kind === GoodRegisterV2.kind) {
           setToken(response.data.authToken)
-          registeredTeamToken = response.data.teamToken
-          registeredLoginUrl = buildLoginUrl(response.data.teamToken)
+          registered = true
           toast.success('Verified successfully!')
           queryClient.invalidateQueries({ queryKey: queryKeys.userSelf })
         } else if (response.kind === GoodVerify.kind) {
@@ -121,11 +117,10 @@
   {/if}
 </svelte:head>
 
-{#if registeredTeamToken && registeredLoginUrl}
-  <TeamTokenCard
-    teamToken={registeredTeamToken}
-    loginUrl={registeredLoginUrl}
-  />
+{#if registered}
+  <Card title="Account created" description="Your email has been verified.">
+    <Button href="/">Continue</Button>
+  </Card>
 {:else if emailSet}
   <Card title="Email verified">
     <auth-page>

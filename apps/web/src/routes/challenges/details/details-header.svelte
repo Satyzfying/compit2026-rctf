@@ -59,11 +59,13 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 1rem;
-    padding: 1rem 2.25rem;
+    gap: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    background: rgb(12 39 70 / 76%);
+    border-block-end: 1px solid rgb(94 180 198 / 30%);
 
     @media (width >= 40rem) {
-      padding-block: 1.5rem;
+      padding-block: 1rem;
     }
   }
 
@@ -73,17 +75,30 @@
     flex-direction: column;
     gap: 0.25rem;
     min-inline-size: 0;
+    /* background: rgb(24 67 94 / 72%); */
+    font-family: Open Sans, Verdana, sans-serif;
   }
 
   h2 {
     margin: 0;
     overflow: hidden;
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     text-overflow: ellipsis;
     white-space: nowrap;
 
     @media (width >= 40rem) {
-      font-size: 1.5rem;
+      font-size: 1.65rem;
+    }
+  }
+
+  chip-row :global(ui-chip) {
+    color: #d7f4ff;
+    background: rgb(24 67 94 / 85%);
+    border: 1px solid rgba(89, 252, 214, 0.35);
+    font-size: 0.9rem;
+
+    @media (width >= 40rem) {
+      font-size: 1rem;
     }
   }
 
@@ -92,11 +107,11 @@
     flex-wrap: wrap;
     align-items: center;
     gap: 0.25rem 0.5rem;
-    color: var(--foreground-l3);
-    font-size: 0.875rem;
+    color: rgba(33, 219, 219, 0.93);
+    font-size: 1.1rem;
 
     @media (width >= 40rem) {
-      font-size: 1rem;
+      font-size: 1.15rem;
     }
   }
 
@@ -128,10 +143,14 @@
     align-items: center;
     gap: 0.25rem;
     padding: 0.125rem 0.5rem;
-    font-size: 0.75rem;
+    font-size: 0.9rem;
     color: var(--category-foreground-l1);
     white-space: nowrap;
-    background: var(--category-background-l0);
+    background: linear-gradient(
+      135deg,
+      color-mix(in oklab, var(--category-background-l0) 46%, transparent),
+      color-mix(in oklab, var(--background-l1) 38%, transparent)
+    );
     border-radius: var(--radius-lg);
 
     @media (width >= 40rem) {
@@ -144,7 +163,7 @@
       font-size: 0.75rem;
 
       @media (width >= 40rem) {
-        font-size: 0.875rem;
+        font-size: 1rem;
       }
     }
   }
@@ -159,7 +178,7 @@
   }
 
   [data-slot='points'] {
-    font-size: 1.25rem;
+    font-size: 1.4rem;
 
     @media (width >= 40rem) {
       font-size: 1.5rem;
@@ -168,10 +187,10 @@
 
   [data-slot='solves'] {
     color: var(--foreground-l3);
-    font-size: 0.875rem;
+    font-size: 1rem;
 
     @media (width >= 40rem) {
-      font-size: 1rem;
+      font-size: 0.95rem;
     }
   }
 </style>

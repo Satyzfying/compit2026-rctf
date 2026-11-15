@@ -69,18 +69,18 @@ export const loadEnvConfig = (): ConfigLayer => {
   const databaseUrl = getEnvString('RCTF_DATABASE_URL')
   const databaseMigrate = getEnvString('RCTF_DATABASE_MIGRATE')
   const sqlDetails = optionalObjectFrom([
-    ['host', getEnvString('RCTF_DATABASE_HOST')],
-    ['port', getEnvInteger('RCTF_DATABASE_PORT')],
-    ['user', getEnvString('RCTF_DATABASE_USERNAME')],
-    ['password', getEnvString('RCTF_DATABASE_PASSWORD')],
-    ['database', getEnvString('RCTF_DATABASE_DATABASE')],
+    ['host', getEnvString('RCTF_DATABASE_HOST') ?? getEnvString('POSTGRES_HOST')],
+    ['port', getEnvInteger('RCTF_DATABASE_PORT') ?? getEnvInteger('POSTGRES_PORT')],
+    ['user', getEnvString('RCTF_DATABASE_USERNAME') ?? getEnvString('POSTGRES_USER')],
+    ['password', getEnvString('RCTF_DATABASE_PASSWORD') ?? getEnvString('POSTGRES_PASSWORD')],
+    ['database', getEnvString('RCTF_DATABASE_DATABASE') ?? getEnvString('POSTGRES_DB')],
   ])
 
   const redisUrl = getEnvString('RCTF_REDIS_URL')
   const redisDetails = optionalObjectFrom([
-    ['host', getEnvString('RCTF_REDIS_HOST')],
-    ['port', getEnvInteger('RCTF_REDIS_PORT')],
-    ['password', getEnvString('RCTF_REDIS_PASSWORD')],
+    ['host', getEnvString('RCTF_REDIS_HOST') ?? getEnvString('REDIS_HOST')],
+    ['port', getEnvInteger('RCTF_REDIS_PORT') ?? getEnvInteger('REDIS_PORT')],
+    ['password', getEnvString('RCTF_REDIS_PASSWORD') ?? getEnvString('REDIS_PASSWORD')],
     ['database', getEnvInteger('RCTF_REDIS_DATABASE')],
     ['socketTimeout', getEnvInteger('RCTF_REDIS_SOCKET_TIMEOUT')],
   ])

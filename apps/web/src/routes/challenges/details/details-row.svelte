@@ -127,9 +127,9 @@
 <style>
   rank-row {
     --avatar-size: 2.5rem;
-    --row-fg-l0: var(--foreground-nth-l0);
-    --row-fg-l1: var(--foreground-nth-l1);
-    --row-base: var(--background-l3);
+    --row-fg-l0: #e1f5ff;
+    --row-fg-l1: #a9d5e5;
+    --row-base: rgb(25 47 78 / 88%);
     --row-gradient: transparent;
 
     position: relative;
@@ -211,6 +211,12 @@
     @media (width >= 40rem) {
       min-inline-size: 3rem;
     }
+  }
+
+  :global([data-part='fallback']) {
+    color: var(--row-fg-l0);
+    background: color-mix(in oklab, var(--row-base) 78%, #1b3154);
+    border-color: color-mix(in oklab, var(--row-fg-l1) 48%, transparent);
   }
 
   rank-number {
@@ -302,7 +308,7 @@
   [data-part='primary'] {
     font-size: 1.125rem;
     font-variant-numeric: tabular-nums;
-    color: var(--foreground-l1);
+    color: #d8f4ff;
     white-space: nowrap;
 
     @media (width >= 40rem) {
@@ -312,7 +318,7 @@
 
   [data-part='secondary'] {
     font-size: 0.875rem;
-    color: var(--foreground-l3);
+    color: #9fc3d5;
     white-space: nowrap;
 
     @media (width >= 40rem) {

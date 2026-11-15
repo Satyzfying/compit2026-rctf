@@ -3,7 +3,9 @@ import pino from 'pino'
 import type { TypedRedis } from '../cache/scripts'
 import type { RecomputeSource } from '../services/solve-points'
 
-const workerExt = process.env.WORKER_EXTENSION ?? '.ts'
+const workerExt =
+  process.env.WORKER_EXTENSION ??
+  (import.meta.url.endsWith('.js') ? '.js' : '.ts')
 const logger = pino().child({ module: 'workers' })
 
 export const LEADERBOARD_FORCE_UPDATE_CHANNEL = 'leaderboard:force-update'

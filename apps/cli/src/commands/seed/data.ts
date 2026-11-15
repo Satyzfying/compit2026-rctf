@@ -40,6 +40,8 @@ export type SeedData = {
 const DAY = 24 * 60 * 60 * 1000
 const SOLVE_END_OFFSET = 5 * 60_000
 
+export const DEFAULT_ADMIN_PASSWORD = 'RctfAdmin!2026'
+
 const TEAM_COUNT = 1000
 const FLAG_CHALLENGE_COUNT = 38
 
@@ -193,6 +195,7 @@ function buildAdmin(): User {
     id: 'seed-admin',
     name: 'Admin',
     email: 'admin@seed.rctf.local',
+    passwordHash: Bun.password.hashSync(DEFAULT_ADMIN_PASSWORD),
     division: 'open',
     perms: ALL_PERMISSIONS,
     ctftimeId: null,

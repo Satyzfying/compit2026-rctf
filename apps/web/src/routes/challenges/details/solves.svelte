@@ -204,6 +204,7 @@
     flex-direction: column;
     block-size: 100%;
     min-block-size: 0;
+    background: linear-gradient(135deg, #102b50 0%, #1b4770 52%, #0b1e3d 100%);
   }
 
   solves-status {
@@ -262,7 +263,7 @@
     z-index: 2;
     padding-inline: 1.25rem;
     pointer-events: none;
-    background: var(--background-l2);
+    background: rgb(14 42 72 / 94%);
 
     &[data-edge='top'] {
       inset-block-start: 0;

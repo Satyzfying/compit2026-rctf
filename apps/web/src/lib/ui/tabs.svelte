@@ -62,8 +62,17 @@
 </div>
 
 <style>
+  [data-part='root'] {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    block-size: 100%;
+    min-block-size: 0;
+  }
+
   [data-part='list'] {
     display: flex;
+    flex-shrink: 0;
   }
 
   [data-part='trigger'] {
@@ -96,6 +105,12 @@
   }
 
   [data-part='content'] {
+    display: flex;
+    flex: 1 1 auto;
+    block-size: 100%;
+    min-block-size: 0;
+    overflow: hidden;
+
     &:focus-visible {
       outline: none;
     }

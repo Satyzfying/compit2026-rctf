@@ -23,6 +23,7 @@
     focusedChallengeId: () => null,
     showTop3Context: () => urlState.showTop3Context,
     showSelfContext: () => urlState.showSelfContext,
+    freeze: () => false,
   })
 
   const screenshot = createScreenshotModel(data)

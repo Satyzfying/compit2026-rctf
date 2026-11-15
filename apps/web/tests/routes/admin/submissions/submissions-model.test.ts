@@ -244,6 +244,25 @@ describe('detailEntries', () => {
     ])
   })
 
+  test('a flag submission surfaces the AI solver disclosure when present', () => {
+    const entries = detailEntries(
+      submissionWith({
+        kind: SubmissionKind.FLAG,
+        details: {
+          submittedFlag: 'rctf{pwned}',
+          solverFile: 'solver.py',
+          aiSolver: 'https://example.com/solver',
+        },
+      })
+    )
+
+    expect(entries).toEqual([
+      { label: 'flag', value: 'rctf{pwned}' },
+      { label: 'solver ref', value: 'solver.py' },
+      { label: 'ai solver', value: 'https://example.com/solver' },
+    ])
+  })
+
   test('an admin-bot submission surfaces every present field in order', () => {
     const entries = detailEntries(
       submissionWith({

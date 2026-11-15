@@ -29,7 +29,8 @@
     label = 'Configuration tree',
   }: Props = $props()
 
-  // NUL sentinel: never collides with consumer node ids (which may include '')
+  
+
   const hiddenRootId = '\u0000'
 
   const toValue = (nodeId: string) => `#${nodeId}`

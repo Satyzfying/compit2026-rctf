@@ -12,7 +12,9 @@
   import { QueryClientProvider } from '@tanstack/svelte-query'
   import favicon from '$lib/assets/favicon.svg'
   import Brainrot from '$lib/components/brainrot.svelte'
+  import CustomCursor from '$lib/components/custom-cursor.svelte'
   import Navigation from '$lib/components/navigation.svelte'
+  import RouteBubbleTransition from '$lib/components/route-bubble-transition.svelte'
   import RootEdgeFades from '$lib/components/root-edge-fades.svelte'
   import { resetSessionQueries } from '$lib/query/core'
   import ToastHost from '$lib/ui/toast-host.svelte'
@@ -97,18 +99,34 @@
 
 <Brainrot />
 
+<CustomCursor />
+
+<RouteBubbleTransition />
+
 <style>
+  :global(html),
+  :global(body) {
+    overflow: auto;
+  }
+
   app-shell {
     display: flex;
     flex-direction: column;
+    block-size: 100dvh;
+    max-block-size: 100dvh;
     min-block-size: 100dvh;
-    padding-block-start: var(--header-height);
+    padding-block-start: 5.5rem;
+    padding-block-end: 2rem;
+    overflow: hidden;
   }
 
   main {
     display: flex;
     flex-direction: column;
     flex: 1;
+    min-block-size: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
     outline: none;
   }
 

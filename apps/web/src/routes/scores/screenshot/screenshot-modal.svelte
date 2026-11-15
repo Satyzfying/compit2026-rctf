@@ -70,7 +70,8 @@
           scale: exportSettings.scale,
         })
 
-        // Fetch into a blob first; webkit chokes on very large data URLs in anchors.
+        
+
         const blob = await (await fetch(dataUrl)).blob()
         downloadBlob(buildFilename(exportSettings.format), blob)
 

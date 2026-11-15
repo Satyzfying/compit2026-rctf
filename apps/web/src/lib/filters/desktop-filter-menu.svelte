@@ -166,9 +166,9 @@
     justify-content: center;
     inline-size: 2rem;
     block-size: 2rem;
-    color: var(--foreground-l2);
-    background: var(--background-l4);
-    border: 2px solid var(--border);
+    color: #d9f7ff;
+    background: #022135;
+    border: 2px solid #1597a8;
     border-radius: var(--radius-md);
     cursor: pointer;
 
@@ -178,12 +178,12 @@
     }
 
     &:hover {
-      color: var(--foreground-l1);
-      background: var(--background-l5);
+      color: #ffffff;
+      background: #087f91;
     }
 
     &[data-active] {
-      color: var(--foreground-accent);
+      color: #5eead4;
     }
 
     &:focus-visible {
@@ -196,6 +196,12 @@
     flex-direction: column;
     min-block-size: 0;
     max-block-size: min(29rem, 70vh);
+    color: #c8edf5;
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, rgba(17, 17, 159, 0.637) 75%, transparent 30%),
+      color-mix(in srgb, rgba(36, 130, 130, 0.637) 55%, rgb(20, 134, 90) 35%)
+    );
   }
 
   funnel-body {
@@ -219,7 +225,7 @@
       gap: var(--space-2xs);
       block-size: 2.75rem;
       padding-inline: 0.5rem;
-      color: var(--foreground-l2);
+      color: #a8c7d2;
       background: transparent;
       border: none;
       font-size: var(--step--1);
@@ -227,7 +233,8 @@
 
       &:hover,
       &:focus-visible {
-        background: var(--background-l3);
+        color: #ffffff;
+        background: #087f91;
         outline: none;
       }
 
@@ -246,7 +253,7 @@
     align-items: center;
     gap: var(--space-2xs);
     padding: 0.375rem 0.5rem;
-    color: var(--foreground-l2);
+    color: #c8edf5;
     background: transparent;
     border: none;
     border-radius: var(--radius-sm);
@@ -255,7 +262,8 @@
 
     &:hover,
     &:focus-visible {
-      background: var(--background-l3);
+      color: #ffffff;
+      background: #087f91;
       outline: none;
     }
 
@@ -270,7 +278,7 @@
     }
 
     :global(svg[data-chevron]) {
-      color: var(--foreground-l4);
+      color: #8ab7c8;
     }
   }
 

@@ -208,10 +208,14 @@
     align-items: center;
     justify-content: space-between;
     flex-shrink: 0;
-    row-gap: 0.5rem;
+    row-gap: 0.75rem;
     column-gap: 1rem;
-    padding-block: 0.5rem;
+    padding-block: 0.75rem;
     padding-inline: 1rem;
+    background: linear-gradient(180deg, rgb(12 39 72 / 94%), rgb(7 25 55 / 94%));
+    border: 1px solid rgb(91 190 214 / 28%);
+    border-radius: var(--radius-xl);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
   }
 
   score-controls {
@@ -225,8 +229,8 @@
       justify-content: center;
       block-size: 2.25rem;
       padding-inline: 0.75rem;
-      color: var(--foreground-l3);
-      background: transparent;
+      color: #9ec9db;
+      background: rgb(18 52 86 / 72%);
       border-radius: var(--radius-md);
       cursor: pointer;
 
@@ -236,8 +240,8 @@
 
       &:hover,
       &[data-active] {
-        color: var(--foreground-l1);
-        background: var(--background-l3);
+        color: #e1fbff;
+        background: rgb(35 91 119 / 88%);
       }
 
       &:focus-visible {
@@ -252,7 +256,7 @@
     gap: 0.5rem;
 
     > span {
-      color: var(--foreground-l3);
+      color: #a8d5e2;
       font-size: var(--step--1);
     }
   }
@@ -281,7 +285,7 @@
     display: none;
     align-items: center;
     gap: 0.375rem;
-    color: var(--foreground-l3);
+    color: #a8d5e2;
     font-size: var(--step--1);
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
@@ -371,6 +375,7 @@
     inline-size: 2.25rem;
     color: var(--foreground-l3);
     background: var(--background-l2);
+    border: 1px solid var(--background-l3);
     border-radius: var(--radius-md);
     cursor: pointer;
 

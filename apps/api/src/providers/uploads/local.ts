@@ -1,7 +1,12 @@
 import fs from 'fs'
 import path from 'path'
+import { Permissions } from '@rctf/types'
 import type { Hono } from 'hono'
+import { getCachedUser } from '../../cache/auth-cache'
 import type { AppEnv } from '../../lib/app-env'
+import { parseToken, TokenKind } from '../../lib/tokens'
+import { getCompetitionTiming } from '../../services/settings'
+import { getUser } from '../../services/users'
 import type { Csp } from '../base'
 import { encodeKey, UploadProvider, type FileInfo } from './base'
 
@@ -49,6 +54,44 @@ export default class LocalProvider extends UploadProvider {
           .slice(2)
           .map(decodeURIComponent)
           .join('/')
+
+        // Protect challenge attachments before competition starts (allow avatars unconditionally)
+        if (!key.startsWith('avatars/')) {
+          const { startTime } = await getCompetitionTiming(
+            c.var.db,
+            c.var.redis
+          )
+          if (Date.now() < startTime) {
+            let hasAccess = false
+            const authHeader = c.req.header('authorization')
+            if (authHeader && authHeader.startsWith('Bearer ')) {
+              const token = authHeader.slice(7)
+              const userId = await parseToken(TokenKind.Auth, token)
+              if (userId) {
+                const user =
+                  (await getCachedUser(c.var.redis, userId)) ||
+                  (await getUser(c.var.db, userId))
+                if (
+                  user &&
+                  (user.perms & Permissions.challsRead) ===
+                    Permissions.challsRead
+                ) {
+                  hasAccess = true
+                }
+              }
+            }
+
+            if (!hasAccess) {
+              return c.json(
+                {
+                  kind: 'badNotStarted',
+                  message: 'Competition has not started yet',
+                },
+                403
+              )
+            }
+          }
+        }
 
         file = Bun.file(this.resolveUploadPath(key))
         if (!(await file.exists())) {

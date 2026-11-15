@@ -29,6 +29,7 @@ interface ScoresDataConfig {
   focusedChallengeId: () => string | null
   showTop3Context: () => boolean
   showSelfContext: () => boolean
+  freeze?: () => boolean
 }
 
 export function createScoresData(config: ScoresDataConfig) {

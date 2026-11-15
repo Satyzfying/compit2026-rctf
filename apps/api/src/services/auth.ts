@@ -82,10 +82,14 @@ type RecoverResponseHelpers = ResponseHelpers<
 type RegisterUserBody = {
   email?: string
   name: string
+  password?: string
   ctftimeToken?: string
 }
 
-type UserToCreate = Pick<User, 'division' | 'email' | 'name' | 'ctftimeId'>
+type UserToCreate = Pick<
+  User,
+  'division' | 'email' | 'name' | 'ctftimeId' | 'passwordHash'
+>
 type RegisterResult = ReturnType<
   RegisterResponseHelpers[keyof RegisterResponseHelpers]
 >
@@ -99,6 +103,21 @@ type RegisterCommonResult = ReturnType<
 type PrepareRegistrationResult =
   | { hasResult: true; response: RegisterCommonResult }
   | { hasResult: false; userToCreate: UserToCreate }
+
+export const verifyPasswordForUser = async (
+  password: string,
+  passwordHash: string | null | undefined
+): Promise<boolean> => {
+  if (!passwordHash) {
+    return false
+  }
+
+  try {
+    return await Bun.password.verify(password, passwordHash)
+  } catch {
+    return false
+  }
+}
 
 const prepareRegistration = async (
   res: RegisterCommonResponseHelpers,
@@ -127,6 +146,10 @@ const prepareRegistration = async (
 
   // Registration with email:
   if (config.email && body.email) {
+    if (!body.password) {
+      return { hasResult: true, response: res.badEndpoint() }
+    }
+
     // Prior to sending the verification email we need to make sure there are no conflicts
     const conflict = await getUserByNameOrEmail(db, {
       name: body.name,
@@ -176,6 +199,7 @@ const prepareRegistration = async (
     email: body.email,
     name: body.name,
     ctftimeId: null,
+    passwordHash: body.password ? await Bun.password.hash(body.password) : null,
   }
 
   // Registration with ctftime

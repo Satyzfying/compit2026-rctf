@@ -41,10 +41,18 @@
 
 <style>
   [data-part='root'] {
+    display: flex;
+    inline-size: 100%;
     block-size: 100%;
+    min-block-size: 0;
+    min-inline-size: 0;
   }
 
   [data-part='panel'] {
+    display: flex;
+    flex: 1 1 0;
+    min-inline-size: 0;
+    min-block-size: 0;
     overflow: hidden;
   }
 

@@ -17,6 +17,16 @@
 
   const urlState = createScoresRouteState()
 
+  const endTime = $derived(configQuery.data?.endTime ?? null)
+  let currentTime = $state(Date.now())
+  const freezeTime = $derived(
+    endTime != null &&
+      configQuery.data?.startTime != null &&
+      currentTime >= configQuery.data.startTime &&
+      currentTime >= endTime - 60 * 60 * 1000 &&
+      currentTime < endTime
+  )
+
   const data = createScoresData({
     division: () => urlState.division,
     search: () => urlState.search,
@@ -24,13 +34,17 @@
     focusedChallengeId: () => urlState.focusedChallengeId,
     showTop3Context: () => urlState.showTop3Context,
     showSelfContext: () => urlState.showSelfContext,
+    freeze: () => freezeTime,
   })
 
   const revealAfterLoading = data.isLoading
 
-  const endTime = $derived(configQuery.data?.endTime ?? null)
-
   let screenshotOpen = $state(false)
+
+  $effect(() => {
+    const timer = window.setInterval(() => (currentTime = Date.now()), 1000)
+    return () => window.clearInterval(timer)
+  })
 
   const focusFetching = $derived(
     !!urlState.focusedChallengeId &&
@@ -48,7 +62,8 @@
 {#if data.isNotStarted}
   <CtfNotStarted />
 {:else}
-  <scores-page>
+  <scores-page data-reveal>
+    {#if freezeTime}<freeze-banner>Freeze time</freeze-banner>{/if}
     <ScoresToolbar
       {data}
       {urlState}
@@ -115,10 +130,41 @@
     flex: 1;
     flex-direction: column;
     min-block-size: 0;
-    block-size: calc(100dvh - var(--header-height));
-    max-block-size: calc(100dvh - var(--header-height));
+    block-size: calc(100dvh - var(--header-height) - 1.5rem);
+    max-block-size: calc(100dvh - var(--header-height) - 1.5rem);
     overflow: hidden;
     padding-block-end: 1rem;
+    /* background: linear-gradient(135deg, #0a2149 0%, #164a88 48%, #071a3a 100%); */
+    background: transparent;
+    opacity: 0;
+    transform: translateY(18px);
+    animation: score-page-reveal 500ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    font-family: Cambay;
+  }
+
+  freeze-banner {
+    display: block;
+    inline-size: fit-content;
+    margin: 0 auto 0.5rem;
+    padding: 0.35rem 0.8rem;
+    color: #dbeafe;
+    background: rgb(7 21 47 / 0.88);
+    border: 1px solid rgb(94 157 202 / 0.5);
+    border-radius: 999px;
+    font-family: Tangerine;
+  }
+
+  @keyframes score-page-reveal {
+    0% {
+      opacity: 0;
+      transform: translateY(18px);
+      filter: blur(4px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
   }
 
   scores-frame {

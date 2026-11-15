@@ -37,6 +37,9 @@ export const RegisterRoute = defineRoute({
         .optional(UserEmail)
         .check(z.describe('Required when `ctftimeToken` is omitted.')),
       name: UserName,
+      password: z
+        .string()
+        .check(z.describe('Password used for the new account.')),
       ctftimeToken: z
         .optional(z.string())
         .check(
@@ -81,28 +84,16 @@ export const RegisterRoute = defineRoute({
 export const LoginRoute = defineRoute({
   path: '/v1/auth/login',
   method: 'POST',
-  body: z
-    .object({
-      teamToken: z
-        .optional(z.string())
-        .check(z.describe('Required when `ctftimeToken` is omitted.')),
-      ctftimeToken: z
-        .optional(z.string())
-        .check(z.describe('Required when `teamToken` is omitted.')),
-    })
-    .check(
-      z.superRefine((data, ctx) => {
-        if (!data.teamToken && !data.ctftimeToken) {
-          ctx.addIssue({
-            code: 'custom',
-            message: 'Either teamToken or ctftimeToken must be provided.',
-            path: ['teamToken'],
-          })
-        }
-      })
-    ),
+  body: z.object({
+    username: z
+      .string()
+      .check(z.describe('The username or team name associated with the account.')),
+    password: z
+      .string()
+      .check(z.describe('The user password for the account.')),
+  }),
   goodResponses: [GoodLogin],
-  badResponses: [BadUnknownUser, BadTokenVerification, BadCtftimeToken],
+  badResponses: [BadUnknownUser, BadRateLimit],
   authRequired: false,
 })
 

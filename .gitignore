@@ -1,45 +1,32 @@
+# Dependencies
 node_modules/
+.bun/
+
+# Environment and sensitive secrets
+.env
+*.env
+!.env.example
+
+# Sensitive team credentials and participant lists
+scripts/teams-credentials.csv
+teams-credentials.csv
+*.csv
+
+# Database & file backups
+/backups/
+backups/*.sql
+backups/*.sql.gz
+*.tar.gz
+
+# Uploaded challenge files & user avatars (root level only)
+/uploads/
+
+# Build artifacts
 dist/
 build/
-*.tgz
-
-coverage/
-*.lcov
-*.log
-
-.env
-.env.*
-!.env.example
-!**/.env.example
-
-.cache/
-*.tsbuildinfo
-.idea/
-.DS_Store
-
-*.db
-*.db-journal
-tmp/
-temp/
-.data/
-
 .svelte-kit/
-vite.config.js.timestamp-*
-vite.config.ts.timestamp-*
 
-.cursor/
-.codex/
-.claude/
-.zed/
-AGENTS.md
-CLAUDE.md
-
-uploads/
-!apps/api/src/providers/uploads/
-!apps/api/src/providers/uploads/**
-.browser-cache/
-__pycache__/
-
-export-output/
-
-!packages/build/
+# Logs & temp
+*.log
+.DS_Store
+Thumbs.db

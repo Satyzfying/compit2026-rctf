@@ -84,7 +84,7 @@
     flex-direction: column;
     gap: var(--space-3xs);
     padding: var(--space-2xs) var(--space-xs) var(--space-xs);
-    background: var(--background-l2);
+    background: transparent;
     border-radius: var(--radius-md);
   }
 

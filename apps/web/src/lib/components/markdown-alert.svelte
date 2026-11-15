@@ -41,6 +41,7 @@
       : content.trim()
   )
   const isUrl = $derived(/^https?:\/\//.test(trimmed))
+
   const CopyIcon = $derived(copied ? IconCheck : IconCopy)
 
   function copy() {

@@ -342,6 +342,7 @@
     gap: var(--space-2xs);
     padding: var(--space-2xs);
     border-block-end: 2px solid var(--border);
+    font-family: Short Stack;
   }
 
   search-field {
@@ -352,10 +353,11 @@
     inline-size: min(18rem, 42vw);
     block-size: 2rem;
     padding-inline: 0.5rem;
-    color: var(--foreground-l3);
-    background: var(--background-l4);
-    border: 2px solid var(--border);
+    color: rgb(183, 0, 255);
+    background: color-mix(in srgb, rgba(43, 34, 137, 0.844) 50%, transparent);
+    border: 2px solid #058964de;
     border-radius: var(--radius-md);
+    font-family: Short Stack;
 
     :global(svg) {
       flex-shrink: 0;
@@ -394,8 +396,8 @@
 
   teams-head {
     block-size: 100%;
-    border-block-end: 2px solid var(--border);
-    background: var(--background-l2);
+    border-block-end: 2px solid #1597a8;
+    background: color-mix(in srgb, #071d35 90%, transparent);
   }
 
   th-cell {
@@ -404,7 +406,7 @@
     align-items: center;
     padding-inline: var(--space-2xs);
     block-size: 2.5rem;
-    color: var(--foreground-l3);
+    color: #8ab7c8;
     font-size: var(--step--1);
 
     &[data-static] {
@@ -436,7 +438,7 @@
       }
 
       &:hover {
-        color: var(--foreground-l1);
+        color: #5eead4;
       }
 
       &:focus-visible {
@@ -445,7 +447,7 @@
     }
 
     &[data-active] {
-      color: var(--foreground-l1);
+      color: #5eead4;
 
       :global(svg[data-arrow]) {
         opacity: 1;
@@ -460,18 +462,14 @@
   teams-row {
     align-items: stretch;
     min-block-size: 3rem;
-    background: var(--background-l1);
+    background: color-mix(in srgb, #102b45 82%, transparent);
 
     &[data-even] {
-      background: color-mix(
-        in srgb,
-        var(--background-l2) 55%,
-        var(--background-l1)
-      );
+      background: color-mix(in srgb, #16405c 76%, transparent);
     }
 
     &:hover {
-      background: var(--background-l3);
+      background: color-mix(in srgb, #087f91 72%, transparent);
     }
 
     &[data-banned] {
@@ -503,6 +501,12 @@
       --avatar-radius: var(--radius-md);
       display: flex;
       flex-shrink: 0;
+
+      :global([data-part='fallback']) {
+        color: #d9f7ff;
+        background: #24465d;
+        border-color: #1597a8;
+      }
     }
 
     a,
@@ -571,20 +575,25 @@
   email-button {
     display: flex;
     min-inline-size: 0;
+    max-inline-size: 100%;
 
     button {
       min-inline-size: 0;
       overflow: hidden;
-      color: var(--foreground-l2);
-      background: transparent;
-      border: none;
+      padding: 0.3rem 0.55rem;
+      color: #c8edf5;
+      background: #24465d;
+      border: 1px solid rgb(94 234 212 / 24%);
+      border-radius: var(--radius-md);
       white-space: nowrap;
       text-overflow: ellipsis;
       text-align: start;
       cursor: pointer;
 
       &:hover {
-        color: var(--foreground-l1);
+        color: #ffffff;
+        background: #087f91;
+        border-color: #5eead4;
         text-decoration: underline;
       }
     }

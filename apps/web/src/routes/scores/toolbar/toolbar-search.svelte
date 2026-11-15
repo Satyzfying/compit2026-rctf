@@ -65,6 +65,8 @@
     background: var(--background-l4);
     border-radius: var(--radius-md);
     cursor: text;
+    font-family: Short Stack;
+    background: color-mix(in srgb, rgba(43, 34, 137, 0.844) 50%, transparent);
 
     &:focus-within {
       outline: 2px solid var(--ring);
@@ -84,7 +86,7 @@
     border: 0;
     outline: none;
     background: transparent;
-    color: var(--foreground-l0);
+    color: blue;
     text-overflow: ellipsis;
 
     &::placeholder {
@@ -98,7 +100,7 @@
     align-items: center;
     flex-shrink: 0;
     padding: 0;
-    color: var(--foreground-l1);
+    color: blue;
     background: transparent;
     cursor: pointer;
     transition:

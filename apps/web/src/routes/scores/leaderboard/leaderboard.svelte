@@ -174,6 +174,7 @@
     return 'visible'
   })
   const searchActive = $derived(!!urlState.search)
+  let graphOpen = $state(false)
 
   const hasSelf = $derived(
     !!data.currentUser &&
@@ -274,25 +275,36 @@
   data-fade-scope
   data-self-edge={selfEdge ?? undefined}
 >
-  <mobile-graph>
-    {@render graphPanel()}
-  </mobile-graph>
+  <graph-toggle-row>
+    <button
+      type="button"
+      aria-expanded={graphOpen}
+      onclick={() => (graphOpen = !graphOpen)}
+    >
+      {graphOpen ? 'Hide graph' : 'Show graph'}
+    </button>
+  </graph-toggle-row>
 
-  <!-- svelte-ignore a11y_no_static_element_interactions -->
-  <scores-scroll
-    {@attach virtual.scrollContainer}
-    {@attach captureScroll}
-    data-fade-source
-    tabindex="-1"
-    onpointermove={hover.handlePointerMove}
-    onpointerleave={hover.handlePointerLeave}
-  >
+  {#if graphOpen}
+    <graph-section data-open="true">
+      {@render graphPanel()}
+    </graph-section>
+  {/if}
+
+  {#if !graphOpen}
+    <!-- svelte-ignore a11y_no_static_element_interactions -->
+    <scores-scroll
+      {@attach virtual.scrollContainer}
+      {@attach captureScroll}
+      data-fade-source
+      tabindex="-1"
+      onpointermove={hover.handlePointerMove}
+      onpointerleave={hover.handlePointerLeave}
+    >
     <scores-table>
       <header-row>
         <header-corner>
-          <graph-panel>
-            {@render graphPanel()}
-          </graph-panel>
+          <user-column-label>Teams</user-column-label>
         </header-corner>
         <header-content>
           {#if data.challenges.length > 0}
@@ -344,9 +356,10 @@
         {/each}
       </virtual-list>
     </scores-table>
-  </scores-scroll>
+    </scores-scroll>
 
-  <ScoresScrollbars root={scrollRoot} {geometry} />
+    <ScoresScrollbars root={scrollRoot} {geometry} />
+  {/if}
 
   <edge-fade data-edge="top" aria-hidden="true"></edge-fade>
   <edge-fade data-edge="bottom" aria-hidden="true"></edge-fade>
@@ -426,6 +439,12 @@
     min-block-size: 0;
     inline-size: 100%;
     max-inline-size: 100%;
+    background: linear-gradient(
+      135deg, color-mix(in oklab, #cdcecf 48%, #12385e 82%),
+        color-mix(in oklab, #06bcc1 48%, transparent 75%));
+    border: 1px solid rgba(1, 7, 12, 0.959);
+    border-radius: var(--radius-lg);
+    font-family: VT323;
 
     &[data-fade-scope] {
       timeline-scope: --edge-fade, --lb-block, --lb-inline;
@@ -442,10 +461,7 @@
 
   edge-fade {
     position: absolute;
-    /* top/bottom sit below the pinned self row (z 15). their opacity tracks
-       scroll on the compositor while their inset updates from JS a frame
-       later, so they must never be able to paint over the row occupying the
-       edge in the meantime */
+    
     z-index: 14;
     display: block;
     pointer-events: none;
@@ -523,18 +539,71 @@
     }
   }
 
-  mobile-graph {
-    display: block;
-    flex-shrink: 0;
-    block-size: var(--score-mobile-graph-height);
-    margin-block-end: var(--space-3xs);
-    background: var(--background-l1);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
+  graph-toggle-row {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.35rem 0.75rem;
+    font-family: elegant;
   }
 
-  graph-panel {
-    display: none;
+  graph-toggle-row button {
+    padding: 0.35rem 0.75rem;
+    color: color-mix(in oklab, #c9f7ff 72%, #01272e 25%);
+    background: rgb(24 69 100 / 88%);
+    border: 0.5px solid rgba(11, 22, 59, 0.4);
+    border-radius: 999px;
+    cursor: pointer;
+  }
+
+  graph-toggle-row button:hover {
+    color: color-mix(in oklab, #a8f2ff 72%, #01272e 25%);
+    background: linear-gradient(
+      135deg, 
+      color-mix(in oklab, #639add 72%, transparent),
+      color-mix(in oklab, #105670 42%, transparent)
+    );
+  }
+
+  graph-section {
+    display: block;
+    inline-size: calc(100% - 1.5rem);
+    block-size: 10rem;
+    margin: 0 0.75rem 0.75rem;
+    padding: 0.5rem;
+    background:
+      linear-gradient(
+        135deg,
+        color-mix(in oklab, #07152f 92%, transparent),
+        color-mix(in oklab, #10284a 84%, var(--background-l1)),
+        color-mix(in oklab, #050b1c 94%, transparent)
+      );
+    background-size: 180% 180%;
+    border: 1px solid color-mix(in oklab, #5e9dca 28%, var(--border));
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    animation: graph-section-in 180ms ease-out;
+    /* box-shadow: inset 0 1px 0 rgb(150 220 255 / 0.08), 0 1rem 2rem rgb(0 0 0 / 0.2); */
+
+    &:hover {
+      background-position: 100% 100%;
+      transition: background-position 900ms ease;
+    }
+  }
+
+  user-column-label {
+    display: flex;
+    align-items: center;
+    block-size: 100%;
+    padding-inline: 1rem;
+    color: #9fd9e4;
+    font-size: var(--step--1);
+  }
+
+  @keyframes graph-section-in {
+    from {
+      opacity: 0;
+      transform: translateY(-0.5rem);
+    }
   }
 
   scores-scroll {
@@ -571,10 +640,10 @@
     position: relative;
     inline-size: 100%;
     contain: layout style;
-    /* not one huge repeating-linear-gradient because firefox misrenders giant gradient primitives??? */
+    
     background-image: linear-gradient(
       to bottom,
-      var(--background-l2) 0 var(--score-row-height),
+      rgb(20 52 87 / 88%) 0 var(--score-row-height),
       transparent var(--score-row-height)
     );
     background-size: 100% var(--score-row-height-full);
@@ -588,7 +657,10 @@
     inline-size: 100%;
     block-size: var(--score-row-height-full);
     contain: layout style paint;
-    background: var(--background-l0);
+    background: linear-gradient(180deg, rgb(25 57 91 / 92%), rgb(14 38 70 / 92%));
+    border: 1px solid rgb(91 190 214 / 24%);
+    border-radius: var(--radius-lg);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
 
     &:has(:global(a:focus-visible))::after {
       content: '';
@@ -616,7 +688,7 @@
     display: block;
     inline-size: 100%;
     block-size: var(--score-row-height);
-    background: var(--background-l2);
+    background: blue ;
   }
 
   row-team {
@@ -632,7 +704,9 @@
     inline-size: var(--score-team-column-width);
     block-size: var(--score-row-height);
     padding-inline: 1rem;
-    background: var(--background-l0);
+    background: color-mix(in oklab, rgb(105, 179, 209) 28%, transparent);
+    backdrop-filter: blur(5px);
+    border-radius: var(--radius-lg);
 
     &::before,
     &::after {
@@ -644,20 +718,15 @@
     }
 
     &::before {
-      background: var(--background-l2);
+      background: linear-gradient(135 deg, color-mix(in oklab, #06bcc1 28%, transparent), color-mix(in oklab, #105670 42%, transparent));
     }
 
     &[data-hovered]::before {
-      background: color-mix(
-        in oklab,
-        var(--foreground-l0) 4%,
-        var(--background-l2)
-      );
+      background: linear-gradient(135 deg, color-mix(in oklab, #06bcc1 28%, transparent), color-mix(in oklab, #105670 42%, transparent));
     }
 
     &[data-ranked]::after {
-      inline-size: min(24rem, 100%);
-      background: linear-gradient(to right, var(--rank-glow), transparent);
+      background: linear-gradient(135 deg, color-mix(in oklab, #06bcc1 28%, transparent), color-mix(in oklab, #105670 42%, transparent));
     }
 
     &[data-rank='first'] {
@@ -698,7 +767,7 @@
       --score-team-column-width: min(60vw - 4.5rem, 26rem);
       --score-fade-region-top: var(--score-header-height);
       --score-fade-rail: 0.5rem;
-      inline-size: fit-content;
+      inline-size: min(100%, 92rem);
       margin-inline: auto;
       padding-block-end: var(--score-fade-rail);
     }
@@ -709,9 +778,6 @@
       inset-block-start: 0;
       inset-block-end: var(--score-fade-rail);
       inline-size: var(--score-fade-size);
-      /* unlike top/bottom these don't move with the pinned self row, so they
-         sit above the sticky header (z 20) and self row (z 15) to fade their
-         horizontally scrolling cells at the column boundary */
       z-index: 21;
     }
 
@@ -725,10 +791,6 @@
       background: linear-gradient(to left, var(--background-l0), transparent);
     }
 
-    mobile-graph {
-      display: none;
-    }
-
     scores-table {
       inline-size: max-content;
       min-inline-size: 100%;
@@ -740,7 +802,7 @@
       inset-block-start: 0;
       z-index: 20;
       block-size: var(--score-header-height);
-      background: var(--background-l0);
+      background: linear-gradient(135 deg, color-mix(in oklab, #06bcc1 28%, transparent), color-mix(in oklab, #105670 42%, transparent));background: rgb(11 31 62 / 92%);
     }
 
     header-corner {
@@ -750,17 +812,7 @@
       flex-shrink: 0;
       inline-size: var(--score-team-column-width);
       block-size: 100%;
-      background: var(--background-l0);
-    }
-
-    graph-panel {
-      display: block;
-      block-size: 100%;
-      background: var(--background-l1);
-      border-start-start-radius: var(--radius-lg);
-      border-start-end-radius: var(--radius-lg);
-      border-end-start-radius: var(--radius-lg);
-      overflow: hidden;
+      background: rgba(1, 7, 65, 0.842);
     }
 
     header-content {
@@ -799,16 +851,12 @@
       flex-shrink: 0;
       inline-size: var(--score-content-width);
       block-size: var(--score-row-height);
-      background: var(--background-l2);
+      background: rgb(26 60 94 / 88%);
       border-start-end-radius: var(--radius-lg);
       border-end-end-radius: var(--radius-lg);
 
       &[data-hovered] {
-        background: color-mix(
-          in oklab,
-          var(--foreground-l0) 4%,
-          var(--background-l2)
-        );
+        background: rgba(27, 60, 150, 0.719);
       }
 
       &[data-current] {
@@ -824,7 +872,7 @@
     flex-direction: column;
     max-inline-size: 16rem;
     padding: 0.375rem 0.625rem;
-    background: var(--background-l2);
+    background: rgb(26 60 94 / 88%);
     border: 2px solid var(--border);
     border-radius: var(--radius-sm);
     pointer-events: none;
@@ -841,7 +889,7 @@
       inset-inline-start: 50%;
       inline-size: 0.625rem;
       block-size: 0.625rem;
-      background: var(--background-l2);
+      background: rgb(26 60 94 / 88%);
       translate: -50%;
       rotate: 45deg;
     }
@@ -875,6 +923,7 @@
       color: var(--foreground-l3);
       font-size: var(--step--2);
       white-space: nowrap;
+      border-radius: var(--radius-sm);
 
       &[data-trend='positive'] {
         color: var(--foreground-success);

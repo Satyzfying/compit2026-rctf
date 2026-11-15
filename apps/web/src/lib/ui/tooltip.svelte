@@ -17,6 +17,8 @@
     id,
     openDelay: 300,
     disabled,
+    placement: 'top',
+    offset: 8,
   }))
   const api = $derived(tooltip.connect(service, normalizeProps))
 
@@ -48,6 +50,7 @@
     background: var(--background-l2);
     border: 2px solid var(--border);
     border-radius: var(--radius-sm);
+    transform: translateY(-0.15rem);
   }
 
   [data-part='arrow'] {

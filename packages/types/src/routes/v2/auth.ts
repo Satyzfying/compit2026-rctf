@@ -35,6 +35,9 @@ export const RegisterRouteV2 = defineRoute({
         .optional(UserEmail)
         .check(z.describe('Required when `ctftimeToken` is omitted.')),
       name: UserName,
+      password: z
+        .string()
+        .check(z.describe('Password used for the new account.')),
       ctftimeToken: z
         .optional(z.string())
         .check(

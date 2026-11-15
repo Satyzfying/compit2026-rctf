@@ -86,8 +86,12 @@
     flex-direction: column;
     inline-size: var(--popover-width, max-content);
     max-inline-size: min(90vw, 24rem);
-    background: var(--background-l1);
-    border: 2px solid var(--border);
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, rgba(1, 1, 19, 0.637) 75%, transparent),
+      color-mix(in srgb, rgba(235, 237, 237, 0.637) 55%, transparent)
+    );
+    border: 1px solid #3dce85;
     border-radius: var(--radius-md);
     overflow: hidden;
   }
